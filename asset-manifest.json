@@ -1,0 +1,32 @@
+{
+  "files": {
+    "main.css": "/incubator-friday/static/css/main.dc32927a.css",
+    "main.js": "/incubator-friday/static/js/main.06128ecf.js",
+    "static/js/787.7b5c628f.chunk.js": "/incubator-friday/static/js/787.7b5c628f.chunk.js",
+    "static/media/fon-1.jpg": "/incubator-friday/static/media/fon-1.f2fd11ae30326cf97226.jpg",
+    "static/media/Oswald-Medium.eot": "/incubator-friday/static/media/Oswald-Medium.0922d1d6384e1966882d.eot",
+    "static/media/Oswald-Medium.ttf": "/incubator-friday/static/media/Oswald-Medium.412de8ccd54c42018cad.ttf",
+    "static/media/Oswald-Regular.eot": "/incubator-friday/static/media/Oswald-Regular.238ec159343e65e17a0d.eot",
+    "static/media/Oswald-Regular.ttf": "/incubator-friday/static/media/Oswald-Regular.e1093f9adc57be310c08.ttf",
+    "static/media/Oswald-Light.eot": "/incubator-friday/static/media/Oswald-Light.fb02f52dd2f267860191.eot",
+    "static/media/Oswald-Light.ttf": "/incubator-friday/static/media/Oswald-Light.3ee3d5c16822fd99d9ed.ttf",
+    "static/media/Oswald-Medium.woff": "/incubator-friday/static/media/Oswald-Medium.166fc0cd2df8b0b4bf59.woff",
+    "static/media/Oswald-Regular.woff": "/incubator-friday/static/media/Oswald-Regular.7f8da1cd05f2191785fd.woff",
+    "static/media/Oswald-Light.woff": "/incubator-friday/static/media/Oswald-Light.74386c69a32d4334eb79.woff",
+    "static/media/OpenSansBold.eot": "/incubator-friday/static/media/OpenSansBold.bd28c119a39c9d84a7d3.eot",
+    "static/media/OpenSansBold.ttf": "/incubator-friday/static/media/OpenSansBold.b0cde4594957745358be.ttf",
+    "static/media/OpenSansRegular.eot": "/incubator-friday/static/media/OpenSansRegular.c9ebfe940e88be9056b5.eot",
+    "static/media/OpenSansRegular.ttf": "/incubator-friday/static/media/OpenSansRegular.1e96270eb92b148f2a25.ttf",
+    "static/media/OpenSansBold.woff": "/incubator-friday/static/media/OpenSansBold.d6dc0a7557fc6ea09340.woff",
+    "static/media/OpenSansRegular.woff": "/incubator-friday/static/media/OpenSansRegular.f815477469249e798748.woff",
+    "static/media/logo.png": "/incubator-friday/static/media/logo.8cb178725bfbbbe7e104.png",
+    "index.html": "/incubator-friday/index.html",
+    "main.dc32927a.css.map": "/incubator-friday/static/css/main.dc32927a.css.map",
+    "main.06128ecf.js.map": "/incubator-friday/static/js/main.06128ecf.js.map",
+    "787.7b5c628f.chunk.js.map": "/incubator-friday/static/js/787.7b5c628f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.dc32927a.css",
+    "static/js/main.06128ecf.js"
+  ]
+}
