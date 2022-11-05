@@ -1,0 +1,25 @@
+.header {
+    padding: 5px 20px;
+    background-color: rgba(235,235,235,.4);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+.header > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.logo {
+    max-height: 50px;
+}
+.header a {
+    padding: 5px 10px;
+    color: #000;
+    font-size: 18px;
+    font-weight: 300;
+}
+.header a:hover {
+    text-decoration: underline;
+}
