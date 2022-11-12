@@ -60,7 +60,7 @@ export const InputPassword: React.FC<InputPasswordPropsType> = ({
       />
       <span onClick={() => setShowPass(!showPass)}>
         {showPass ? (
-          <VisibilityOffIcon  sx={{ color: '#333333', fontSize: 20 }} />
+          <VisibilityOffIcon sx={{ color: '#333333', fontSize: 20 }} />
         ) : (
           <RemoveRedEyeIcon sx={{ color: '#333333', fontSize: 20 }} />
         )}
