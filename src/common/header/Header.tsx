@@ -2,7 +2,7 @@ import React from 'react'
 import s from 'common/header/Header.module.css'
 import logo from 'assets/images/logo.png'
 import { NavLink } from 'react-router-dom'
-import {PATH} from "app/Pages";
+import {PATH} from "common/pages/Pages";
 
 export const Header = () => {
 
