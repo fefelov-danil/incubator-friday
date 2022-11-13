@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useFormik } from 'formik'
 import { Navigate } from 'react-router-dom'
 
 import { Button } from '../../../common/button/Button'
@@ -15,30 +16,32 @@ export const Registration = () => {
   const dispatch = useAppDispatch()
   const isRegistered = useAppSelector<boolean>(state => state.auth.isRegistered)
 
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    onSubmit: values => {
+      dispatch(registerMeTC(values))
+      formik.resetForm()
+    },
+  })
+
   if (isRegistered) {
-    return <Navigate replace to={PATH.LOGIN} />
+    return <Navigate to={PATH.LOGIN} />
   }
 
   return (
     <div className={'formPage'}>
       <div className={'formContainer'}>
         <h1>Registration</h1>
-        <InputText className={s.inpEmail} />
-        <InputPassword className={s.inpPass} />
-        <Button
-          onClick={() => {
-            console.log('registerMe')
-            dispatch(
-              registerMeTC({
-                email: 'sxplddin@gmail.com',
-                password: 'stringstring',
-              })
-            )
-          }}
-          className={s.btn}
-        >
-          Кнопка
-        </Button>
+        <form onSubmit={formik.handleSubmit}>
+          <InputText className={s.inpEmail} {...formik.getFieldProps('email')} />
+          <InputPassword className={s.inpPass} {...formik.getFieldProps('password')} />
+          <Button type={'submit'} className={s.btn}>
+            Register
+          </Button>
+        </form>
       </div>
     </div>
   )
