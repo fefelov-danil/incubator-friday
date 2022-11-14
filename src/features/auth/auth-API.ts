@@ -1,8 +1,20 @@
 import axios from 'axios'
 
 export const instance = axios.create({
-  baseURL: 'https://neko-back.herokuapp.com/2.0',
+  baseURL: 'http://localhost:7542/2.0',
   withCredentials: true,
 })
 
-export const authAPI = {}
+export const authAPI = {
+  me() {
+    return instance.post<AuthMeType>('/auth/me', {})
+  },
+}
+
+// types
+type AuthMeType = {
+  created: string
+  email: string
+  name: string
+  publicCardPacksCount: number
+}
