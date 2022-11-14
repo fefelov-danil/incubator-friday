@@ -20,12 +20,14 @@ export const authReducer = (state: AuthStateType = authInitialState, action: aut
 }
 
 // Actions
+
 const setRegistrationAC = (isRegistered: boolean) => {
   return {
     type: 'AUTH/SET-REGISTRATION',
     isRegistered,
   } as const
 }
+
 // Thunks
 
 export const registerMeTC =

@@ -21,6 +21,22 @@ export const Registration = () => {
       email: '',
       password: '',
     },
+    validate: values => {
+      const errors: FormikErrorType = {}
+
+      if (!values.email) {
+        errors.email = 'Required'
+      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+        errors.email = 'Invalid email address'
+      }
+      if (!values.password) {
+        errors.password = 'Required'
+      } else if (values.password.length <= 7) {
+        errors.password = 'Password must be more than 7 characters'
+      }
+
+      return errors
+    },
     onSubmit: values => {
       dispatch(registerMeTC(values))
       formik.resetForm()
@@ -35,9 +51,19 @@ export const Registration = () => {
     <div className={'formPage'}>
       <div className={'formContainer'}>
         <h1>Registration</h1>
-        <form onSubmit={formik.handleSubmit}>
-          <InputText className={s.inpEmail} {...formik.getFieldProps('email')} />
-          <InputPassword className={s.inpPass} {...formik.getFieldProps('password')} />
+        <form className={s.registration_form} onSubmit={formik.handleSubmit}>
+          <div className={s.inpEmail_container}>
+            <InputText className={s.inpEmail} {...formik.getFieldProps('email')} />
+            {formik.touched.email && formik.errors.email ? (
+              <span className={s.error_message}>{formik.errors.email}</span>
+            ) : null}
+          </div>
+          <div className={s.inpPass_container}>
+            <InputPassword className={s.inpPass} {...formik.getFieldProps('password')} />
+            {formik.touched.password && formik.errors.password ? (
+              <span className={s.error_message}>{formik.errors.password}</span>
+            ) : null}
+          </div>
           <Button type={'submit'} className={s.btn}>
             Register
           </Button>
@@ -45,4 +71,11 @@ export const Registration = () => {
       </div>
     </div>
   )
+}
+
+// Types
+
+type FormikErrorType = {
+  email?: string
+  password?: string
 }

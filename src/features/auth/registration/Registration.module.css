@@ -1,8 +1,24 @@
+.inpEmail_container,
+.inpPass_container {
+  position: relative;
+
+  margin-bottom: 28px;
+}
+
 .inpEmail,
 .inpPass {
   width: 100%;
-  margin-bottom: 28px;
 }
+
 .btn {
   width: 100%;
+}
+
+.error_message {
+  position: absolute;
+  left: 5px;
+
+  display: block;
+
+  color: #b60505;
 }
