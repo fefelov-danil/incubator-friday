@@ -9,12 +9,26 @@ export const authAPI = {
   me() {
     return instance.post<ProfileType>('/auth/me', {})
   },
+  logOut() {
+    return instance.delete('/auth/me')
+  },
+  updateProfile(profileModel: updateProfileModelType) {
+    return instance.put<updateProfile>('/auth/me', profileModel)
+  },
 }
 
 // types
-type ProfileType = {
+export type ProfileType = {
   created: string
   email: string
   name: string
   publicCardPacksCount: number
+  avatar: string
+}
+export type updateProfileModelType = {
+  name?: string
+  avatar?: string
+}
+type updateProfile = {
+  updatedUser: ProfileType
 }
