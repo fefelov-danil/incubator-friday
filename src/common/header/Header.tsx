@@ -3,10 +3,15 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 
 import logo from 'assets/images/logo.png'
+import { Button } from 'common/button/Button'
 import s from 'common/header/Header.module.css'
 import { PATH } from 'common/pages/Pages'
+import { useAppSelector } from 'utils/hooks'
 
 export const Header = () => {
+  const authMe = useAppSelector(state => state.auth.authMe)
+  const profile = useAppSelector(state => state.auth.profile)
+
   return (
     <div className={s.header}>
       <div className="container">
@@ -14,11 +19,16 @@ export const Header = () => {
           <img src={logo} alt={''} className={s.logo} />
         </NavLink>
         <div className={s.menu}>
-          <NavLink to={PATH.LOGIN}>Login</NavLink>
-          <NavLink to={PATH.REGISTRATION}>Registration</NavLink>
-          <NavLink to={PATH.PASSWORD_RECOVERY}>Password recovery</NavLink>
-          <NavLink to={PATH.CHANGE_PASSWORD}>Change password</NavLink>
-          <NavLink to={PATH.PROFILE}>Profile</NavLink>
+          {authMe ? (
+            <NavLink to={PATH.PROFILE} className={s.login}>
+              {profile.name}
+              <img src={profile.avatar} alt="" />
+            </NavLink>
+          ) : (
+            <NavLink to={PATH.LOGIN} className={s.signIn}>
+              <Button>Sign in</Button>
+            </NavLink>
+          )}
         </div>
       </div>
     </div>
