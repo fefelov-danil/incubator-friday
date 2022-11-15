@@ -6,6 +6,7 @@ import { Navigate } from 'react-router-dom'
 import { Checkbox } from '../../../common/checkbox/Checkbox'
 import { InputPassword } from '../../../common/inputPassword/InputPassword'
 import { InputText } from '../../../common/inputText/InputText'
+import { PATH } from '../../../common/pages/Pages'
 import { useAppDispatch, useAppSelector } from '../../../utils/hooks'
 import { loginTC } from '../auth-reducer'
 
@@ -53,7 +54,7 @@ export const Login = () => {
   })
 
   if (isLoggedIn) {
-    return <Navigate to={'/'} />
+    return <Navigate to={PATH.PROFILE} />
   }
 
   return (
