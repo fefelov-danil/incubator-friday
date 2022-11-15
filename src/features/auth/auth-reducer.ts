@@ -1,11 +1,25 @@
+import axios from 'axios'
 import { Dispatch } from 'redux'
 
 import { RootState } from 'app/store'
-import { authAPI, ProfileType, updateProfileModelType } from 'features/auth/auth-API'
+import { authAPI, LoginParamsDataType, LoginResponseType, ProfileType, updateProfileModelType } from 'features/auth/auth-API'
 
 const authInitialState = {
   authMe: false,
   profile: {} as ProfileType,
+  isLoggedIn: false,
+  _id: '',
+  email: '',
+  rememberMe: false,
+  isAdmin: false,
+  name: '',
+  verified: false,
+  publicCardPacksCount: 0,
+  created: null,
+  updated: null,
+  __v: 0,
+  token: '',
+  tokenDeathTime: 0,
 }
 
 export const authReducer = (state: AuthStateType = authInitialState, action: authActionsType) => {
@@ -16,6 +30,13 @@ export const authReducer = (state: AuthStateType = authInitialState, action: aut
       return { ...state, profile: action.profile }
     case 'auth/LOGOUT':
       return { ...state, authMe: false }
+    case 'LOGIN/SET-IS-LOGGED-IN':
+      return {
+        ...state,
+        isLoggedIn: action.value,
+      }
+    case 'LOGIN/SET-USER-DATA':
+      return { ...state, ...action.userData }
     default:
       return state
   }
@@ -31,6 +52,9 @@ export const profileAC = (profile: ProfileType) => {
 export const logOutAC = () => {
   return { type: 'auth/LOGOUT' } as const
 }
+const setIsLoggedInAC = (value: boolean) => ({ type: 'LOGIN/SET-IS-LOGGED-IN', value } as const)
+const setUserDataAC = (userData: LoginResponseType) =>
+  ({ type: 'LOGIN/SET-USER-DATA', userData } as const)
 
 // Thunks
 export const authMeTC = () => async (dispatch: Dispatch) => {
@@ -75,10 +99,41 @@ export const updateProfile =
       console.log(err)
     }
   }
+export const loginTC = (data: LoginParamsDataType) => async (dispatch: Dispatch) => {
+  try {
+    const response = await authAPI.login(data)
+
+    dispatch(setUserDataAC(response.data))
+    dispatch(setIsLoggedInAC(true))
+    alert('Success')
+  } catch (e) {
+    if (axios.isAxiosError(e)) {
+      console.log(e.response ? e.response.data.error : e.message)
+      alert(e.response ? e.response.data.error : e.message)
+    } else console.log('Some error occurred')
+  }
+}
 
 // Types
 type AuthStateType = typeof authInitialState
+type AuthStateType1 = {
+  isLoggedIn: boolean
+  _id: string
+  email: string
+  rememberMe: boolean
+  isAdmin: boolean
+  name: string
+  verified: boolean
+  publicCardPacksCount: number
+  created: Date | null
+  updated: Date | null
+  __v: number
+  token: string
+  tokenDeathTime: number
+}
 type authActionsType =
   | ReturnType<typeof authMeAC>
   | ReturnType<typeof profileAC>
   | ReturnType<typeof logOutAC>
+  | ReturnType<typeof setIsLoggedInAC>
+  | ReturnType<typeof setUserDataAC>
