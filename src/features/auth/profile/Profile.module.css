@@ -1,0 +1,47 @@
+.profile > div {
+  padding: 20px 30px 30px 30px;
+}
+.profile h1 {
+  margin-bottom: 14px;
+}
+.avatar {
+  margin-bottom: 15px;
+
+  text-align: center;
+}
+.avatar img {
+  max-width: 200px;
+  height: auto;
+
+  border-radius: 50%;
+}
+.name {
+  width: max-content;
+  margin: 0 auto 5px auto;
+
+  font-size: 22px;
+  color: #111;
+}
+.profile .name span svg {
+  font-size: 22px;
+}
+.email {
+  text-align: center;
+}
+.logOut {
+  display: flex;
+  align-items: center;
+
+  margin-left: auto;
+  padding: 0;
+
+  text-decoration: underline;
+
+  background: transparent;
+  border: 0;
+}
+.logOut svg {
+  margin-left: 5px;
+
+  font-size: 16px;
+}
