@@ -28,11 +28,15 @@ export const EditableSpan: React.FC<EditAbleSpanPropsType> = ({ value, updateTit
     }
     const itemTitle = title.trim()
 
-    if (itemTitle) {
+    if (itemTitle && itemTitle.length < 25) {
       updateTitle(title)
       setEditMode(false)
-    } else {
+    }
+    if (!itemTitle) {
       setError('The field is required')
+    }
+    if (itemTitle.length > 25) {
+      setError('Length no more than 25 characters')
     }
   }
 
@@ -42,7 +46,7 @@ export const EditableSpan: React.FC<EditAbleSpanPropsType> = ({ value, updateTit
 
     if (error && itemTitle) setError(false)
     if (!itemTitle) setError('The field is required')
-    if (itemTitle.length >= 100) setError('Length no more than 100 characters')
+    if (itemTitle.length >= 25) setError('Length no more than 25 characters')
   }
   const onKeyDownChangeText = (e: KeyboardEvent<HTMLInputElement>) => {
     e.key === 'Enter' && offEditMode()
