@@ -2,9 +2,11 @@ import { applyMiddleware, combineReducers, legacy_createStore as createStore } f
 import thunk, { ThunkDispatch } from 'redux-thunk'
 
 import { appReducer } from 'app/app-reducer'
+import { authReducer } from 'features/auth/auth-reducer'
 
 const rootReducer = combineReducers({
   app: appReducer,
+  auth: authReducer,
 })
 
 export type RootReducerType = ReturnType<typeof rootReducer>
