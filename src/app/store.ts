@@ -8,6 +8,8 @@ import thunk, { ThunkAction, ThunkDispatch } from 'redux-thunk'
 
 import { authReducer } from '../features/auth/auth-reducer'
 
+import { authReducer } from '../features/auth/auth-reducer'
+
 import { appReducer } from 'app/app-reducer'
 import { authReducer } from 'features/auth/auth-reducer'
 

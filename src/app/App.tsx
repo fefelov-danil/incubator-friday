@@ -1,5 +1,7 @@
 import React from 'react'
 
+import { AlertSnackbar } from '../common/AlertSnackbar/AlertSnackbar'
+
 import s from './App.module.css'
 
 import 'assets/general-css/reset.css'
@@ -12,6 +14,7 @@ export const App = () => {
   return (
     <div className={s.app} style={{ backgroundImage: `url('${mainBg}')` }}>
       <div>
+        <AlertSnackbar />
         <Header />
         <Pages />
       </div>

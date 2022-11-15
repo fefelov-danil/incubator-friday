@@ -1,11 +1,13 @@
 import axios from 'axios'
 import { Dispatch } from 'redux'
-
+import { errorUtils } from '../../utils/errorsHandler'
 import { RootState } from 'app/store'
-import { authAPI, LoginParamsDataType, LoginResponseType, ProfileType, updateProfileModelType } from 'features/auth/auth-API'
+import { setAppErrorAC, setAppStatusAC } from '../../app/app-reducer'
+import { authAPI, LoginParamsDataType, RegistrationRequestType, LoginResponseType, ProfileType, updateProfileModelType } from 'features/auth/auth-API'
 
 const authInitialState = {
   authMe: false,
+  isRegistered: false,
   profile: {} as ProfileType,
   isLoggedIn: false,
   _id: '',
@@ -37,6 +39,9 @@ export const authReducer = (state: AuthStateType = authInitialState, action: aut
       }
     case 'LOGIN/SET-USER-DATA':
       return { ...state, ...action.userData }
+    case 'AUTH/SET-REGISTRATION': {
+      return { ...state, isRegistered: action.isRegistered }
+    }
     default:
       return state
   }
@@ -55,6 +60,13 @@ export const logOutAC = () => {
 const setIsLoggedInAC = (value: boolean) => ({ type: 'LOGIN/SET-IS-LOGGED-IN', value } as const)
 const setUserDataAC = (userData: LoginResponseType) =>
   ({ type: 'LOGIN/SET-USER-DATA', userData } as const)
+
+const setRegistrationAC = (isRegistered: boolean) => {
+  return {
+    type: 'AUTH/SET-REGISTRATION',
+    isRegistered,
+  } as const
+}
 
 // Thunks
 export const authMeTC = () => async (dispatch: Dispatch) => {
@@ -114,6 +126,21 @@ export const loginTC = (data: LoginParamsDataType) => async (dispatch: Dispatch)
   }
 }
 
+export const registerMeTC =
+  (data: RegistrationRequestType) => (dispatch: Dispatch<authActionsType>) => {
+    dispatch(setAppStatusAC('loading'))
+    authAPI
+      .registerMe(data)
+      .then(res => {
+        dispatch(setRegistrationAC(true))
+        dispatch(setAppStatusAC('succeeded'))
+      })
+      .catch(error => {
+        errorUtils(error, dispatch)
+        dispatch(setAppStatusAC('succeeded'))
+      })
+  }
+
 // Types
 type AuthStateType = typeof authInitialState
 type AuthStateType1 = {
@@ -137,3 +164,6 @@ type authActionsType =
   | ReturnType<typeof logOutAC>
   | ReturnType<typeof setIsLoggedInAC>
   | ReturnType<typeof setUserDataAC>
+  | ReturnType<typeof setRegistrationAC>
+  | ReturnType<typeof setAppErrorAC>
+  | ReturnType<typeof setAppStatusAC>

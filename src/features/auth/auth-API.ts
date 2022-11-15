@@ -15,6 +15,9 @@ export const authAPI = {
   updateProfile(profileModel: updateProfileModelType) {
     return instance.put<updateProfile>('/auth/me', profileModel)
   },
+  registerMe(data: RegistrationRequestType) {
+    return instance.post<RegistrationRequestType>('auth/register', data)
+  },
   login(data: LoginParamsDataType) {
     return instance.post<LoginParamsDataType, AxiosResponse<LoginResponseType>>('auth/login', data)
   },
@@ -56,4 +59,9 @@ export type LoginResponseType = {
   token: string
   tokenDeathTime: number
   avatar?: string
+}
+
+export type RegistrationRequestType = {
+  email: string
+  password: string
 }
