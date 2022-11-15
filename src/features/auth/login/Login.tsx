@@ -60,11 +60,15 @@ export const Login = () => {
     <div className={'formPage'}>
       <form className={'formContainer'} onSubmit={formik.handleSubmit}>
         <h1>Login</h1>
-        <InputText className={s.inpEmail} {...formik.getFieldProps('email')} />
+        <InputText placeholder="Email" className={s.inpEmail} {...formik.getFieldProps('email')} />
         {formik.touched.email && formik.errors.email && (
           <div className={s.error}>{formik.errors.email}</div>
         )}
-        <InputPassword className={s.inpPass} {...formik.getFieldProps('password')} />
+        <InputPassword
+          placeholder="Password"
+          className={s.inpPass}
+          {...formik.getFieldProps('password')}
+        />
         {formik.touched.password && formik.errors.password && (
           <div className={s.error}>{formik.errors.password}</div>
         )}
