@@ -61,21 +61,31 @@ export const Login = () => {
     <div className={'formPage'}>
       <form className={'formContainer'} onSubmit={formik.handleSubmit}>
         <h1>Login</h1>
-        <InputText placeholder="Email" className={s.inpEmail} {...formik.getFieldProps('email')} />
-        {formik.touched.email && formik.errors.email && (
-          <div className={s.error}>{formik.errors.email}</div>
-        )}
-        <InputPassword
-          placeholder="Password"
-          className={s.inpPass}
-          {...formik.getFieldProps('password')}
-        />
-        {formik.touched.password && formik.errors.password && (
-          <div className={s.error}>{formik.errors.password}</div>
-        )}
-        <Checkbox checked={formik.values.rememberMe} {...formik.getFieldProps('rememberMe')}>
-          Remember Me
-        </Checkbox>
+        <div className={s.inputContainer}>
+          <InputText
+            placeholder="Email"
+            className={s.inpEmail}
+            {...formik.getFieldProps('email')}
+          />
+          {formik.touched.email && formik.errors.email && (
+            <span className={s.formError}>{formik.errors.email}</span>
+          )}
+        </div>
+        <div className={s.inputContainer}>
+          <InputPassword
+            placeholder="Password"
+            className={s.inpPass}
+            {...formik.getFieldProps('password')}
+          />
+          {formik.touched.password && formik.errors.password && (
+            <span className={s.formError}>{formik.errors.password}</span>
+          )}
+        </div>
+        <div className={s.checkBox}>
+          <Checkbox checked={formik.values.rememberMe} {...formik.getFieldProps('rememberMe')}>
+            Remember Me
+          </Checkbox>
+        </div>
         <Button type={'submit'} className={s.btn}>
           Sign in
         </Button>
