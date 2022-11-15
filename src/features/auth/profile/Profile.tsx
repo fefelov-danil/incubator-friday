@@ -20,8 +20,8 @@ export const Profile = () => {
   }
 
   return (
-    <div className={`${s.profile} formPage`}>
-      <div className={'formContainer'}>
+    <div className={'formPage'}>
+      <div className={s.profile}>
         <h1>Profile</h1>
         <p className={s.avatar}>
           <img src={profile.avatar} alt="" />
