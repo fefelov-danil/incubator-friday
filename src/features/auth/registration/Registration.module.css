@@ -15,10 +15,23 @@
 }
 
 .error_message {
+  pointer-events: none;
+
   position: absolute;
-  left: 5px;
+  z-index: 1;
+  top: calc(100% + 6px);
+  left: -8px;
 
-  display: block;
+  margin-top: -4px;
+  padding: 2px 8px 5px 8px;
 
-  color: #b60505;
+  font-family: 'OpenSans', sans-serif;
+  font-size: 13px;
+  color: #fff;
+
+  background: #434f5c;
+  border-radius: 6px;
+
+  animation: fade 0.2s;
+  animation-iteration-count: 1;
 }

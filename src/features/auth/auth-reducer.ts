@@ -1,8 +1,7 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { Dispatch } from 'redux'
 
 import { setAppErrorAC, setAppStatusAC } from '../../app/app-reducer'
-import { errorUtils } from '../../utils/errorsHandler'
 
 import { RootState } from 'app/store'
 import {
@@ -76,6 +75,7 @@ export const authMeTC = () => async (dispatch: Dispatch) => {
     const res = await authAPI.me()
 
     dispatch(setIsLoggedInAC(true))
+    dispatch(setRegistrationAC(true))
     const avatar = res.data.avatar
       ? res.data.avatar
       : 'https://avatarfiles.alphacoders.com/798/79894.jpg'
@@ -119,6 +119,7 @@ export const loginTC = (data: LoginParamsDataType) => async (dispatch: Dispatch)
 
     dispatch(setUserDataAC(response.data))
     dispatch(setIsLoggedInAC(true))
+    dispatch(setRegistrationAC(true))
     alert('Success')
   } catch (e) {
     if (axios.isAxiosError(e)) {
@@ -129,18 +130,25 @@ export const loginTC = (data: LoginParamsDataType) => async (dispatch: Dispatch)
 }
 
 export const registerMeTC =
-  (data: RegistrationRequestType) => (dispatch: Dispatch<authActionsType>) => {
+  (data: RegistrationRequestType) => async (dispatch: Dispatch<authActionsType>) => {
     dispatch(setAppStatusAC('loading'))
-    authAPI
-      .registerMe(data)
-      .then(res => {
-        dispatch(setRegistrationAC(true))
-        dispatch(setAppStatusAC('succeeded'))
-      })
-      .catch(error => {
-        errorUtils(error, dispatch)
-        dispatch(setAppStatusAC('succeeded'))
-      })
+    try {
+      await authAPI.registerMe(data)
+
+      dispatch(setRegistrationAC(true))
+      dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
+
+      if (axios.isAxiosError(err)) {
+        const error = err.response?.data ? err.response.data.error : err.message
+
+        dispatch(setAppErrorAC(error))
+      } else {
+        dispatch(setAppErrorAC(`Native error ${err.message}`))
+      }
+      dispatch(setAppStatusAC('succeeded'))
+    }
   }
 
 // Types

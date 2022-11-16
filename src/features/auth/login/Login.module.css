@@ -1,11 +1,14 @@
-.inpEmail{
+.inpEmail {
   width: 100%;
 }
-.inpPass{
+.inpPass {
   width: 100%;
 }
 
-.checkBox{
+.checkBox {
+  display: flex;
+  justify-content: space-between;
+
   margin-top: 35px;
 }
 
@@ -13,7 +16,6 @@
   width: 100%;
   margin-top: 35px;
 }
-
 
 .inputContainer {
   position: relative;
@@ -33,18 +35,16 @@
   margin-top: 4px;
   padding: 2px 8px 5px 8px;
 
-  font-family: "OpenSans", sans-serif;
+  font-family: 'OpenSans', sans-serif;
   font-size: 13px;
   color: #fff;
 
-  background: #434F5C;
+  background: #434f5c;
   border-radius: 6px;
 
   animation: fade 0.2s;
   animation-iteration-count: 1;
 }
-
-
 
 @keyframes fade {
   0% {
@@ -69,5 +69,5 @@
   width: 8px;
   height: 8px;
 
-  background: #434F5C;
+  background: #434f5c;
 }

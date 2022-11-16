@@ -1,12 +1,9 @@
 import axios, { AxiosError } from 'axios'
 import { Dispatch } from 'redux'
 
-import { AppActionsType, setAppErrorAC } from '../app/app-reducer'
+import { setAppErrorAC } from '../app/app-reducer'
 
-export const errorUtils = (
-  e: Error | AxiosError<{ error: string }>,
-  dispatch: Dispatch<AppActionsType>
-) => {
+export const errorUtils = (e: Error | AxiosError<{ error: string }>, dispatch: Dispatch) => {
   const err = e as Error | AxiosError<{ error: string }>
 
   if (axios.isAxiosError(err)) {

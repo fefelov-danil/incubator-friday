@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useFormik } from 'formik'
-import { Navigate } from 'react-router-dom'
+import { Navigate, NavLink } from 'react-router-dom'
 
 import { Checkbox } from '../../../common/checkbox/Checkbox'
 import { InputPassword } from '../../../common/inputPassword/InputPassword'
@@ -85,6 +85,7 @@ export const Login = () => {
           <Checkbox checked={formik.values.rememberMe} {...formik.getFieldProps('rememberMe')}>
             Remember Me
           </Checkbox>
+          <NavLink to={PATH.REGISTRATION}>registration</NavLink>
         </div>
         <Button type={'submit'} className={s.btn}>
           Sign in
