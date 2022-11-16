@@ -21,11 +21,6 @@ export const PATH = {
 
 export const Pages = () => {
   const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
-  const dispatch = useAppDispatch()
-
-  useEffect(() => {
-    dispatch(authMeTC())
-  }, [])
 
   return (
     <div>
