@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import { Dispatch } from 'redux'
 
-import { AppActionsType, setAppErrorAC } from '../app/app-reducer'
+import { AppActionsType, setAppErrorAC, setAppStatusAC } from '../app/app-reducer'
 
 export const errorUtils = (
   e: Error | AxiosError<{ error: string }>,
@@ -16,4 +16,5 @@ export const errorUtils = (
   } else {
     dispatch(setAppErrorAC(`Native error ${err.message}`))
   }
+  dispatch(setAppStatusAC('idle'))
 }
