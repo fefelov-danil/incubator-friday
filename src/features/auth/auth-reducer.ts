@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { Dispatch } from 'redux'
 
-import { setAppErrorAC, setAppStatusAC } from '../../app/app-reducer'
+import { setAppErrorAC, setAppLoading, setAppStatusAC } from '../../app/app-reducer'
 import { errorUtils } from '../../utils/errorsHandler'
 
 import { RootState } from 'app/store'
@@ -72,6 +72,7 @@ const setRegistrationAC = (isRegistered: boolean) => {
 
 // Thunks
 export const authMeTC = () => async (dispatch: Dispatch) => {
+  dispatch(setAppLoading(true))
   try {
     const res = await authAPI.me()
 
@@ -81,22 +82,29 @@ export const authMeTC = () => async (dispatch: Dispatch) => {
       : 'https://avatarfiles.alphacoders.com/798/79894.jpg'
 
     dispatch(profileAC({ ...res.data, avatar }))
+    dispatch(setAppLoading(false))
   } catch (err) {
-    console.log(err)
+    dispatch(setAppLoading(false))
   }
 }
 export const logOutTC = () => async (dispatch: Dispatch) => {
+  dispatch(setAppStatusAC('loading'))
   try {
     await authAPI.logOut()
 
     dispatch(setIsLoggedInAC(false))
+    dispatch(setAppStatusAC('succeeded'))
   } catch (err) {
-    console.log(err)
+    const error = err as Error | AxiosError<{ error: string }>
+
+    errorUtils(error, dispatch)
   }
 }
 export const updateProfile =
   (profileModel: updateProfileModelType) =>
   async (dispatch: Dispatch, getState: () => RootState) => {
+    dispatch(setAppStatusAC('loading'))
+
     const profile = getState().auth.profile
 
     const profileApiModel = {
@@ -109,8 +117,11 @@ export const updateProfile =
       const res = await authAPI.updateProfile(profileApiModel)
 
       dispatch(profileAC(res.data.updatedUser))
+      dispatch(setAppStatusAC('succeeded'))
     } catch (err) {
-      console.log(err)
+      const error = err as Error | AxiosError<{ error: string }>
+
+      errorUtils(error, dispatch)
     }
   }
 export const loginTC = (data: LoginParamsDataType) => async (dispatch: Dispatch) => {
