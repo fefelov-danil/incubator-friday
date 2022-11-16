@@ -1,9 +1,18 @@
 import axios from 'axios'
 import { Dispatch } from 'redux'
-import { errorUtils } from '../../utils/errorsHandler'
-import { RootState } from 'app/store'
+
 import { setAppErrorAC, setAppStatusAC } from '../../app/app-reducer'
-import { authAPI, LoginParamsDataType, RegistrationRequestType, LoginResponseType, ProfileType, updateProfileModelType } from 'features/auth/auth-API'
+import { errorUtils } from '../../utils/errorsHandler'
+
+import { RootState } from 'app/store'
+import {
+  authAPI,
+  RegistrationRequestType,
+  LoginResponseType,
+  ProfileType,
+  updateProfileModelType,
+  LoginParamsDataType,
+} from 'features/auth/auth-API'
 
 const authInitialState = {
   authMe: false,
@@ -24,20 +33,19 @@ const authInitialState = {
   tokenDeathTime: 0,
 }
 
-export const authReducer = (state: AuthStateType = authInitialState, action: authActionsType) => {
+export const authReducer = (
+  state: AuthStateType = authInitialState,
+  action: authActionsType
+): AuthStateType => {
   switch (action.type) {
-    case 'auth/AUTH-ME':
-      return { ...state, authMe: true }
     case 'auth/PROFILE':
       return { ...state, profile: action.profile }
-    case 'auth/LOGOUT':
-      return { ...state, authMe: false }
-    case 'LOGIN/SET-IS-LOGGED-IN':
+    case 'auth/SET-IS-LOGGED-IN':
       return {
         ...state,
         isLoggedIn: action.value,
       }
-    case 'LOGIN/SET-USER-DATA':
+    case 'auth/SET-USER-DATA':
       return { ...state, ...action.userData }
     case 'AUTH/SET-REGISTRATION': {
       return { ...state, isRegistered: action.isRegistered }
@@ -48,18 +56,12 @@ export const authReducer = (state: AuthStateType = authInitialState, action: aut
 }
 
 // Actions
-export const authMeAC = () => {
-  return { type: 'auth/AUTH-ME' } as const
-}
 export const profileAC = (profile: ProfileType) => {
   return { type: 'auth/PROFILE', profile } as const
 }
-export const logOutAC = () => {
-  return { type: 'auth/LOGOUT' } as const
-}
-const setIsLoggedInAC = (value: boolean) => ({ type: 'LOGIN/SET-IS-LOGGED-IN', value } as const)
+const setIsLoggedInAC = (value: boolean) => ({ type: 'auth/SET-IS-LOGGED-IN', value } as const)
 const setUserDataAC = (userData: LoginResponseType) =>
-  ({ type: 'LOGIN/SET-USER-DATA', userData } as const)
+  ({ type: 'auth/SET-USER-DATA', userData } as const)
 
 const setRegistrationAC = (isRegistered: boolean) => {
   return {
@@ -73,7 +75,7 @@ export const authMeTC = () => async (dispatch: Dispatch) => {
   try {
     const res = await authAPI.me()
 
-    dispatch(authMeAC())
+    dispatch(setIsLoggedInAC(true))
     const avatar = res.data.avatar
       ? res.data.avatar
       : 'https://avatarfiles.alphacoders.com/798/79894.jpg'
@@ -87,7 +89,7 @@ export const logOutTC = () => async (dispatch: Dispatch) => {
   try {
     await authAPI.logOut()
 
-    dispatch(logOutAC())
+    dispatch(setIsLoggedInAC(false))
   } catch (err) {
     console.log(err)
   }
@@ -142,8 +144,11 @@ export const registerMeTC =
   }
 
 // Types
-type AuthStateType = typeof authInitialState
-type AuthStateType1 = {
+type AuthStateType1 = typeof authInitialState
+type AuthStateType = {
+  authMe: boolean
+  isRegistered: boolean
+  profile: ProfileType
   isLoggedIn: boolean
   _id: string
   email: string
@@ -159,9 +164,7 @@ type AuthStateType1 = {
   tokenDeathTime: number
 }
 type authActionsType =
-  | ReturnType<typeof authMeAC>
   | ReturnType<typeof profileAC>
-  | ReturnType<typeof logOutAC>
   | ReturnType<typeof setIsLoggedInAC>
   | ReturnType<typeof setUserDataAC>
   | ReturnType<typeof setRegistrationAC>

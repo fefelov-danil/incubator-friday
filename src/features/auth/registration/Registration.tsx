@@ -14,7 +14,7 @@ import s from './Registration.module.css'
 
 export const Registration = () => {
   const dispatch = useAppDispatch()
-  const isRegistered = useAppSelector<boolean>(state => state.auth.isRegistered)
+  const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
 
   const formik = useFormik({
     initialValues: {
@@ -43,7 +43,7 @@ export const Registration = () => {
     },
   })
 
-  if (isRegistered) {
+  if (isLoggedIn) {
     return <Navigate to={PATH.LOGIN} />
   }
 

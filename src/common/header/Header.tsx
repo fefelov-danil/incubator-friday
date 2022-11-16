@@ -10,7 +10,6 @@ import logo from 'assets/images/logo.png'
 import { Button } from 'common/button/Button'
 import s from 'common/header/Header.module.css'
 import { PATH } from 'common/pages/Pages'
-import { useAppSelector } from 'utils/hooks'
 
 export const Header = () => {
   const authMe = useAppSelector(state => state.auth.authMe)

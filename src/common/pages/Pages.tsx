@@ -20,7 +20,7 @@ export const PATH = {
 }
 
 export const Pages = () => {
-  const authMe = useAppSelector(state => state.auth.authMe)
+  const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export const Pages = () => {
   return (
     <div>
       <Routes>
-        {authMe ? (
+        {isLoggedIn ? (
           <>
             <Route path={'/'} element={<Navigate to={PATH.PROFILE} />} />
             <Route path={PATH.LOGIN} element={<Navigate to={PATH.PROFILE} />} />
