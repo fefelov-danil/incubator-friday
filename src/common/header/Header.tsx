@@ -12,8 +12,8 @@ import s from 'common/header/Header.module.css'
 import { PATH } from 'common/pages/Pages'
 
 export const Header = () => {
-  const authMe = useAppSelector(state => state.auth.authMe)
   const profile = useAppSelector(state => state.auth.profile)
+  const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
 
   const status = useAppSelector<AppStatusType>(state => state.app.appStatus)
 
@@ -24,7 +24,7 @@ export const Header = () => {
           <img src={logo} alt={'logo'} className={s.logo} />
         </NavLink>
         <div className={s.menu}>
-          {authMe ? (
+          {isLoggedIn ? (
             <NavLink to={PATH.PROFILE} className={s.login}>
               {profile.name}
               <img src={profile.avatar} alt="" />

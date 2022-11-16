@@ -7,6 +7,9 @@
 
 .checkBox{
   margin-top: 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
 .btn {
@@ -70,4 +73,9 @@
   height: 8px;
 
   background: #434F5C;
+}
+
+.signUp{
+  position: relative;
+
 }

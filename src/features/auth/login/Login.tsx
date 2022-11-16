@@ -1,8 +1,9 @@
 import React from 'react'
 
 import { useFormik } from 'formik'
-import { Navigate } from 'react-router-dom'
+import { Link, Navigate, NavLink, Route } from 'react-router-dom'
 
+import { AppStatusType } from '../../../app/app-reducer'
 import { Checkbox } from '../../../common/checkbox/Checkbox'
 import { InputPassword } from '../../../common/inputPassword/InputPassword'
 import { InputText } from '../../../common/inputText/InputText'
@@ -22,6 +23,7 @@ type FormikErrorType = {
 
 export const Login = () => {
   const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
+  const appStatus = useAppSelector<AppStatusType>(state => state.app.appStatus)
   const dispatch = useAppDispatch()
   const formik = useFormik({
     initialValues: {
@@ -49,7 +51,7 @@ export const Login = () => {
 
     onSubmit: values => {
       dispatch(loginTC(values))
-      formik.resetForm()
+      // formik.resetForm()
     },
   })
 
@@ -85,8 +87,11 @@ export const Login = () => {
           <Checkbox checked={formik.values.rememberMe} {...formik.getFieldProps('rememberMe')}>
             Remember Me
           </Checkbox>
+          <div>
+            <NavLink to={PATH.REGISTRATION}> Sign Up </NavLink>
+          </div>
         </div>
-        <Button type={'submit'} className={s.btn}>
+        <Button disabled={appStatus === 'loading'} type={'submit'} className={s.btn}>
           Sign in
         </Button>
       </form>

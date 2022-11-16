@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { AxiosError } from 'axios'
 import { Dispatch } from 'redux'
 
 import { setAppErrorAC, setAppStatusAC } from '../../app/app-reducer'
@@ -15,6 +15,7 @@ import {
 } from 'features/auth/auth-API'
 
 const authInitialState = {
+  avatar: 'https://avatarfiles.alphacoders.com/798/79894.jpg',
   authMe: false,
   isRegistered: false,
   profile: {} as ProfileType,
@@ -86,12 +87,15 @@ export const authMeTC = () => async (dispatch: Dispatch) => {
   }
 }
 export const logOutTC = () => async (dispatch: Dispatch) => {
+  dispatch(setAppStatusAC('loading'))
   try {
     await authAPI.logOut()
 
     dispatch(setIsLoggedInAC(false))
   } catch (err) {
     console.log(err)
+  } finally {
+    dispatch(setAppStatusAC('idle'))
   }
 }
 export const updateProfile =
@@ -114,17 +118,18 @@ export const updateProfile =
     }
   }
 export const loginTC = (data: LoginParamsDataType) => async (dispatch: Dispatch) => {
+  dispatch(setAppStatusAC('loading'))
   try {
     const response = await authAPI.login(data)
 
     dispatch(setUserDataAC(response.data))
     dispatch(setIsLoggedInAC(true))
-    alert('Success')
-  } catch (e) {
-    if (axios.isAxiosError(e)) {
-      console.log(e.response ? e.response.data.error : e.message)
-      alert(e.response ? e.response.data.error : e.message)
-    } else console.log('Some error occurred')
+  } catch (err) {
+    const error = err as Error | AxiosError<{ error: string }>
+
+    errorUtils(error, dispatch)
+  } finally {
+    dispatch(setAppStatusAC('succeeded'))
   }
 }
 
@@ -146,6 +151,7 @@ export const registerMeTC =
 // Types
 type AuthStateType1 = typeof authInitialState
 type AuthStateType = {
+  avatar: string
   authMe: boolean
   isRegistered: boolean
   profile: ProfileType
