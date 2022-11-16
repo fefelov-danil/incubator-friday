@@ -50,6 +50,10 @@ export const EditableSpan: React.FC<EditAbleSpanPropsType> = ({ value, updateTit
   }
   const onKeyDownChangeText = (e: KeyboardEvent<HTMLInputElement>) => {
     e.key === 'Enter' && offEditMode()
+    if (e.key === 'Escape') {
+      setTitle(value)
+      setEditMode(false)
+    }
   }
 
   return (
