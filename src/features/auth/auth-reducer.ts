@@ -11,6 +11,7 @@ import {
   ProfileType,
   updateProfileModelType,
   LoginParamsDataType,
+  ResetPasswordRequestType,
 } from 'features/auth/auth-API'
 
 const authInitialState = {
@@ -30,6 +31,7 @@ const authInitialState = {
   __v: 0,
   token: '',
   tokenDeathTime: 0,
+  isPasswordReset: false,
 }
 
 export const authReducer = (
@@ -49,6 +51,9 @@ export const authReducer = (
     case 'AUTH/SET-REGISTRATION': {
       return { ...state, isRegistered: action.isRegistered }
     }
+    case 'AUTH/SET-PASSWORD-RESET': {
+      return { ...state, isPasswordReset: action.isPasswordReset }
+    }
     default:
       return state
   }
@@ -66,6 +71,12 @@ const setRegistrationAC = (isRegistered: boolean) => {
   return {
     type: 'AUTH/SET-REGISTRATION',
     isRegistered,
+  } as const
+}
+const setPasswordResetAC = (isPasswordReset: boolean) => {
+  return {
+    type: 'AUTH/SET-PASSWORD-RESET',
+    isPasswordReset,
   } as const
 }
 
@@ -128,7 +139,6 @@ export const loginTC = (data: LoginParamsDataType) => async (dispatch: Dispatch)
     } else console.log('Some error occurred')
   }
 }
-
 export const registerMeTC =
   (data: RegistrationRequestType) => async (dispatch: Dispatch<authActionsType>) => {
     dispatch(setAppStatusAC('loading'))
@@ -136,6 +146,28 @@ export const registerMeTC =
       await authAPI.registerMe(data)
 
       dispatch(setRegistrationAC(true))
+      dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
+
+      if (axios.isAxiosError(err)) {
+        const error = err.response?.data ? err.response.data.error : err.message
+
+        dispatch(setAppErrorAC(error))
+      } else {
+        dispatch(setAppErrorAC(`Native error ${err.message}`))
+      }
+      dispatch(setAppStatusAC('succeeded'))
+    }
+  }
+
+export const resetPasswordTC =
+  (data: ResetPasswordRequestType) => async (dispatch: Dispatch<authActionsType>) => {
+    dispatch(setAppStatusAC('loading'))
+    try {
+      await authAPI.forgot(data)
+
+      dispatch(setPasswordResetAC(true))
       dispatch(setAppStatusAC('succeeded'))
     } catch (e) {
       const err = e as Error | AxiosError<{ error: string }>
@@ -170,6 +202,7 @@ type AuthStateType = {
   __v: number
   token: string
   tokenDeathTime: number
+  isPasswordReset: boolean
 }
 type authActionsType =
   | ReturnType<typeof profileAC>
@@ -178,3 +211,4 @@ type authActionsType =
   | ReturnType<typeof setRegistrationAC>
   | ReturnType<typeof setAppErrorAC>
   | ReturnType<typeof setAppStatusAC>
+  | ReturnType<typeof setPasswordResetAC>

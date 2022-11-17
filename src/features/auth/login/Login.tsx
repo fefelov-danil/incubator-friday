@@ -90,6 +90,11 @@ export const Login = () => {
         <Button type={'submit'} className={s.btn}>
           Sign in
         </Button>
+        <div className={s.forgot_password}>
+          <NavLink className={s.forgot_password} to={PATH.PASSWORD_RECOVERY}>
+            forgot password
+          </NavLink>
+        </div>
       </form>
     </div>
   )

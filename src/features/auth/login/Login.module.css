@@ -71,3 +71,10 @@
 
   background: #434f5c;
 }
+
+.forgot_password {
+  display: flex;
+  justify-content: center;
+
+  margin-top: 20px;
+}
