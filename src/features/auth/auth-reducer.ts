@@ -12,6 +12,7 @@ import {
   updateProfileModelType,
   LoginParamsDataType,
   setNewPasswordDataType,
+  ResetPasswordRequestType,
 } from 'features/auth/auth-API'
 
 const authInitialState = {
@@ -38,6 +39,9 @@ export const authReducer = (
     case 'auth/SET-REGISTRATION': {
       return { ...state, isRegistered: action.isRegistered }
     }
+    case 'AUTH/SET-PASSWORD-RESET': {
+      return { ...state, isPasswordReset: action.isPasswordReset }
+    }
     default:
       return state
   }
@@ -56,6 +60,12 @@ const setRegistrationAC = (isRegistered: boolean) => {
     isRegistered,
   } as const
 }
+const setPasswordResetAC = (isPasswordReset: boolean) => {
+  return {
+    type: 'AUTH/SET-PASSWORD-RESET',
+    isPasswordReset,
+  } as const
+}
 
 // Thunks
 export const authMeTC = () => async (dispatch: Dispatch) => {
@@ -64,6 +74,7 @@ export const authMeTC = () => async (dispatch: Dispatch) => {
     const res = await authAPI.me()
 
     dispatch(setIsLoggedInAC(true))
+    dispatch(setRegistrationAC(true))
     const avatar = res.data.avatar
       ? res.data.avatar
       : 'https://avatarfiles.alphacoders.com/798/79894.jpg'
@@ -141,20 +152,48 @@ export const setNewPasswordTC = (data: setNewPasswordDataType) => async (dispatc
     dispatch(setAppStatusAC('succeeded'))
   }
 }
-
 export const registerMeTC =
-  (data: RegistrationRequestType) => (dispatch: Dispatch<authActionsType>) => {
+  (data: RegistrationRequestType) => async (dispatch: Dispatch<authActionsType>) => {
     dispatch(setAppStatusAC('loading'))
-    authAPI
-      .registerMe(data)
-      .then(res => {
-        dispatch(setRegistrationAC(true))
-        dispatch(setAppStatusAC('succeeded'))
-      })
-      .catch(error => {
-        errorUtils(error, dispatch)
-        dispatch(setAppStatusAC('succeeded'))
-      })
+    try {
+      await authAPI.registerMe(data)
+
+      dispatch(setRegistrationAC(true))
+      dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
+
+      if (axios.isAxiosError(err)) {
+        const error = err.response?.data ? err.response.data.error : err.message
+
+        dispatch(setAppErrorAC(error))
+      } else {
+        dispatch(setAppErrorAC(`Native error ${err.message}`))
+      }
+      dispatch(setAppStatusAC('succeeded'))
+    }
+  }
+
+export const resetPasswordTC =
+  (data: ResetPasswordRequestType) => async (dispatch: Dispatch<authActionsType>) => {
+    dispatch(setAppStatusAC('loading'))
+    try {
+      await authAPI.forgot(data)
+
+      dispatch(setPasswordResetAC(true))
+      dispatch(setAppStatusAC('succeeded'))
+    } catch (e) {
+      const err = e as Error | AxiosError<{ error: string }>
+
+      if (axios.isAxiosError(err)) {
+        const error = err.response?.data ? err.response.data.error : err.message
+
+        dispatch(setAppErrorAC(error))
+      } else {
+        dispatch(setAppErrorAC(`Native error ${err.message}`))
+      }
+      dispatch(setAppStatusAC('succeeded'))
+    }
   }
 
 // Types
