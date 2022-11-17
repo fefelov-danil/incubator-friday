@@ -53,13 +53,21 @@ export const Registration = () => {
         <h1>Registration</h1>
         <form className={s.registration_form} onSubmit={formik.handleSubmit}>
           <div className={s.inpEmail_container}>
-            <InputText className={s.inpEmail} {...formik.getFieldProps('email')} />
+            <InputText
+              placeholder={'email'}
+              className={s.inpEmail}
+              {...formik.getFieldProps('email')}
+            />
             {formik.touched.email && formik.errors.email ? (
               <span className={s.error_message}>{formik.errors.email}</span>
             ) : null}
           </div>
           <div className={s.inpPass_container}>
-            <InputPassword className={s.inpPass} {...formik.getFieldProps('password')} />
+            <InputPassword
+              placeholder={'password'}
+              className={s.inpPass}
+              {...formik.getFieldProps('password')}
+            />
             {formik.touched.password && formik.errors.password ? (
               <span className={s.error_message}>{formik.errors.password}</span>
             ) : null}

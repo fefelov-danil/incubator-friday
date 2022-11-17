@@ -20,12 +20,10 @@ const authInitialState = {
   isRegistered: false,
   profile: {} as ProfileType,
   isLoggedIn: false,
+  isPasswordReset: false,
 }
 
-export const authReducer = (
-  state: AuthStateType = authInitialState,
-  action: authActionsType
-): AuthStateType => {
+export const authReducer = (state: AuthStateType = authInitialState, action: authActionsType) => {
   switch (action.type) {
     case 'auth/PROFILE':
       return { ...state, profile: action.profile }
@@ -54,7 +52,7 @@ export const profileAC = (profile: ProfileType) => {
 const setIsLoggedInAC = (value: boolean) => ({ type: 'auth/SET-IS-LOGGED-IN', value } as const)
 const setUserDataAC = (userData: ProfileType) => ({ type: 'auth/SET-USER-DATA', userData } as const)
 
-const setRegistrationAC = (isRegistered: boolean) => {
+export const setRegistrationAC = (isRegistered: boolean) => {
   return {
     type: 'auth/SET-REGISTRATION',
     isRegistered,
@@ -197,13 +195,7 @@ export const resetPasswordTC =
   }
 
 // Types
-type AuthStateType1 = typeof authInitialState
-type AuthStateType = {
-  authMe: boolean
-  isRegistered: boolean
-  profile: ProfileType
-  isLoggedIn: boolean
-}
+type AuthStateType = typeof authInitialState
 type authActionsType =
   | ReturnType<typeof profileAC>
   | ReturnType<typeof setIsLoggedInAC>
@@ -211,3 +203,4 @@ type authActionsType =
   | ReturnType<typeof setRegistrationAC>
   | ReturnType<typeof setAppErrorAC>
   | ReturnType<typeof setAppStatusAC>
+  | ReturnType<typeof setPasswordResetAC>

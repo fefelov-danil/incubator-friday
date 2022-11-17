@@ -9,7 +9,7 @@ import { InputPassword } from '../../../common/inputPassword/InputPassword'
 import { InputText } from '../../../common/inputText/InputText'
 import { PATH } from '../../../common/pages/Pages'
 import { useAppDispatch, useAppSelector } from '../../../utils/hooks'
-import { loginTC } from '../auth-reducer'
+import { loginTC, setRegistrationAC } from '../auth-reducer'
 
 import s from './Login.module.css'
 
@@ -25,6 +25,9 @@ export const Login = () => {
   const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
   const appStatus = useAppSelector<AppStatusType>(state => state.app.appStatus)
   const dispatch = useAppDispatch()
+
+  dispatch(setRegistrationAC(false))
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -89,8 +92,7 @@ export const Login = () => {
           </Checkbox>
           <div>
             <NavLink className={s.passwordReset} to={PATH.PASSWORD_RECOVERY}>
-              {' '}
-              Forgot your password?{' '}
+              Forgot your password?
             </NavLink>
           </div>
         </div>
@@ -98,11 +100,9 @@ export const Login = () => {
           Sign in
         </Button>
         <div className={s.forgotPassword}>
-          {/* eslint-disable-next-line react/no-unescaped-entities */}
-          <div>Still don't have an account?</div>
+          <div>{`Still don't have an account?`}</div>
           <NavLink className={s.signUp} to={PATH.REGISTRATION}>
-            {' '}
-            Sign Up{' '}
+            Sign Up
           </NavLink>
         </div>
       </form>
