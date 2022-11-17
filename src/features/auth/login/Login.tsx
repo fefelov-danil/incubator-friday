@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { useFormik } from 'formik'
 import { Navigate, NavLink } from 'react-router-dom'
@@ -26,7 +26,9 @@ export const Login = () => {
   const appStatus = useAppSelector<AppStatusType>(state => state.app.appStatus)
   const dispatch = useAppDispatch()
 
-  dispatch(setRegistrationAC(false))
+  useEffect(() => {
+    dispatch(setRegistrationAC(false))
+  })
 
   const formik = useFormik({
     initialValues: {

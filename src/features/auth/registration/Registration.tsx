@@ -8,7 +8,7 @@ import { InputPassword } from '../../../common/inputPassword/InputPassword'
 import { InputText } from '../../../common/inputText/InputText'
 import { PATH } from '../../../common/pages/Pages'
 import { useAppDispatch, useAppSelector } from '../../../utils/hooks'
-import { registerMeTC } from '../auth-reducer'
+import { registerMeTC, setRegistrationAC } from '../auth-reducer'
 
 import s from './Registration.module.css'
 

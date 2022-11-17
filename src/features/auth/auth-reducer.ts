@@ -32,8 +32,6 @@ export const authReducer = (state: AuthStateType = authInitialState, action: aut
         ...state,
         isLoggedIn: action.value,
       }
-    case 'auth/SET-USER-DATA':
-      return { ...state, profile: { ...action.userData } }
     case 'auth/SET-REGISTRATION': {
       return { ...state, isRegistered: action.isRegistered }
     }
@@ -50,7 +48,6 @@ export const profileAC = (profile: ProfileType) => {
   return { type: 'auth/PROFILE', profile } as const
 }
 const setIsLoggedInAC = (value: boolean) => ({ type: 'auth/SET-IS-LOGGED-IN', value } as const)
-const setUserDataAC = (userData: ProfileType) => ({ type: 'auth/SET-USER-DATA', userData } as const)
 
 export const setRegistrationAC = (isRegistered: boolean) => {
   return {
@@ -73,9 +70,7 @@ export const authMeTC = () => async (dispatch: Dispatch) => {
 
     dispatch(setIsLoggedInAC(true))
     dispatch(setRegistrationAC(true))
-    const avatar = res.data.avatar
-      ? res.data.avatar
-      : 'https://avatarfiles.alphacoders.com/798/79894.jpg'
+    const avatar = 'https://avatarfiles.alphacoders.com/798/79894.jpg'
 
     dispatch(profileAC({ ...res.data, avatar }))
     dispatch(setAppLoading(false))
@@ -125,7 +120,9 @@ export const loginTC = (data: LoginParamsDataType) => async (dispatch: Dispatch)
   try {
     const response = await authAPI.login(data)
 
-    dispatch(setUserDataAC(response.data))
+    const avatar = 'https://avatarfiles.alphacoders.com/798/79894.jpg'
+
+    dispatch(profileAC({ ...response.data, avatar }))
     dispatch(setIsLoggedInAC(true))
   } catch (err) {
     const error = err as Error | AxiosError<{ error: string }>
@@ -199,7 +196,7 @@ type AuthStateType = typeof authInitialState
 type authActionsType =
   | ReturnType<typeof profileAC>
   | ReturnType<typeof setIsLoggedInAC>
-  | ReturnType<typeof setUserDataAC>
+  // | ReturnType<typeof setUserDataAC>
   | ReturnType<typeof setRegistrationAC>
   | ReturnType<typeof setAppErrorAC>
   | ReturnType<typeof setAppStatusAC>
