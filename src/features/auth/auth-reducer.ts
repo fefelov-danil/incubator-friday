@@ -8,10 +8,10 @@ import { RootState } from 'app/store'
 import {
   authAPI,
   RegistrationRequestType,
-  LoginResponseType,
   ProfileType,
   updateProfileModelType,
   LoginParamsDataType,
+  setNewPasswordDataType,
 } from 'features/auth/auth-API'
 
 const authInitialState = {
@@ -19,18 +19,6 @@ const authInitialState = {
   isRegistered: false,
   profile: {} as ProfileType,
   isLoggedIn: false,
-  _id: '',
-  email: '',
-  rememberMe: false,
-  isAdmin: false,
-  name: '',
-  verified: false,
-  publicCardPacksCount: 0,
-  created: null,
-  updated: null,
-  __v: 0,
-  token: '',
-  tokenDeathTime: 0,
 }
 
 export const authReducer = (
@@ -60,8 +48,7 @@ export const profileAC = (profile: ProfileType) => {
   return { type: 'auth/PROFILE', profile } as const
 }
 const setIsLoggedInAC = (value: boolean) => ({ type: 'auth/SET-IS-LOGGED-IN', value } as const)
-const setUserDataAC = (userData: LoginResponseType) =>
-  ({ type: 'auth/SET-USER-DATA', userData } as const)
+const setUserDataAC = (userData: ProfileType) => ({ type: 'auth/SET-USER-DATA', userData } as const)
 
 const setRegistrationAC = (isRegistered: boolean) => {
   return {
@@ -125,17 +112,33 @@ export const updateProfile =
     }
   }
 export const loginTC = (data: LoginParamsDataType) => async (dispatch: Dispatch) => {
+  dispatch(setAppStatusAC('loading'))
   try {
     const response = await authAPI.login(data)
 
     dispatch(setUserDataAC(response.data))
     dispatch(setIsLoggedInAC(true))
-    alert('Success')
-  } catch (e) {
-    if (axios.isAxiosError(e)) {
-      console.log(e.response ? e.response.data.error : e.message)
-      alert(e.response ? e.response.data.error : e.message)
-    } else console.log('Some error occurred')
+  } catch (err) {
+    const error = err as Error | AxiosError<{ error: string }>
+
+    errorUtils(error, dispatch)
+  } finally {
+    dispatch(setAppStatusAC('succeeded'))
+  }
+}
+
+export const setNewPasswordTC = (data: setNewPasswordDataType) => async (dispatch: Dispatch) => {
+  dispatch(setAppStatusAC('loading'))
+  try {
+    const response = await authAPI.setNewPassword(data)
+
+    alert('Password has been changed')
+  } catch (err) {
+    const error = err as Error | AxiosError<{ error: string }>
+
+    errorUtils(error, dispatch)
+  } finally {
+    dispatch(setAppStatusAC('succeeded'))
   }
 }
 
@@ -161,18 +164,6 @@ type AuthStateType = {
   isRegistered: boolean
   profile: ProfileType
   isLoggedIn: boolean
-  _id: string
-  email: string
-  rememberMe: boolean
-  isAdmin: boolean
-  name: string
-  verified: boolean
-  publicCardPacksCount: number
-  created: Date | null
-  updated: Date | null
-  __v: number
-  token: string
-  tokenDeathTime: number
 }
 type authActionsType =
   | ReturnType<typeof profileAC>
