@@ -34,8 +34,8 @@ export const authReducer = (
         isLoggedIn: action.value,
       }
     case 'auth/SET-USER-DATA':
-      return { ...state, ...action.userData }
-    case 'AUTH/SET-REGISTRATION': {
+      return { ...state, profile: { ...action.userData } }
+    case 'auth/SET-REGISTRATION': {
       return { ...state, isRegistered: action.isRegistered }
     }
     default:
@@ -52,7 +52,7 @@ const setUserDataAC = (userData: ProfileType) => ({ type: 'auth/SET-USER-DATA', 
 
 const setRegistrationAC = (isRegistered: boolean) => {
   return {
-    type: 'AUTH/SET-REGISTRATION',
+    type: 'auth/SET-REGISTRATION',
     isRegistered,
   } as const
 }
