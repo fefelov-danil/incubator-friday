@@ -8,30 +8,17 @@ import { RootState } from 'app/store'
 import {
   authAPI,
   RegistrationRequestType,
-  LoginResponseType,
   ProfileType,
   updateProfileModelType,
   LoginParamsDataType,
+  setNewPasswordDataType,
 } from 'features/auth/auth-API'
 
 const authInitialState = {
-  avatar: 'https://avatarfiles.alphacoders.com/798/79894.jpg',
   authMe: false,
   isRegistered: false,
   profile: {} as ProfileType,
   isLoggedIn: false,
-  _id: '',
-  email: '',
-  rememberMe: false,
-  isAdmin: false,
-  name: '',
-  verified: false,
-  publicCardPacksCount: 0,
-  created: null,
-  updated: null,
-  __v: 0,
-  token: '',
-  tokenDeathTime: 0,
 }
 
 export const authReducer = (
@@ -61,8 +48,7 @@ export const profileAC = (profile: ProfileType) => {
   return { type: 'auth/PROFILE', profile } as const
 }
 const setIsLoggedInAC = (value: boolean) => ({ type: 'auth/SET-IS-LOGGED-IN', value } as const)
-const setUserDataAC = (userData: LoginResponseType) =>
-  ({ type: 'auth/SET-USER-DATA', userData } as const)
+const setUserDataAC = (userData: ProfileType) => ({ type: 'auth/SET-USER-DATA', userData } as const)
 
 const setRegistrationAC = (isRegistered: boolean) => {
   return {
@@ -133,6 +119,21 @@ export const loginTC = (data: LoginParamsDataType) => async (dispatch: Dispatch)
   }
 }
 
+export const setNewPasswordTC = (data: setNewPasswordDataType) => async (dispatch: Dispatch) => {
+  dispatch(setAppStatusAC('loading'))
+  try {
+    const response = await authAPI.setNewPassword(data)
+
+    alert('Password has been changed')
+  } catch (err) {
+    const error = err as Error | AxiosError<{ error: string }>
+
+    errorUtils(error, dispatch)
+  } finally {
+    dispatch(setAppStatusAC('succeeded'))
+  }
+}
+
 export const registerMeTC =
   (data: RegistrationRequestType) => (dispatch: Dispatch<authActionsType>) => {
     dispatch(setAppStatusAC('loading'))
@@ -151,23 +152,10 @@ export const registerMeTC =
 // Types
 type AuthStateType1 = typeof authInitialState
 type AuthStateType = {
-  avatar: string
   authMe: boolean
   isRegistered: boolean
   profile: ProfileType
   isLoggedIn: boolean
-  _id: string
-  email: string
-  rememberMe: boolean
-  isAdmin: boolean
-  name: string
-  verified: boolean
-  publicCardPacksCount: number
-  created: Date | null
-  updated: Date | null
-  __v: number
-  token: string
-  tokenDeathTime: number
 }
 type authActionsType =
   | ReturnType<typeof profileAC>

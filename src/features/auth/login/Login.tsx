@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useFormik } from 'formik'
-import { Link, Navigate, NavLink, Route } from 'react-router-dom'
+import { Navigate, NavLink } from 'react-router-dom'
 
 import { AppStatusType } from '../../../app/app-reducer'
 import { Checkbox } from '../../../common/checkbox/Checkbox'
@@ -88,12 +88,23 @@ export const Login = () => {
             Remember Me
           </Checkbox>
           <div>
-            <NavLink to={PATH.REGISTRATION}> Sign Up </NavLink>
+            <NavLink className={s.passwordReset} to={PATH.PASSWORD_RECOVERY}>
+              {' '}
+              Forgot your password?{' '}
+            </NavLink>
           </div>
         </div>
         <Button disabled={appStatus === 'loading'} type={'submit'} className={s.btn}>
           Sign in
         </Button>
+        <div className={s.forgotPassword}>
+          {/* eslint-disable-next-line react/no-unescaped-entities */}
+          <div>Still don't have an account?</div>
+          <NavLink className={s.signUp} to={PATH.REGISTRATION}>
+            {' '}
+            Sign Up{' '}
+          </NavLink>
+        </div>
       </form>
     </div>
   )
