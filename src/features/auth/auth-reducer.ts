@@ -55,7 +55,7 @@ export const setRegistrationAC = (isRegistered: boolean) => {
     isRegistered,
   } as const
 }
-const setPasswordResetAC = (isPasswordReset: boolean) => {
+export const setPasswordResetAC = (isPasswordReset: boolean) => {
   return {
     type: 'AUTH/SET-PASSWORD-RESET',
     isPasswordReset,
@@ -155,17 +155,10 @@ export const registerMeTC =
 
       dispatch(setRegistrationAC(true))
       dispatch(setAppStatusAC('succeeded'))
-    } catch (e) {
-      const err = e as Error | AxiosError<{ error: string }>
+    } catch (err) {
+      const error = err as Error | AxiosError<{ error: string }>
 
-      if (axios.isAxiosError(err)) {
-        const error = err.response?.data ? err.response.data.error : err.message
-
-        dispatch(setAppErrorAC(error))
-      } else {
-        dispatch(setAppErrorAC(`Native error ${err.message}`))
-      }
-      dispatch(setAppStatusAC('succeeded'))
+      errorUtils(error, dispatch)
     }
   }
 
@@ -177,17 +170,10 @@ export const resetPasswordTC =
 
       dispatch(setPasswordResetAC(true))
       dispatch(setAppStatusAC('succeeded'))
-    } catch (e) {
-      const err = e as Error | AxiosError<{ error: string }>
+    } catch (err) {
+      const error = err as Error | AxiosError<{ error: string }>
 
-      if (axios.isAxiosError(err)) {
-        const error = err.response?.data ? err.response.data.error : err.message
-
-        dispatch(setAppErrorAC(error))
-      } else {
-        dispatch(setAppErrorAC(`Native error ${err.message}`))
-      }
-      dispatch(setAppStatusAC('succeeded'))
+      errorUtils(error, dispatch)
     }
   }
 
