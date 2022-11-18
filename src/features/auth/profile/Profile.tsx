@@ -5,7 +5,7 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import s from './Profile.module.css'
 
 import { EditableSpan } from 'common/editableSpan/EditableSpan'
-import { logOutTC, updateProfile } from 'features/auth/auth-reducer'
+import { logOutTC, updateProfileTC } from 'features/auth/auth-reducer'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 export const Profile = () => {
@@ -13,7 +13,7 @@ export const Profile = () => {
   const dispatch = useAppDispatch()
 
   const updateTitleHandler = (name: string) => {
-    dispatch(updateProfile({ name }))
+    dispatch(updateProfileTC({ name }))
   }
   const logoutHandler = () => {
     dispatch(logOutTC())

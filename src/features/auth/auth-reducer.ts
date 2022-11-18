@@ -92,7 +92,7 @@ export const logOutTC = () => async (dispatch: Dispatch) => {
     errorUtils(error, dispatch)
   }
 }
-export const updateProfile =
+export const updateProfileTC =
   (profileModel: updateProfileModelType) =>
   async (dispatch: Dispatch, getState: () => RootState) => {
     dispatch(setAppStatusAC('loading'))
@@ -138,9 +138,8 @@ export const setNewPasswordTC =
   (data: setNewPasswordDataType, callBack: () => void) => async (dispatch: Dispatch) => {
     dispatch(setAppStatusAC('loading'))
     try {
-      const response = await authAPI.setNewPassword(data)
+      await authAPI.setNewPassword(data)
 
-      alert(response.data.info)
       callBack()
     } catch (err) {
       const error = err as Error | AxiosError<{ error: string }>
@@ -185,7 +184,6 @@ type AuthStateType = typeof authInitialState
 type authActionsType =
   | ReturnType<typeof profileAC>
   | ReturnType<typeof setIsLoggedInAC>
-  // | ReturnType<typeof setUserDataAC>
   | ReturnType<typeof setRegistrationAC>
   | ReturnType<typeof setAppErrorAC>
   | ReturnType<typeof setAppStatusAC>
