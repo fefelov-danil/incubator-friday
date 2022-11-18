@@ -1,19 +1,18 @@
-import axios, { AxiosError } from 'axios'
+import { AxiosError } from 'axios'
 import { Dispatch } from 'redux'
 
-import { setAppErrorAC, setAppLoading, setAppStatusAC } from '../../app/app-reducer'
-import { PATH } from '../../common/pages/Pages'
+import { setAppAlertAC, setAppLoading, setAppStatusAC } from '../../app/app-reducer'
 import { errorUtils } from '../../utils/errorsHandler'
 
 import { RootState } from 'app/store'
 import {
   authAPI,
-  RegistrationRequestType,
-  ProfileType,
-  updateProfileModelType,
   LoginParamsDataType,
-  setNewPasswordDataType,
+  ProfileType,
+  RegistrationRequestType,
   ResetPasswordRequestType,
+  setNewPasswordDataType,
+  updateProfileModelType,
 } from 'features/auth/auth-API'
 
 const authInitialState = {
@@ -141,6 +140,7 @@ export const setNewPasswordTC =
       await authAPI.setNewPassword(data)
 
       callBack()
+      dispatch(setAppAlertAC('Password successfully changed', 'success'))
     } catch (err) {
       const error = err as Error | AxiosError<{ error: string }>
 
@@ -185,6 +185,5 @@ type authActionsType =
   | ReturnType<typeof profileAC>
   | ReturnType<typeof setIsLoggedInAC>
   | ReturnType<typeof setRegistrationAC>
-  | ReturnType<typeof setAppErrorAC>
   | ReturnType<typeof setAppStatusAC>
   | ReturnType<typeof setPasswordResetAC>

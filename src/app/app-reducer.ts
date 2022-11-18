@@ -2,16 +2,17 @@ const appInitialState = {
   appError: null as null | string,
   appLoading: true,
   appStatus: 'idle' as AppStatusType,
+  appAlert: { message: null, type: null } as AppAlertType,
 }
 
 export const appReducer = (state: AppStateType = appInitialState, action: AppActionsType) => {
   switch (action.type) {
-    case 'APP/SET-APP-ERROR':
-      return { ...state, appError: action.error }
     case 'APP/SET-APP-LOADING':
       return { ...state, appLoading: action.appLoading }
     case 'APP/SET-APP-STATUS':
       return { ...state, appStatus: action.appStatus }
+    case 'APP/SET-ALERT':
+      return { ...state, appAlert: action.appAlert }
     default:
       return state
   }
@@ -19,10 +20,10 @@ export const appReducer = (state: AppStateType = appInitialState, action: AppAct
 
 // actions
 
-export const setAppErrorAC = (error: string | null) => {
+export const setAppAlertAC = (message: string | null, type: AlertType) => {
   return {
-    type: 'APP/SET-APP-ERROR',
-    error,
+    type: 'APP/SET-ALERT',
+    appAlert: { message, type } as AppAlertType,
   } as const
 }
 
@@ -44,7 +45,9 @@ export const setAppStatusAC = (appStatus: AppStatusType) => {
 type AppStateType = typeof appInitialState
 
 export type AppActionsType =
-  | ReturnType<typeof setAppErrorAC>
   | ReturnType<typeof setAppStatusAC>
   | ReturnType<typeof setAppLoading>
+  | ReturnType<typeof setAppAlertAC>
 export type AppStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+type AppAlertType = { message: null | string; type: AlertType }
+export type AlertType = null | 'error' | 'success'

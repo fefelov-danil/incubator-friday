@@ -59,9 +59,9 @@ export const ChangePassword = () => {
             <span className={s.formError}>{formik.errors.password}</span>
           )}
         </div>
-        <div className={s.note}>
+        <p className={s.note}>
           Create a new password and we will send you further instructions to the email.
-        </div>
+        </p>
         <div className={s.btnContainer}>
           <Button className={s.btn}>Create new password</Button>
         </div>
