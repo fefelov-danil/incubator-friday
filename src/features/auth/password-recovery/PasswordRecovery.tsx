@@ -36,7 +36,7 @@ export const PasswordRecovery = () => {
         resetPasswordTC({
           email: values.email,
           from: 'test-front-admin <ai73a@yandex.by>',
-          message: `<div; padding: 40px">password recovery link: <a href='http://localhost:3000/#/set-new-password/$token$'>click here to change a password</a></div>`,
+          message: `<div; padding: 40px">password recovery link: <a href='https://fefelov-danil.github.io/#/set-new-password/$token$'>click here to change a password</a></div>`,
         })
       )
     },
