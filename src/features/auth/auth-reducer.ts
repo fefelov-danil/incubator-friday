@@ -2,6 +2,7 @@ import axios, { AxiosError } from 'axios'
 import { Dispatch } from 'redux'
 
 import { setAppErrorAC, setAppLoading, setAppStatusAC } from '../../app/app-reducer'
+import { PATH } from '../../common/pages/Pages'
 import { errorUtils } from '../../utils/errorsHandler'
 
 import { RootState } from 'app/store'
@@ -133,20 +134,22 @@ export const loginTC = (data: LoginParamsDataType) => async (dispatch: Dispatch)
   }
 }
 
-export const setNewPasswordTC = (data: setNewPasswordDataType) => async (dispatch: Dispatch) => {
-  dispatch(setAppStatusAC('loading'))
-  try {
-    const response = await authAPI.setNewPassword(data)
+export const setNewPasswordTC =
+  (data: setNewPasswordDataType, callBack: () => void) => async (dispatch: Dispatch) => {
+    dispatch(setAppStatusAC('loading'))
+    try {
+      const response = await authAPI.setNewPassword(data)
 
-    alert('Password has been changed')
-  } catch (err) {
-    const error = err as Error | AxiosError<{ error: string }>
+      alert(response.data.info)
+      callBack()
+    } catch (err) {
+      const error = err as Error | AxiosError<{ error: string }>
 
-    errorUtils(error, dispatch)
-  } finally {
-    dispatch(setAppStatusAC('succeeded'))
+      errorUtils(error, dispatch)
+    } finally {
+      dispatch(setAppStatusAC('succeeded'))
+    }
   }
-}
 export const registerMeTC =
   (data: RegistrationRequestType) => async (dispatch: Dispatch<authActionsType>) => {
     dispatch(setAppStatusAC('loading'))

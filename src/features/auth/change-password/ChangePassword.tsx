@@ -1,10 +1,11 @@
 import React from 'react'
 
 import { useFormik } from 'formik'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { Button } from '../../../common/button/Button'
 import { InputPassword } from '../../../common/inputPassword/InputPassword'
+import { PATH } from '../../../common/pages/Pages'
 import { useAppDispatch } from '../../../utils/hooks'
 import { setNewPasswordTC } from '../auth-reducer'
 
@@ -17,6 +18,7 @@ type FormikErrorType = {
 export const ChangePassword = () => {
   const dispatch = useAppDispatch()
   const { token } = useParams()
+  const navigate = useNavigate()
   const formik = useFormik({
     initialValues: {
       password: '',
@@ -35,7 +37,11 @@ export const ChangePassword = () => {
     },
 
     onSubmit: values => {
-      dispatch(setNewPasswordTC({ password: values.password, resetPasswordToken: token ?? '' }))
+      dispatch(
+        setNewPasswordTC({ password: values.password, resetPasswordToken: token ?? '' }, () =>
+          navigate(PATH.LOGIN)
+        )
+      )
     },
   })
 
