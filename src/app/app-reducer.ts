@@ -5,7 +5,10 @@ const appInitialState = {
   appAlert: { message: null, type: null } as AppAlertType,
 }
 
-export const appReducer = (state: AppStateType = appInitialState, action: AppActionsType) => {
+export const appReducer = (
+  state: AppStateType = appInitialState,
+  action: AppActionsType
+): AppStateType => {
   switch (action.type) {
     case 'APP/SET-APP-LOADING':
       return { ...state, appLoading: action.appLoading }

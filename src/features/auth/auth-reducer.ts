@@ -1,7 +1,6 @@
 import { AxiosError } from 'axios'
 
 import { setAppAlertAC, setAppLoadingAC, setAppStatusAC } from '../../app/app-reducer'
-import { errorUtils } from '../../utils/errorsHandler'
 
 import { AppDispatch, RootState } from 'app/store'
 import {
@@ -13,6 +12,7 @@ import {
   SetNewPasswordDataType,
   updateProfileModelType,
 } from 'features/auth/auth-API'
+import { errorUtils } from 'utils/errors-handler'
 
 const authInitialState = {
   authMe: false,
@@ -27,14 +27,14 @@ export const authReducer = (
   action: AuthActionsType
 ): AuthStateType => {
   switch (action.type) {
-    case 'auth/PROFILE':
+    case 'AUTH/PROFILE':
       return { ...state, profile: action.profile }
-    case 'auth/SET-IS-LOGGED-IN':
+    case 'AUTH/SET-IS-LOGGED-IN':
       return {
         ...state,
         isLoggedIn: action.value,
       }
-    case 'auth/SET-REGISTRATION': {
+    case 'AUTH/SET-REGISTRATION': {
       return { ...state, isRegistered: action.isRegistered }
     }
     case 'AUTH/SET-PASSWORD-RESET': {
@@ -48,21 +48,21 @@ export const authReducer = (
 // Actions
 export const profileAC = (profile: ProfileType) => {
   return {
-    type: 'auth/PROFILE',
+    type: 'AUTH/PROFILE',
     profile,
   } as const
 }
 
 const setIsLoggedInAC = (value: boolean) => {
   return {
-    type: 'auth/SET-IS-LOGGED-IN',
+    type: 'AUTH/SET-IS-LOGGED-IN',
     value,
   } as const
 }
 
 export const setRegistrationAC = (isRegistered: boolean) => {
   return {
-    type: 'auth/SET-REGISTRATION',
+    type: 'AUTH/SET-REGISTRATION',
     isRegistered,
   } as const
 }
