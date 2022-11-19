@@ -20,11 +20,11 @@ export function AlertSnackbar() {
     if (reason === 'clickaway') {
       return
     }
-    dispatch(setAppAlertAC(null, null))
+    dispatch(setAppAlertAC(null, alert.type))
   }
 
   return (
-    <Snackbar open={!!alert.type} autoHideDuration={6000} onClose={handleClose}>
+    <Snackbar open={!!alert.message} autoHideDuration={6000} onClose={handleClose}>
       <Alert onClose={handleClose} severity={alert.type || 'success'} sx={{ width: '100%' }}>
         {alert.message}
       </Alert>
