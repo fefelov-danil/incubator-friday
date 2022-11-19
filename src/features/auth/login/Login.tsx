@@ -7,19 +7,19 @@ import { AppStatusType } from '../../../app/app-reducer'
 import { Checkbox } from '../../../common/checkbox/Checkbox'
 import { InputPassword } from '../../../common/inputPassword/InputPassword'
 import { InputText } from '../../../common/inputText/InputText'
-import { PATH } from '../../../common/pages/Pages'
 import { useAppDispatch, useAppSelector } from '../../../utils/hooks'
 import { loginTC, setRegistrationAC } from '../auth-reducer'
 
 import s from './Login.module.css'
 
 import { Button } from 'common/button/Button'
+import { PATH } from 'common/routes/Pages'
 
-type FormikErrorType = {
-  email?: string
-  password?: string
-  rememberMe?: boolean
-}
+type FormikErrorType = Partial<{
+  email: string
+  password: string
+  rememberMe: boolean
+}>
 
 export const Login = () => {
   const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
@@ -56,7 +56,6 @@ export const Login = () => {
 
     onSubmit: values => {
       dispatch(loginTC(values))
-      // formik.resetForm()
     },
   })
 

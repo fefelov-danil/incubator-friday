@@ -1,15 +1,14 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { PageNotFound } from 'common/404/PageNotFound'
-import { authMeTC } from 'features/auth/auth-reducer'
 import { ChangePassword } from 'features/auth/change-password/ChangePassword'
 import { Login } from 'features/auth/login/Login'
 import { PasswordRecovery } from 'features/auth/password-recovery/PasswordRecovery'
 import { Profile } from 'features/auth/profile/Profile'
 import { Registration } from 'features/auth/registration/Registration'
-import { useAppDispatch, useAppSelector } from 'utils/hooks'
+import { useAppSelector } from 'utils/hooks'
 
 export const PATH = {
   LOGIN: '/login',
@@ -20,7 +19,7 @@ export const PATH = {
 }
 
 export const Pages = () => {
-  const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
+  const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
 
   return (
     <div>

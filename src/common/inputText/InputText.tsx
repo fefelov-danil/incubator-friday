@@ -30,6 +30,7 @@ export const InputText: React.FC<InputTextPropsType> = ({
     onChange && onChange(e)
     onChangeText && onChangeText(e.currentTarget.value)
   }
+
   const onKeyPressCallback = (e: KeyboardEvent<HTMLInputElement>) => {
     onKeyDown && onKeyDown(e)
     onEnter && e.key === 'Enter' && onEnter()

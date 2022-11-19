@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 
 import CircularProgress from '@mui/material/CircularProgress'
 
-import { AlertSnackbar } from '../common/AlertSnackbar/AlertSnackbar'
+import { AlertSnackbar } from '../common/alertSnackbar/AlertSnackbar'
 
 import s from './App.module.css'
 
@@ -10,7 +10,7 @@ import 'assets/general-css/reset.css'
 import 'assets/general-css/style.css'
 import mainBg from 'assets/images/fon-1.jpg'
 import { Header } from 'common/header/Header'
-import { Pages } from 'common/pages/Pages'
+import { Pages } from 'common/routes/Pages'
 import { authMeTC } from 'features/auth/auth-reducer'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
 

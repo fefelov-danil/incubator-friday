@@ -1,17 +1,16 @@
 import { AxiosError } from 'axios'
-import { Dispatch } from 'redux'
 
-import { setAppAlertAC, setAppLoading, setAppStatusAC } from '../../app/app-reducer'
+import { setAppAlertAC, setAppLoadingAC, setAppStatusAC } from '../../app/app-reducer'
 import { errorUtils } from '../../utils/errorsHandler'
 
-import { RootState } from 'app/store'
+import { AppDispatch, RootState } from 'app/store'
 import {
   authAPI,
   LoginParamsDataType,
   ProfileType,
   RegistrationRequestType,
   ResetPasswordRequestType,
-  setNewPasswordDataType,
+  SetNewPasswordDataType,
   updateProfileModelType,
 } from 'features/auth/auth-API'
 
@@ -23,7 +22,10 @@ const authInitialState = {
   isPasswordReset: false,
 }
 
-export const authReducer = (state: AuthStateType = authInitialState, action: authActionsType) => {
+export const authReducer = (
+  state: AuthStateType = authInitialState,
+  action: AuthActionsType
+): AuthStateType => {
   switch (action.type) {
     case 'auth/PROFILE':
       return { ...state, profile: action.profile }
@@ -45,9 +47,18 @@ export const authReducer = (state: AuthStateType = authInitialState, action: aut
 
 // Actions
 export const profileAC = (profile: ProfileType) => {
-  return { type: 'auth/PROFILE', profile } as const
+  return {
+    type: 'auth/PROFILE',
+    profile,
+  } as const
 }
-const setIsLoggedInAC = (value: boolean) => ({ type: 'auth/SET-IS-LOGGED-IN', value } as const)
+
+const setIsLoggedInAC = (value: boolean) => {
+  return {
+    type: 'auth/SET-IS-LOGGED-IN',
+    value,
+  } as const
+}
 
 export const setRegistrationAC = (isRegistered: boolean) => {
   return {
@@ -55,6 +66,7 @@ export const setRegistrationAC = (isRegistered: boolean) => {
     isRegistered,
   } as const
 }
+
 export const setPasswordResetAC = (isPasswordReset: boolean) => {
   return {
     type: 'AUTH/SET-PASSWORD-RESET',
@@ -63,8 +75,8 @@ export const setPasswordResetAC = (isPasswordReset: boolean) => {
 }
 
 // Thunks
-export const authMeTC = () => async (dispatch: Dispatch) => {
-  dispatch(setAppLoading(true))
+export const authMeTC = () => async (dispatch: AppDispatch) => {
+  dispatch(setAppLoadingAC(true))
   try {
     const res = await authAPI.me()
 
@@ -73,12 +85,13 @@ export const authMeTC = () => async (dispatch: Dispatch) => {
     const avatar = 'https://avatarfiles.alphacoders.com/798/79894.jpg'
 
     dispatch(profileAC({ ...res.data, avatar }))
-    dispatch(setAppLoading(false))
+    dispatch(setAppLoadingAC(false))
   } catch (err) {
-    dispatch(setAppLoading(false))
+    dispatch(setAppLoadingAC(false))
   }
 }
-export const logOutTC = () => async (dispatch: Dispatch) => {
+
+export const logOutTC = () => async (dispatch: AppDispatch) => {
   dispatch(setAppStatusAC('loading'))
   try {
     await authAPI.logOut()
@@ -91,9 +104,10 @@ export const logOutTC = () => async (dispatch: Dispatch) => {
     errorUtils(error, dispatch)
   }
 }
+
 export const updateProfileTC =
   (profileModel: updateProfileModelType) =>
-  async (dispatch: Dispatch, getState: () => RootState) => {
+  async (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(setAppStatusAC('loading'))
 
     const profile = getState().auth.profile
@@ -115,7 +129,8 @@ export const updateProfileTC =
       errorUtils(error, dispatch)
     }
   }
-export const loginTC = (data: LoginParamsDataType) => async (dispatch: Dispatch) => {
+
+export const loginTC = (data: LoginParamsDataType) => async (dispatch: AppDispatch) => {
   dispatch(setAppStatusAC('loading'))
   try {
     const response = await authAPI.login(data)
@@ -134,7 +149,7 @@ export const loginTC = (data: LoginParamsDataType) => async (dispatch: Dispatch)
 }
 
 export const setNewPasswordTC =
-  (data: setNewPasswordDataType, callBack: () => void) => async (dispatch: Dispatch) => {
+  (data: SetNewPasswordDataType, callBack: () => void) => async (dispatch: AppDispatch) => {
     dispatch(setAppStatusAC('loading'))
     try {
       await authAPI.setNewPassword(data)
@@ -149,23 +164,23 @@ export const setNewPasswordTC =
       dispatch(setAppStatusAC('succeeded'))
     }
   }
-export const registerMeTC =
-  (data: RegistrationRequestType) => async (dispatch: Dispatch<authActionsType>) => {
-    dispatch(setAppStatusAC('loading'))
-    try {
-      await authAPI.registerMe(data)
 
-      dispatch(setRegistrationAC(true))
-      dispatch(setAppStatusAC('succeeded'))
-    } catch (err) {
-      const error = err as Error | AxiosError<{ error: string }>
+export const registerMeTC = (data: RegistrationRequestType) => async (dispatch: AppDispatch) => {
+  dispatch(setAppStatusAC('loading'))
+  try {
+    await authAPI.registerMe(data)
 
-      errorUtils(error, dispatch)
-    }
+    dispatch(setRegistrationAC(true))
+    dispatch(setAppStatusAC('succeeded'))
+  } catch (err) {
+    const error = err as Error | AxiosError<{ error: string }>
+
+    errorUtils(error, dispatch)
   }
+}
 
 export const resetPasswordTC =
-  (data: ResetPasswordRequestType) => async (dispatch: Dispatch<authActionsType>) => {
+  (data: ResetPasswordRequestType) => async (dispatch: AppDispatch) => {
     dispatch(setAppStatusAC('loading'))
     try {
       await authAPI.forgot(data)
@@ -181,7 +196,7 @@ export const resetPasswordTC =
 
 // Types
 type AuthStateType = typeof authInitialState
-type authActionsType =
+export type AuthActionsType =
   | ReturnType<typeof profileAC>
   | ReturnType<typeof setIsLoggedInAC>
   | ReturnType<typeof setRegistrationAC>

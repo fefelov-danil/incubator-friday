@@ -6,15 +6,16 @@ import { Navigate } from 'react-router-dom'
 import { Button } from '../../../common/button/Button'
 import { InputPassword } from '../../../common/inputPassword/InputPassword'
 import { InputText } from '../../../common/inputText/InputText'
-import { PATH } from '../../../common/pages/Pages'
 import { useAppDispatch, useAppSelector } from '../../../utils/hooks'
-import { registerMeTC, setRegistrationAC } from '../auth-reducer'
+import { registerMeTC } from '../auth-reducer'
 
 import s from './Registration.module.css'
 
+import { PATH } from 'common/routes/Pages'
+
 export const Registration = () => {
   const dispatch = useAppDispatch()
-  const isRegistered = useAppSelector<boolean>(state => state.auth.isRegistered)
+  const isRegistered = useAppSelector(state => state.auth.isRegistered)
 
   const formik = useFormik({
     initialValues: {
@@ -39,7 +40,6 @@ export const Registration = () => {
     },
     onSubmit: values => {
       dispatch(registerMeTC(values))
-      formik.resetForm()
     },
   })
 
@@ -82,8 +82,7 @@ export const Registration = () => {
 }
 
 // Types
-
-type FormikErrorType = {
-  email?: string
-  password?: string
-}
+type FormikErrorType = Partial<{
+  email: string
+  password: string
+}>
