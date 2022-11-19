@@ -5,11 +5,12 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { Button } from '../../../common/button/Button'
 import { InputPassword } from '../../../common/inputPassword/InputPassword'
-import { PATH } from '../../../common/pages/Pages'
 import { useAppDispatch } from '../../../utils/hooks'
 import { setNewPasswordTC } from '../auth-reducer'
 
 import s from './ChangePassword.module.css'
+
+import { PATH } from 'common/routes/Pages'
 
 type FormikErrorType = {
   password?: string

@@ -5,16 +5,17 @@ import { NavLink } from 'react-router-dom'
 
 import { Button } from '../../../common/button/Button'
 import { InputText } from '../../../common/inputText/InputText'
-import { PATH } from '../../../common/pages/Pages'
 import { useAppDispatch, useAppSelector } from '../../../utils/hooks'
 import { resetPasswordTC } from '../auth-reducer'
 
 import { CheckEmail } from './check-email/CheckEmail'
 import s from './PasswordRecovery.module.css'
 
+import { PATH } from 'common/routes/Pages'
+
 export const PasswordRecovery = () => {
   const dispatch = useAppDispatch()
-  const isPasswordReset = useAppSelector<boolean>(state => state.auth.isPasswordReset)
+  const isPasswordReset = useAppSelector(state => state.auth.isPasswordReset)
 
   const formik = useFormik({
     initialValues: {

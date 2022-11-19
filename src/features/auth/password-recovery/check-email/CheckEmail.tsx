@@ -3,10 +3,11 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 
 import { Button } from '../../../../common/button/Button'
-import { PATH } from '../../../../common/pages/Pages'
 import { useAppDispatch } from '../../../../utils/hooks'
 import { setPasswordResetAC } from '../../auth-reducer'
 import s from '../PasswordRecovery.module.css'
+
+import { PATH } from 'common/routes/Pages'
 
 type CheckEmailPropsType = {
   email: string

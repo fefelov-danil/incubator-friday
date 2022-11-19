@@ -13,13 +13,14 @@ type EditAbleSpanPropsType = {
 }
 
 export const EditableSpan: React.FC<EditAbleSpanPropsType> = ({ value, updateTitle, disabled }) => {
-  const [editMode, setEditMode] = useState<boolean>(false)
-  const [title, setTitle] = useState<string>(value)
+  const [editMode, setEditMode] = useState(false)
+  const [title, setTitle] = useState(value)
   const [error, setError] = useState<boolean | string>(false)
 
   const onEditMode = () => {
     !disabled && setEditMode(true)
   }
+
   const offEditMode = () => {
     if (title === value) {
       setEditMode(false)
@@ -48,6 +49,7 @@ export const EditableSpan: React.FC<EditAbleSpanPropsType> = ({ value, updateTit
     if (!itemTitle) setError('The field is required')
     if (itemTitle.length >= 25) setError('Length no more than 25 characters')
   }
+
   const onKeyDownChangeText = (e: KeyboardEvent<HTMLInputElement>) => {
     e.key === 'Enter' && offEditMode()
     if (e.key === 'Escape') {

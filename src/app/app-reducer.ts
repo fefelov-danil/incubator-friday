@@ -19,7 +19,6 @@ export const appReducer = (state: AppStateType = appInitialState, action: AppAct
 }
 
 // actions
-
 export const setAppAlertAC = (message: string | null, type: AlertType) => {
   return {
     type: 'APP/SET-ALERT',
@@ -27,7 +26,7 @@ export const setAppAlertAC = (message: string | null, type: AlertType) => {
   } as const
 }
 
-export const setAppLoading = (appLoading: boolean) => {
+export const setAppLoadingAC = (appLoading: boolean) => {
   return {
     type: 'APP/SET-APP-LOADING',
     appLoading,
@@ -46,7 +45,7 @@ type AppStateType = typeof appInitialState
 
 export type AppActionsType =
   | ReturnType<typeof setAppStatusAC>
-  | ReturnType<typeof setAppLoading>
+  | ReturnType<typeof setAppLoadingAC>
   | ReturnType<typeof setAppAlertAC>
 export type AppStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 type AppAlertType = { message: null | string; type: AlertType }
