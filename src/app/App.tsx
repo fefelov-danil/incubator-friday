@@ -6,8 +6,8 @@ import { AlertSnackbar } from '../common/alertSnackbar/AlertSnackbar'
 
 import s from './App.module.css'
 
-import 'assets/general-css/reset.css'
-import 'assets/general-css/style.css'
+import 'assets/generalCss/reset.css'
+import 'assets/generalCss/style.css'
 import mainBg from 'assets/images/fon-1.jpg'
 import { Header } from 'common/header/Header'
 import { Pages } from 'common/routes/Pages'
