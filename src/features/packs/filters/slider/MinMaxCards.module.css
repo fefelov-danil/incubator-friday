@@ -1,0 +1,25 @@
+.slider {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+
+  font-family: "Oswald", sans-serif;
+}
+.slider span:nth-of-type(2) {
+  width: calc(100% - 40px);
+}
+.minMax {
+  overflow: hidden;
+  display: inline-block;
+
+  width: 25px;
+  margin-right: 14px;
+
+  font-size: 20px;
+  text-align: center;
+}
+.minMax:last-of-type {
+  margin-left: 14px;
+}
