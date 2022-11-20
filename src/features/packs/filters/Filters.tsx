@@ -2,7 +2,7 @@ import React from 'react'
 
 import s from './Filters.module.css'
 
-import { AllOrMyCards } from 'features/packs/filters/allOrMyCards/AllOrMyCards'
+import { AllOrMyPacks } from 'features/packs/filters/allOrMyPacks/AllOrMyPacks'
 import { FiltersOff } from 'features/packs/filters/filtersOff/FiltersOff'
 import { InputSearch } from 'features/packs/filters/inputSearch/InputSearch'
 import { MinMaxCards } from 'features/packs/filters/slider/MinMaxCards'
@@ -32,7 +32,7 @@ export const Filters = () => {
       </div>
       <div className={s.allOrMyPacks}>
         <p className={s.filterName}>Show packs cards</p>
-        <AllOrMyCards myPacks={false} changeAllOrMyPacks={changeAllOrMyPacks} />
+        <AllOrMyPacks myPacks={false} changeAllOrMyPacks={changeAllOrMyPacks} />
       </div>
       <div className={s.slider}>
         <p className={s.filterName}>Number of cards</p>

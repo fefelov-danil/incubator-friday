@@ -1,0 +1,20 @@
+.buttons {
+  overflow: hidden;
+
+  width: max-content;
+
+  border-radius: 5px;
+}
+.buttons button {
+  padding: 8px 18px;
+
+  background: #fff;
+  border: 0;
+
+  transition: 0.2s;
+}
+.buttons button.active {
+  color: #fff;
+
+  background: #FF0808;
+}
