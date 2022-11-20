@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 
 import { useFormik } from 'formik'
-import { Navigate, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 import { AppStatusType } from '../../../app/app-reducer'
 import { Checkbox } from '../../../common/checkbox/Checkbox'
@@ -22,7 +22,6 @@ type FormikErrorType = Partial<{
 }>
 
 export const Login = () => {
-  const isLoggedIn = useAppSelector<boolean>(state => state.auth.isLoggedIn)
   const appStatus = useAppSelector<AppStatusType>(state => state.app.appStatus)
   const dispatch = useAppDispatch()
 
@@ -58,10 +57,6 @@ export const Login = () => {
       dispatch(loginTC(values))
     },
   })
-
-  if (isLoggedIn) {
-    return <Navigate to={PATH.PROFILE} />
-  }
 
   return (
     <div className={'formPage'}>
