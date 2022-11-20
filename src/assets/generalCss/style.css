@@ -131,6 +131,16 @@ ul.ul-custom li:before {
   max-width: 1100px;
   margin: 0 auto;
 }
+.container-with-table {
+  margin: 50px auto;
+  padding: 50px;
+
+  background-color: rgba(235,235,235,.4);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
 
 /* Страницы с формой */
 .formPage {
@@ -156,4 +166,12 @@ ul.ul-custom li:before {
   margin-bottom: 35px;
 
   text-align: center;
+}
+
+/* Slider MU */
+span.MuiSlider-root {
+  color: #FF0000;
+}
+span.css-eg0mwd-MuiSlider-thumb:hover, span.css-eg0mwd-MuiSlider-thumb.Mui-focusVisible {
+  box-shadow: 0 0 0 8px rgb(255 0 0 / 16%);
 }
