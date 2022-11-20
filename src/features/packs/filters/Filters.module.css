@@ -1,0 +1,28 @@
+.filters {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+p.filterName {
+  margin-bottom: 6px;
+
+  font-size: 18px;
+}
+.slider p.filterName {
+  margin-bottom: 11px;
+}
+.search {
+  width: 36%;
+}
+.allOrMyPacks {
+  width: 19%;
+  padding: 0 10px;
+}
+.slider {
+  width: 36%;
+}
+.filtersOff {
+  width: 5%;
+
+  text-align: right;
+}
