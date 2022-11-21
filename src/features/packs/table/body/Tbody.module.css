@@ -1,0 +1,12 @@
+.tableBody td {
+  padding: 8px 12px;
+}
+.actions button {
+  padding: 4px;
+}
+.packName button {
+  padding: 0;
+
+  background: transparent;
+  border: 0;
+}
