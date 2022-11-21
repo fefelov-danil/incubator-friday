@@ -92,7 +92,7 @@ export const updatePackTC =
     const pageCount = getState().packs.pageCount
 
     try {
-      await packsAPI.updatePack({ cardsPack: { ...data } })
+      await packsAPI.updatePack(data)
 
       dispatch(getPacksTC({ page, pageCount }))
     } catch (err) {

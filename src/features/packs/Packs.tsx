@@ -20,12 +20,12 @@ export const Packs = () => {
 
   const deletePack = () => {
     console.log('delete pack')
-    dispatch(deletePackTC('637b5f04a83e5500043db558')) //  id колоды
+    dispatch(deletePackTC('637b71c1a83e5500043db562')) //  _id колоды
   }
 
   const updatePack = () => {
     console.log('update pack')
-    dispatch(updatePackTC({ _id: '637b5f04a83e5500043db558', name: 'new name' })) //  id колоды
+    dispatch(updatePackTC({ _id: '637b71c1a83e5500043db562', name: 'new SUREP name' })) //  _id колоды
   }
 
   useEffect(() => {
