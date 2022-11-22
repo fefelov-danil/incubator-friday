@@ -1,0 +1,21 @@
+.tableBody td {
+  padding: 8px 12px;
+}
+.actions button {
+  padding: 4px;
+}
+.packName {
+  width: 30%;
+}
+.packName button {overflow: hidden;
+  display: inline-block;
+
+  max-width: 300px;
+  padding: 0;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  background: transparent;
+  border: 0;
+}

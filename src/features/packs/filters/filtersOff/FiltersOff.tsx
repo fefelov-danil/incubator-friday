@@ -11,7 +11,7 @@ type FiltersOffPropsType = {
 export const FiltersOff: React.FC<FiltersOffPropsType> = ({ turnOffFilters }) => {
   return (
     <button className={s.filtersOff} onClick={turnOffFilters}>
-      <FilterAltOffIcon />
+      <FilterAltOffIcon sx={{ color: '#646464' }} />
     </button>
   )
 }

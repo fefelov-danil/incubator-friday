@@ -1,0 +1,30 @@
+.tableHead {
+  background: #F0F0F0;
+}
+.tableHead th {
+  cursor: pointer;
+
+  font-family: "Oswald", sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  text-align: right;
+}
+.tableHead th:nth-of-type(2) {
+  text-align: left;
+}
+.tableHead th:first-of-type {
+  text-align: left;
+}
+.tableHead th:last-of-type {
+  padding-left: 21px;
+
+  text-align: left;
+}
+.tableHead th span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tableHead th span.arrowTop svg {
+  transform: rotate(180deg);
+}
