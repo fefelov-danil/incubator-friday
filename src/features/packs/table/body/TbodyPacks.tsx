@@ -8,9 +8,9 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
-import s from 'features/packs/table/body/Tbody.module.css'
+import s from 'features/packs/table/body/TbodyPacks.module.css'
 
-export const Tbody = () => {
+export const TbodyPacks = () => {
   const cardPacks = [
     {
       _id: '6375f0e2560237144cb13881',
@@ -83,22 +83,22 @@ export const Tbody = () => {
     if (myId === userId) {
       return (
         <TableCell className={s.actions} align="right">
-          <IconButton onClick={() => studyPack(packId)} aria-label="add an alarm">
-            <SchoolIcon />
+          <IconButton onClick={() => studyPack(packId)}>
+            <SchoolIcon sx={{ fontSize: 19 }} />
           </IconButton>
-          <IconButton onClick={() => editPack(packId)} aria-label="add an alarm">
-            <EditIcon />
+          <IconButton onClick={() => editPack(packId)}>
+            <EditIcon sx={{ fontSize: 19 }} />
           </IconButton>
-          <IconButton onClick={() => deletePack(packId)} aria-label="add an alarm">
-            <DeleteIcon />
+          <IconButton onClick={() => deletePack(packId)}>
+            <DeleteIcon sx={{ fontSize: 19 }} />
           </IconButton>
         </TableCell>
       )
     } else {
       return (
         <TableCell className={s.actions} align="right">
-          <IconButton onClick={() => studyPack(packId)} aria-label="add an alarm">
-            <SchoolIcon />
+          <IconButton onClick={() => studyPack(packId)}>
+            <SchoolIcon sx={{ fontSize: 19 }} />
           </IconButton>
         </TableCell>
       )
