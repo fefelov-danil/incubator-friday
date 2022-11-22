@@ -8,6 +8,7 @@ import { addPackTC, deletePackTC, getPacksTC, updatePackTC } from './packs-reduc
 import { Button } from 'common/button/Button'
 import { Filters } from 'features/packs/filters/Filters'
 import s from 'features/packs/Packs.module.css'
+import { PacksTable } from 'features/packs/table/PacksTable'
 
 export const Packs = () => {
   const page = useAppSelector(state => state.packs.page)
@@ -54,6 +55,7 @@ export const Packs = () => {
           <Button onClick={getCards}>getCards</Button>
         </div>
         <Filters />
+        <PacksTable />
       </div>
     </div>
   )
