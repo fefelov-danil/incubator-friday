@@ -27,6 +27,10 @@ export const packsReducer = (
   switch (action.type) {
     case 'PACKS/SET-PACKS':
       return { ...state, ...action.data }
+    case 'PACKS/SET-PAGE':
+      return { ...state, page: action.page }
+    case 'PACKS/SET-PAGE-COUNT':
+      return { ...state, pageCount: action.count }
     default:
       return state
   }
@@ -37,6 +41,20 @@ export const setPacksAC = (data: GetPacksResponseType) => {
   return {
     type: 'PACKS/SET-PACKS',
     data,
+  } as const
+}
+
+export const setCurrentPacksPageAC = (page: number) => {
+  return {
+    type: 'PACKS/SET-PAGE',
+    page,
+  } as const
+}
+
+export const setPagePacksCountAC = (count: number) => {
+  return {
+    type: 'PACKS/SET-PAGE-COUNT',
+    count,
   } as const
 }
 
@@ -104,7 +122,10 @@ export const updatePackTC =
 
 // Types
 type PacksStateType = typeof packsInitialState
-export type PacksActionsType = ReturnType<typeof setPacksAC>
+export type PacksActionsType =
+  | ReturnType<typeof setPacksAC>
+  | ReturnType<typeof setCurrentPacksPageAC>
+  | ReturnType<typeof setPagePacksCountAC>
 
 export type PackType = {
   _id: string
