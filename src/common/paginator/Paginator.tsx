@@ -8,6 +8,7 @@ type PaginatorPropsType = {
   currentPage: number
   portionSize: number
   onPageChange: (p: number) => void
+  onPageItemsCountChange: (count: number) => void
   name: string
 }
 
@@ -18,7 +19,7 @@ export const Paginator = ({
   portionSize,
   onPageChange,
   name,
-  ...restProps
+  onPageItemsCountChange,
 }: PaginatorPropsType) => {
   let pageCount = Math.ceil(totalItemsCount / pageSize)
   let pages = []
@@ -75,9 +76,9 @@ export const Paginator = ({
       <div className={s.changeItemsPerPageBlock}>
         <span>SHOW</span>
         <select
-          defaultValue={'10'}
+          defaultValue={'5'}
           onChange={e => {
-            console.log(e.currentTarget.value)
+            onPageItemsCountChange(+e.currentTarget.value)
           }}
           id="select"
         >
