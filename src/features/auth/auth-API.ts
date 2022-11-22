@@ -34,6 +34,7 @@ export const authAPI = {
 
 // types
 export type ProfileType = {
+  _id: string
   created: string
   email: string
   name: string

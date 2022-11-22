@@ -8,80 +8,15 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
+import { useAppSelector } from '../../../../utils/hooks'
+
 import s from './TbodyCards.module.css'
 
 export const TbodyCards = () => {
-  const cards = [
-    {
-      _id: '637ba63fa83e5500043db58b1',
-      cardsPack_id: '635acb334a2cc300049d2040',
-      user_id: '634d840438d8680004bbb5e6',
-      answer: 'answer 1',
-      question: 'question 1',
-      grade: 4.654986156564,
-      shots: 0,
-      questionImg: '',
-      comments: '',
-      type: 'card',
-      rating: 0,
-      more_id: '634d840438d8680004bbb5e6',
-      created: '2022-11-21T16:24:31.308Z',
-      updated: '2022-11-21T16:24:31.308Z',
-      __v: 0,
-    },
-    {
-      _id: '637ba63fa83e5500043db58b2',
-      cardsPack_id: '635acb334a2cc300049d2040',
-      user_id: '634d840438d8680004bbb5e6',
-      answer: 'answer 2',
-      question: 'question 2',
-      grade: 2.458949,
-      shots: 0,
-      questionImg: '',
-      comments: '',
-      type: 'card',
-      rating: 0,
-      more_id: '634d840438d8680004bbb5e6',
-      created: '2022-11-21T16:24:31.308Z',
-      updated: '2022-11-21T16:24:31.308Z',
-      __v: 0,
-    },
-    {
-      _id: '637ba63fa83e5500043db58b3',
-      cardsPack_id: '635acb334a2cc300049d2040',
-      user_id: '634d840438d8680004bbb5e6',
-      answer: 'answer 3',
-      question: 'question 3',
-      grade: 0.458962,
-      shots: 0,
-      questionImg: '',
-      comments: '',
-      type: 'card',
-      rating: 0,
-      more_id: '634d840438d8680004bbb5e6',
-      created: '2022-11-21T16:24:31.308Z',
-      updated: '2022-11-21T16:24:31.308Z',
-      __v: 0,
-    },
-    {
-      _id: '637ba63fa83e5500043db58b4',
-      cardsPack_id: '635acb334a2cc300049d2040',
-      user_id: '634d840438d8680004bbb5e6',
-      answer: 'answer 4',
-      question: 'question 4',
-      grade: 3,
-      shots: 0,
-      questionImg: '',
-      comments: '',
-      type: 'card',
-      rating: 0,
-      more_id: '634d840438d8680004bbb5e6',
-      created: '2022-11-21T16:24:31.308Z',
-      updated: '2022-11-21T16:24:31.308Z',
-      __v: 0,
-    },
-  ]
-  const myId = '634d840438d8680004bbb5e62'
+  const cards = useAppSelector(state => state.cards.cards)
+  const myId = useAppSelector(state => state.auth.profile._id)
+
+  console.log('cards')
 
   const editPack = (packId: string) => {
     console.log('edit', packId)
@@ -140,36 +75,38 @@ export const TbodyCards = () => {
   }
 
   return (
-    <TableBody className={s.tableBody}>
-      {cards.map(card => {
-        const date =
-          new Date(card.updated).getDate() +
-          '.' +
-          new Date(card.updated).getMonth() +
-          '.' +
-          new Date(card.updated).getFullYear()
+    cards && (
+      <TableBody className={s.tableBody}>
+        {cards.map(card => {
+          const date =
+            new Date(card.updated).getDate() +
+            '.' +
+            new Date(card.updated).getMonth() +
+            '.' +
+            new Date(card.updated).getFullYear()
 
-        return (
-          <TableRow key={card._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-            <TableCell className={s.packName} component="th" scope="row">
-              <span className={s.text}>{card.answer}</span>
-            </TableCell>
-            <TableCell align="left">
-              <span className={s.text}>{card.question}</span>
-            </TableCell>
-            <TableCell align="center">{date}</TableCell>
-            <TableCell
-              align="right"
-              className={myId === card.user_id ? s.withActions : s.withoutActions}
-            >
-              <div className={s.starsAndActions}>
-                {renderStars(card.grade)}
-                {renderActions(myId, card.user_id, card._id)}
-              </div>
-            </TableCell>
-          </TableRow>
-        )
-      })}
-    </TableBody>
+          return (
+            <TableRow key={card._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableCell className={s.packName} component="th" scope="row">
+                <span className={s.text}>{card.answer}</span>
+              </TableCell>
+              <TableCell align="left">
+                <span className={s.text}>{card.question}</span>
+              </TableCell>
+              <TableCell align="center">{date}</TableCell>
+              <TableCell
+                align="right"
+                className={myId === card.user_id ? s.withActions : s.withoutActions}
+              >
+                <div className={s.starsAndActions}>
+                  {renderStars(card.grade)}
+                  {renderActions(myId, card.user_id, card._id)}
+                </div>
+              </TableCell>
+            </TableRow>
+          )
+        })}
+      </TableBody>
+    )
   )
 }

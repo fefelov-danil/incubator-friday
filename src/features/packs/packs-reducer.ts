@@ -12,7 +12,7 @@ import {
 import { AppDispatch, RootState } from 'app/store'
 
 const packsInitialState = {
-  cardPacks: [] as PackType[],
+  cardPacks: null as PackType[] | null,
   page: 1,
   pageCount: 10,
   cardPacksTotalCount: 0,

@@ -7,76 +7,30 @@ import IconButton from '@mui/material/IconButton'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
+import { NavLink } from 'react-router-dom'
+
+import { PATH } from '../../../../common/routes/Pages'
+import { useAppDispatch, useAppSelector } from '../../../../utils/hooks'
+import { getCardsTC } from '../../../cards/cards-reduser'
+import { deletePackTC, updatePackTC } from '../../packs-reducer'
 
 import s from 'features/packs/table/body/TbodyPacks.module.css'
 
 export const TbodyPacks = () => {
-  const cardPacks = [
-    {
-      _id: '6375f0e2560237144cb13881',
-      user_id: '6320dc2f45670409e86b0496',
-      user_name: 'Danil',
-      private: false,
-      name: 'Pack 1',
-      path: '/def',
-      grade: 0,
-      shots: 0,
-      cardsCount: 5,
-      type: 'pack',
-      rating: 0,
-      created: '2022-11-17T08:29:22.425Z',
-      updated: '2022-11-18T08:32:10.589Z',
-      more_id: '6320dc2f45670409e86b0496',
-      __v: 0,
-      deckCover: null,
-    },
-    {
-      _id: '6375f0e2560237144cb13882',
-      user_id: '6320dc2f45670409e86b0498',
-      user_name: 'Danil',
-      private: false,
-      name: 'Pack 2',
-      path: '/def',
-      grade: 0,
-      shots: 0,
-      cardsCount: 10,
-      type: 'pack',
-      rating: 0,
-      created: '2022-11-17T08:29:22.425Z',
-      updated: '2022-11-21T08:32:10.589Z',
-      more_id: '6320dc2f45670409e86b0496',
-      __v: 0,
-      deckCover: null,
-    },
-    {
-      _id: '6375f0e2560237144cb13883',
-      user_id: '6320dc2f45670409e86b0499',
-      user_name: 'Danil',
-      private: false,
-      name: 'Pack 3',
-      path: '/def',
-      grade: 0,
-      shots: 0,
-      cardsCount: 0,
-      type: 'pack',
-      rating: 0,
-      created: '2022-11-17T08:29:22.425Z',
-      updated: '2022-11-21T08:32:10.589Z',
-      more_id: '6320dc2f45670409e86b0496',
-      __v: 0,
-      deckCover: null,
-    },
-  ]
-  const myId = '6320dc2f45670409e86b0499'
+  const dispatch = useAppDispatch()
+
+  const cardPacks = useAppSelector(state => state.packs.cardPacks)
+  const myId = useAppSelector(state => state.auth.profile._id)
 
   const studyPack = (packId: string) => {
     console.log('study', packId)
   }
   const editPack = (packId: string) => {
-    console.log('edit', packId)
+    dispatch(updatePackTC({ _id: packId, name: 'edited PACK' })) //  _id колоды обязательно
   }
   const deletePack = (packId: string) => {
-    console.log('delete', packId)
+    console.log('delete pack')
+    dispatch(deletePackTC(packId)) //  _id колоды
   }
 
   const renderActions = (myId: string, userId: string, packId: string) => {
@@ -105,32 +59,36 @@ export const TbodyPacks = () => {
     }
   }
 
-  const openPack = (packId: string) => {
-    console.log('open pack: ', packId)
+  const openPack = (cardsPack_id: string) => {
+    dispatch(getCardsTC({ cardsPack_id }))
   }
 
   return (
-    <TableBody className={s.tableBody}>
-      {cardPacks.map(pack => {
-        const date =
-          new Date(pack.updated).getDate() +
-          '.' +
-          new Date(pack.updated).getMonth() +
-          '.' +
-          new Date(pack.updated).getFullYear()
+    cardPacks && (
+      <TableBody className={s.tableBody}>
+        {cardPacks.map(pack => {
+          const date =
+            new Date(pack.updated ? pack.updated : '').getDate() +
+            '.' +
+            new Date(pack.updated ? pack.updated : '').getMonth() +
+            '.' +
+            new Date(pack.updated ? pack.updated : '').getFullYear()
 
-        return (
-          <TableRow key={pack._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-            <TableCell className={s.packName} component="th" scope="row">
-              <button onClick={() => openPack(pack._id)}>{pack.name}</button>
-            </TableCell>
-            <TableCell align="right">{pack.cardsCount}</TableCell>
-            <TableCell align="right">{date}</TableCell>
-            <TableCell align="right">{pack.user_name}</TableCell>
-            {renderActions(myId, pack.user_id, pack._id)}
-          </TableRow>
-        )
-      })}
-    </TableBody>
+          return (
+            <TableRow key={pack._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableCell className={s.packName} component="th" scope="row">
+                <NavLink to={PATH.CARDS}>
+                  <button onClick={() => openPack(pack._id)}>{pack.name}</button>
+                </NavLink>
+              </TableCell>
+              <TableCell align="right">{pack.cardsCount}</TableCell>
+              <TableCell align="right">{date}</TableCell>
+              <TableCell align="right">{pack.user_name}</TableCell>
+              {renderActions(myId, pack.user_id ? pack.user_id : '', pack._id)}
+            </TableRow>
+          )
+        })}
+      </TableBody>
+    )
   )
 }
