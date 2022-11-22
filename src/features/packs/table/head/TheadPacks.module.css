@@ -18,6 +18,10 @@
 .tableHead th span {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+}
+.tableHead th:first-of-type span {
+  justify-content: flex-start;
 }
 .tableHead th span.arrowTop svg {
   transform: rotate(180deg);

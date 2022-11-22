@@ -5,9 +5,9 @@ import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 
-import s from 'features/packs/table/head/Thead.module.css'
+import s from 'features/packs/table/head/TheadPacks.module.css'
 
-export const Thead = () => {
+export const TheadPacks = () => {
   const sortBy = '1name'
 
   const renderSortBy = (name: string, sort: string) => {
