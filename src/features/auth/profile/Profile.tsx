@@ -2,7 +2,7 @@ import React from 'react'
 
 import LogoutIcon from '@mui/icons-material/Logout'
 
-import { Paginator } from '../../paginator/Paginator'
+import { Paginator } from '../../../common/paginator/Paginator'
 
 import s from './Profile.module.css'
 
