@@ -12,12 +12,12 @@ export const cardsAPI = {
     return instance.get<GetCardsResponseType>('/cards/card', { params: { ...data } })
   },
   addCard(data: CreateCardRequestType) {
-    return instance.post('/cards/card', data)
+    return instance.post('/cards/card', { card: data })
   },
-  deleteCard(data: { id: string }) {
-    return instance.delete('/cards/card', { params: { ...data } })
+  deleteCard(id: string) {
+    return instance.delete('/cards/card', { params: { id } })
   },
-  updateCard(data: CardType) {
+  updateCard(data: UpdateCardType) {
     return instance.put('/cards/card', { card: data })
   },
 }
@@ -45,15 +45,25 @@ export type GetCardsResponseType = {
 }
 
 export type CreateCardRequestType = {
-  card: {
-    cardsPack_id: string
-    question?: string
-    answer?: string
-    grade?: number
-    shots?: number
-    answerImg?: string
-    questionImg?: string
-    questionVideo?: string
-    answerVideo?: string
-  }
+  cardsPack_id: string
+  question?: string
+  answer?: string
+  grade?: number
+  shots?: number
+  answerImg?: string
+  questionImg?: string
+  questionVideo?: string
+  answerVideo?: string
+}
+
+export type UpdateCardType = {
+  _id: string
+  answer?: string
+  question?: string
+  cardsPack_id?: string
+  grade?: number
+  shots?: number
+  user_id?: string
+  created?: string
+  updated?: string
 }

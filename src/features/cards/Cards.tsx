@@ -2,6 +2,9 @@ import React from 'react'
 
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
 
+import { useAppDispatch, useAppSelector } from '../../utils/hooks'
+
+import { createNewCardTC } from './cards-reduser'
 import s from './Cards.module.css'
 
 import { Button } from 'common/button/Button'
@@ -9,8 +12,11 @@ import { CardsTable } from 'features/cards/table/CardsTable'
 import { InputSearch } from 'features/packs/filters/inputSearch/InputSearch'
 
 export const Cards = () => {
-  const learn = () => {
-    console.log('Learn to pack')
+  const dispatch = useAppDispatch()
+  const cardsPack_id = useAppSelector(state => state.cards.currentPackId)
+
+  const addNewCard = () => {
+    dispatch(createNewCardTC({ cardsPack_id }))
   }
 
   const changeSearchText = (value: string) => {
@@ -28,7 +34,7 @@ export const Cards = () => {
         </p>
         <div className={s.titleAndBtn}>
           <h1>Packs list</h1>
-          <Button onClick={learn}>Learn to pack</Button>
+          <Button onClick={addNewCard}>addNewCard</Button>
         </div>
         <div className={s.search}>
           <p className={s.filterName}>Search</p>

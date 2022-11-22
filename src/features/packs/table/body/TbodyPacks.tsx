@@ -11,7 +11,7 @@ import { NavLink } from 'react-router-dom'
 
 import { PATH } from '../../../../common/routes/Pages'
 import { useAppDispatch, useAppSelector } from '../../../../utils/hooks'
-import { getCardsTC } from '../../../cards/cards-reduser'
+import { getCardsTC, setCurrentPackIdAC } from '../../../cards/cards-reduser'
 import { deletePackTC, updatePackTC } from '../../packs-reducer'
 
 import s from 'features/packs/table/body/TbodyPacks.module.css'
@@ -21,6 +21,8 @@ export const TbodyPacks = () => {
 
   const cardPacks = useAppSelector(state => state.packs.cardPacks)
   const myId = useAppSelector(state => state.auth.profile._id)
+  const page = useAppSelector(state => state.cards.page)
+  const pageCount = useAppSelector(state => state.cards.pageCount)
 
   const studyPack = (packId: string) => {
     console.log('study', packId)
@@ -60,7 +62,8 @@ export const TbodyPacks = () => {
   }
 
   const openPack = (cardsPack_id: string) => {
-    dispatch(getCardsTC({ cardsPack_id }))
+    dispatch(getCardsTC({ cardsPack_id, page, pageCount }))
+    dispatch(setCurrentPackIdAC(cardsPack_id))
   }
 
   return (
