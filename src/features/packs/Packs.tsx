@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
+import { getCardsTC } from '../cards/cards-reduser'
 
 import { addPackTC, deletePackTC, getPacksTC, updatePackTC } from './packs-reducer'
 
@@ -12,6 +13,11 @@ export const Packs = () => {
   const page = useAppSelector(state => state.packs.page)
   const pageCount = useAppSelector(state => state.packs.pageCount)
   const dispatch = useAppDispatch()
+
+  const getCards = () => {
+    console.log('add pack')
+    dispatch(getCardsTC({ cardsPack_id: '637c9e6506178c0004b1e227' }))
+  }
 
   const addPack = () => {
     console.log('add pack')
@@ -45,6 +51,7 @@ export const Packs = () => {
           <Button onClick={deletePack}>deletePack</Button>
           <Button onClick={updatePack}>updatePack</Button>
           <Button onClick={addPack}>Add new pack</Button>
+          <Button onClick={getCards}>getCards</Button>
         </div>
         <Filters />
       </div>
