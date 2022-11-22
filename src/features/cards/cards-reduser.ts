@@ -18,7 +18,7 @@ const cardsInitialState = {
   maxGrade: 0,
   minGrade: 0,
   page: 1,
-  pageCount: 10,
+  pageCount: 5,
   packUserId: '',
   currentPackId: '',
 }
@@ -44,6 +44,10 @@ export const cardsReducer = (
         ...state,
         currentPackId: action.id,
       }
+    case 'CARDS/SET-PAGE':
+      return { ...state, page: action.page }
+    case 'CARDS/SET-PAGE-COUNT':
+      return { ...state, pageCount: action.count }
     default:
       return state
   }
@@ -57,10 +61,25 @@ export const setCardsAC = (data: GetCardsResponseType) => {
     data,
   } as const
 }
+
 export const setCurrentPackIdAC = (id: string) => {
   return {
     type: 'CARDS/SET-CURRENT-PACK-ID',
     id,
+  } as const
+}
+
+export const setCurrentCardsPageAC = (page: number) => {
+  return {
+    type: 'CARDS/SET-PAGE',
+    page,
+  } as const
+}
+
+export const setPageCardsCountAC = (count: number) => {
+  return {
+    type: 'CARDS/SET-PAGE-COUNT',
+    count,
   } as const
 }
 
@@ -132,7 +151,11 @@ export const updateCardTC =
 // Types
 
 type CardsStateType = typeof cardsInitialState
-export type CardsActionsType = ReturnType<typeof setCardsAC | typeof setCurrentPackIdAC>
+export type CardsActionsType =
+  | ReturnType<typeof setCardsAC>
+  | ReturnType<typeof setCurrentPackIdAC>
+  | ReturnType<typeof setCurrentCardsPageAC>
+  | ReturnType<typeof setPageCardsCountAC>
 
 export type CardType = {
   _id: string
