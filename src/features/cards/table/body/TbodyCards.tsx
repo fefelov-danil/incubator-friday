@@ -91,10 +91,10 @@ export const TbodyCards = () => {
           return (
             <TableRow key={card._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell className={s.packName} component="th" scope="row">
-                <span className={s.text}>{card.answer}</span>
+                <span className={s.text}>{card.question}</span>
               </TableCell>
               <TableCell align="left">
-                <span className={s.text}>{card.question}</span>
+                <span className={s.text}>{card.answer}</span>
               </TableCell>
               <TableCell align="center">{date}</TableCell>
               <TableCell
