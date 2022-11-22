@@ -9,6 +9,7 @@ import { Login } from 'features/auth/login/Login'
 import { PasswordRecovery } from 'features/auth/password-recovery/PasswordRecovery'
 import { Profile } from 'features/auth/profile/Profile'
 import { Registration } from 'features/auth/registration/Registration'
+import { Cards } from 'features/cards/Cards'
 import { Packs } from 'features/packs/Packs'
 import { useAppSelector } from 'utils/hooks'
 
@@ -19,6 +20,7 @@ export const PATH = {
   CHANGE_PASSWORD: '/set-new-password/:token',
   PROFILE: '/profile',
   PACKS: '/packs',
+  CARDS: '/cards',
 }
 
 export const Pages = () => {
@@ -51,6 +53,7 @@ export const Pages = () => {
             <Route path={PATH.LOGIN} element={<Navigate to={PATH.PROFILE} />} />
             <Route path={PATH.PROFILE} element={<Profile />} />
             <Route path={PATH.PACKS} element={<Packs />} />
+            <Route path={PATH.CARDS} element={<Cards />} />
           </>
         ) : (
           <>
