@@ -16,10 +16,6 @@ export const Filters = () => {
     console.log(currentMinMax)
   }
 
-  const changeAllOrMyPacks = (my: boolean) => {
-    console.log(my)
-  }
-
   const turnOffFilters = () => {
     console.log('filters off')
   }
@@ -32,7 +28,7 @@ export const Filters = () => {
       </div>
       <div className={s.allOrMyPacks}>
         <p className={s.filterName}>Show packs cards</p>
-        <AllOrMyPacks myPacks={false} changeAllOrMyPacks={changeAllOrMyPacks} />
+        <AllOrMyPacks />
       </div>
       <div className={s.slider}>
         <p className={s.filterName}>Number of cards</p>

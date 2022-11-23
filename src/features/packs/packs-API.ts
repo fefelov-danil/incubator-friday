@@ -24,7 +24,7 @@ export const packsAPI = {
 
 // types
 export type GetPacksRequestType = {
-  user_id?: string
+  user_id?: string | null
   packName?: string
   min?: number
   max?: number
