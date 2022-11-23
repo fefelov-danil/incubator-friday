@@ -1,17 +1,30 @@
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import Slider from '@mui/material/Slider/Slider'
 
 import s from './MinMaxCards.module.css'
 
-type MinMaxCardsPropsType = {
-  initialMinMax: number[]
-  changeSlider: (currentMinMax: number[]) => void
-}
+import { getPacksTC } from 'features/packs/packs-reducer'
+import { useAppDispatch, useAppSelector, useDebounce } from 'utils/hooks'
 
-export const MinMaxCards: React.FC<MinMaxCardsPropsType> = ({ initialMinMax, changeSlider }) => {
+export const MinMaxCards = () => {
+  const dispatch = useAppDispatch()
+  const maxCountCards = useAppSelector(state => state.packs.maxCardsCount)
+
+  const [value, setValue] = useState<number[]>([0, maxCountCards])
+  const debouncedValue = useDebounce<number[]>(value, 500)
   const minDistance = 1
-  const [value, setValue] = useState<number[]>([initialMinMax[0], initialMinMax[1]])
+
+  useEffect(() => {
+    setValue([0, maxCountCards])
+  }, [maxCountCards])
+
+  useEffect(() => {
+    if (debouncedValue[1]) {
+      console.log(debouncedValue[1])
+      dispatch(getPacksTC({ min: debouncedValue[0], max: debouncedValue[1] }))
+    }
+  }, [debouncedValue])
 
   const handleChange = (event: Event, newValue: number | number[], activeThumb: number) => {
     if (!Array.isArray(newValue)) {
@@ -23,14 +36,12 @@ export const MinMaxCards: React.FC<MinMaxCardsPropsType> = ({ initialMinMax, cha
     } else {
       setValue([value[0], Math.max(newValue[1], value[0] + minDistance)])
     }
-
-    changeSlider([newValue[0], newValue[1]])
   }
 
   const onChangeMin = (e: ChangeEvent<HTMLInputElement>) => {
     const currentValue = +e.currentTarget.value
 
-    if (currentValue < value[1] && currentValue >= initialMinMax[0]) {
+    if (currentValue < value[1] && currentValue >= 0) {
       setValue([+e.currentTarget.value, value[1]])
     }
   }
@@ -38,7 +49,7 @@ export const MinMaxCards: React.FC<MinMaxCardsPropsType> = ({ initialMinMax, cha
   const onChangeMax = (e: ChangeEvent<HTMLInputElement>) => {
     const currentValue = +e.currentTarget.value
 
-    if (currentValue > value[0] && currentValue <= initialMinMax[1]) {
+    if (currentValue > value[0] && currentValue <= maxCountCards) {
       setValue([value[0], +e.currentTarget.value])
     }
   }
@@ -52,8 +63,8 @@ export const MinMaxCards: React.FC<MinMaxCardsPropsType> = ({ initialMinMax, cha
         onChange={handleChange}
         valueLabelDisplay="off"
         disableSwap
-        min={initialMinMax[0]}
-        max={initialMinMax[1]}
+        min={0}
+        max={maxCountCards}
       />
       <input type={'number'} className={s.minMax} value={value[1]} onChange={onChangeMax} />
     </div>
