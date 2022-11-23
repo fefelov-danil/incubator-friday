@@ -24,10 +24,6 @@ export const Cards = () => {
     dispatch(createNewCardTC({ cardsPack_id }))
   }
 
-  const changeSearchText = (value: string) => {
-    console.log(value)
-  }
-
   const setCurrentPage = (newCurrentPage: number) => {
     dispatch(setCurrentPacksPageAC(newCurrentPage))
     dispatch(getCardsTC({ cardsPack_id, page: newCurrentPage }))
@@ -53,7 +49,7 @@ export const Cards = () => {
         </div>
         <div className={s.search}>
           <p className={s.filterName}>Search</p>
-          <InputSearch placeholder={'Provide your text'} onChangeText={changeSearchText} />
+          <InputSearch placeholder={'Provide your text'} />
         </div>
         <CardsTable />
         <Paginator
