@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 
 import Slider from '@mui/material/Slider/Slider'
 
@@ -27,9 +27,25 @@ export const MinMaxCards: React.FC<MinMaxCardsPropsType> = ({ initialMinMax, cha
     changeSlider([newValue[0], newValue[1]])
   }
 
+  const onChangeMin = (e: ChangeEvent<HTMLInputElement>) => {
+    const currentValue = +e.currentTarget.value
+
+    if (currentValue < value[1] && currentValue >= initialMinMax[0]) {
+      setValue([+e.currentTarget.value, value[1]])
+    }
+  }
+
+  const onChangeMax = (e: ChangeEvent<HTMLInputElement>) => {
+    const currentValue = +e.currentTarget.value
+
+    if (currentValue > value[0] && currentValue <= initialMinMax[1]) {
+      setValue([value[0], +e.currentTarget.value])
+    }
+  }
+
   return (
     <div className={s.slider}>
-      <span className={s.minMax}>{value[0]}</span>
+      <input type={'number'} className={s.minMax} value={value[0]} onChange={onChangeMin} />
       <Slider
         getAriaLabel={() => 'Minimum distance'}
         value={value}
@@ -39,7 +55,7 @@ export const MinMaxCards: React.FC<MinMaxCardsPropsType> = ({ initialMinMax, cha
         min={initialMinMax[0]}
         max={initialMinMax[1]}
       />
-      <span className={s.minMax}>{value[1]}</span>
+      <input type={'number'} className={s.minMax} value={value[1]} onChange={onChangeMax} />
     </div>
   )
 }
