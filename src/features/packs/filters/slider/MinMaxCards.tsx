@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector, useDebounce } from 'utils/hooks'
 export const MinMaxCards = () => {
   const dispatch = useAppDispatch()
   const maxCountCards = useAppSelector(state => state.packs.maxCardsCount)
-
+  const appStatus = useAppSelector(state => state.app.appStatus)
   const sortByAllMy = useAppSelector(state => state.packs.sortByAllMy)
 
   let min: number, max: number
@@ -76,8 +76,15 @@ export const MinMaxCards = () => {
 
   return (
     <div className={s.slider}>
-      <input type={'number'} className={s.minMax} value={value[0]} onChange={onChangeMin} />
+      <input
+        disabled={appStatus === 'loading'}
+        type={'number'}
+        className={s.minMax}
+        value={value[0]}
+        onChange={onChangeMin}
+      />
       <Slider
+        disabled={appStatus === 'loading'}
         getAriaLabel={() => 'Minimum distance'}
         value={value}
         onChange={handleChange}
@@ -86,7 +93,13 @@ export const MinMaxCards = () => {
         min={0}
         max={maxCountCards}
       />
-      <input type={'number'} className={s.minMax} value={value[1]} onChange={onChangeMax} />
+      <input
+        disabled={appStatus === 'loading'}
+        type={'number'}
+        className={s.minMax}
+        value={value[1]}
+        onChange={onChangeMax}
+      />
     </div>
   )
 }

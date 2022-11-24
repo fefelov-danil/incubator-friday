@@ -13,6 +13,7 @@ import s from './AllOrMyPacks.module.css'
 export const AllOrMyPacks: React.FC = () => {
   const dispatch = useAppDispatch()
   const sortByAllMy = useAppSelector(state => state.packs.sortByAllMy)
+  const appStatus = useAppSelector(state => state.app.appStatus)
 
   const minForAll = useAppSelector(state => state.packs.minForAll)
   const maxForAll = useAppSelector(state => state.packs.maxForAll)
@@ -34,13 +35,15 @@ export const AllOrMyPacks: React.FC = () => {
   return (
     <div className={s.buttons}>
       <button
-        className={sortByAllMy == 'my' ? s.active : ''}
+        disabled={appStatus === 'loading'}
+        className={`${sortByAllMy == 'my' ? s.active : ''} ${s.my}`}
         onClick={() => changeAllOrMyPacksHandler(true)}
       >
         My
       </button>
       <button
-        className={sortByAllMy == 'all' ? s.active : ''}
+        disabled={appStatus === 'loading'}
+        className={`${sortByAllMy == 'all' ? s.active : ''} ${s.all}`}
         onClick={() => changeAllOrMyPacksHandler(false)}
       >
         All

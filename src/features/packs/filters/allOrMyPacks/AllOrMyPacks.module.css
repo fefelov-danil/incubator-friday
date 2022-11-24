@@ -16,5 +16,12 @@
 .buttons button.active {
   color: #fff;
 
-  background: #FF0808;
+  background: #ff0808;
+}
+
+.buttons button.active:disabled {
+  background: #8c4e4e !important;
+}
+.buttons button:disabled {
+  background: #a49e9e !important;
 }

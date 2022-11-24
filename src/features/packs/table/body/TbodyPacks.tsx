@@ -23,6 +23,7 @@ export const TbodyPacks = () => {
   const myId = useAppSelector(state => state.auth.profile._id)
   const page = useAppSelector(state => state.cards.page)
   const pageCount = useAppSelector(state => state.cards.pageCount)
+  const appStatus = useAppSelector(state => state.app.appStatus)
 
   const studyPack = (packId: string) => {
     console.log('study', packId)
@@ -39,13 +40,13 @@ export const TbodyPacks = () => {
     if (myId === userId) {
       return (
         <TableCell className={s.actions} align="right">
-          <IconButton onClick={() => studyPack(packId)}>
+          <IconButton disabled={appStatus === 'loading'} onClick={() => studyPack(packId)}>
             <SchoolIcon sx={{ fontSize: 19 }} />
           </IconButton>
-          <IconButton onClick={() => editPack(packId)}>
+          <IconButton disabled={appStatus === 'loading'} onClick={() => editPack(packId)}>
             <EditIcon sx={{ fontSize: 19 }} />
           </IconButton>
-          <IconButton onClick={() => deletePack(packId)}>
+          <IconButton disabled={appStatus === 'loading'} onClick={() => deletePack(packId)}>
             <DeleteIcon sx={{ fontSize: 19 }} />
           </IconButton>
         </TableCell>
@@ -53,7 +54,7 @@ export const TbodyPacks = () => {
     } else {
       return (
         <TableCell className={s.actions} align="right">
-          <IconButton onClick={() => studyPack(packId)}>
+          <IconButton disabled={appStatus === 'loading'} onClick={() => studyPack(packId)}>
             <SchoolIcon sx={{ fontSize: 19 }} />
           </IconButton>
         </TableCell>
@@ -81,7 +82,9 @@ export const TbodyPacks = () => {
             <TableRow key={pack._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell className={s.packName} component="th" scope="row">
                 <NavLink to={PATH.CARDS}>
-                  <button onClick={() => openPack(pack._id)}>{pack.name}</button>
+                  <button disabled={appStatus === 'loading'} onClick={() => openPack(pack._id)}>
+                    {pack.name}
+                  </button>
                 </NavLink>
               </TableCell>
               <TableCell align="right">{pack.cardsCount}</TableCell>

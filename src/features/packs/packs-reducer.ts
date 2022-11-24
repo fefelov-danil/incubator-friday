@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios'
 
+import { setAppStatusAC } from '../../app/app-reducer'
 import { errorUtils } from '../../utils/errors-handler'
 
 import { CreatePackRequestType, GetPacksResponseType, packsAPI } from './packs-API'
@@ -99,6 +100,7 @@ export const setSortMinMaxCardsForMyAC = (minForMy: number, maxForMy: number) =>
 // Thunks
 
 export const getPacksTC = () => async (dispatch: AppDispatch, getState: () => RootState) => {
+  dispatch(setAppStatusAC('loading'))
   const page = getState().packs.page
   const pageCount = getState().packs.pageCount
   const myId = getState().auth.profile._id
@@ -116,10 +118,13 @@ export const getPacksTC = () => async (dispatch: AppDispatch, getState: () => Ro
     const error = err as Error | AxiosError<{ error: string }>
 
     errorUtils(error, dispatch)
+  } finally {
+    dispatch(setAppStatusAC('succeeded'))
   }
 }
 
 export const addPackTC = (data: CreatePackRequestType) => async (dispatch: AppDispatch) => {
+  dispatch(setAppStatusAC('loading'))
   try {
     await packsAPI.addPack(data)
 
@@ -128,10 +133,13 @@ export const addPackTC = (data: CreatePackRequestType) => async (dispatch: AppDi
     const error = err as Error | AxiosError<{ error: string }>
 
     errorUtils(error, dispatch)
+  } finally {
+    dispatch(setAppStatusAC('succeeded'))
   }
 }
 
 export const deletePackTC = (id: string) => async (dispatch: AppDispatch) => {
+  dispatch(setAppStatusAC('loading'))
   try {
     await packsAPI.deletePack({ id })
 
@@ -140,10 +148,13 @@ export const deletePackTC = (id: string) => async (dispatch: AppDispatch) => {
     const error = err as Error | AxiosError<{ error: string }>
 
     errorUtils(error, dispatch)
+  } finally {
+    dispatch(setAppStatusAC('succeeded'))
   }
 }
 
 export const updatePackTC = (data: PackType) => async (dispatch: AppDispatch) => {
+  dispatch(setAppStatusAC('loading'))
   try {
     await packsAPI.updatePack(data)
 
@@ -152,6 +163,8 @@ export const updatePackTC = (data: PackType) => async (dispatch: AppDispatch) =>
     const error = err as Error | AxiosError<{ error: string }>
 
     errorUtils(error, dispatch)
+  } finally {
+    dispatch(setAppStatusAC('succeeded'))
   }
 }
 

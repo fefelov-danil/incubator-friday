@@ -24,6 +24,7 @@ export const Paginator = ({
   onPageItemsCountChange,
 }: PaginatorPropsType) => {
   const value = useAppSelector(state => state.packs.pageCount)
+  const appStatus = useAppSelector(state => state.app.appStatus)
 
   let pageCount = Math.ceil(totalItemsCount / pageSize)
   let pages = []
@@ -41,6 +42,7 @@ export const Paginator = ({
     <div className={s.paginator}>
       {portionNumber > 1 && (
         <button
+          disabled={appStatus === 'loading'}
           className={s.button}
           onClick={() => {
             setPortionNumber(portionNumber - 1)
@@ -54,21 +56,22 @@ export const Paginator = ({
         .filter(p => p >= leftPortionLimit && p <= rightPortionLimit)
         .map(p => {
           return (
-            <span
+            <button
               key={p}
+              disabled={appStatus === 'loading'}
               className={`${currentPage === p && s.selectedPage} ${s.pageNumber}`}
               onClick={() => {
-                console.log(p)
                 onPageChange(p)
               }}
             >
               {p}
-            </span>
+            </button>
           )
         })}
 
       {portionCount > portionNumber && (
         <button
+          disabled={appStatus === 'loading'}
           className={s.button}
           onClick={() => {
             setPortionNumber(portionNumber + 1)
@@ -80,6 +83,7 @@ export const Paginator = ({
       <div className={s.changeItemsPerPageBlock}>
         <span>SHOW</span>
         <select
+          disabled={appStatus === 'loading'}
           value={value}
           onChange={e => {
             onPageItemsCountChange(+e.currentTarget.value)
