@@ -13,6 +13,8 @@ const packsInitialState = {
   cardPacksTotalCount: 0,
   maxCardsCount: 0,
   minCardsCount: 0,
+  min: 0,
+  max: 0,
   sortByAllMy: 'all' as 'all' | 'my',
 }
 
@@ -22,13 +24,15 @@ export const packsReducer = (
 ): PacksStateType => {
   switch (action.type) {
     case 'PACKS/SET-PACKS':
-      return { ...state, ...action.data }
+      return { ...state, ...action.data, max: action.data.maxCardsCount }
     case 'PACKS/SET-PAGE':
       return { ...state, page: action.page }
     case 'PACKS/SET-PAGE-COUNT':
       return { ...state, pageCount: action.count }
     case 'PACKS/SET-SORT-MY-ALL':
       return { ...state, sortByAllMy: action.sortByAllMy }
+    case 'PACKS/SET-SORT-MIN-MAX-CARDS':
+      return { ...state, min: action.min, max: action.max }
     default:
       return state
   }
@@ -60,6 +64,14 @@ export const setSortByAllMyAC = (sortByAllMy: 'all' | 'my') => {
   return {
     type: 'PACKS/SET-SORT-MY-ALL',
     sortByAllMy,
+  } as const
+}
+
+export const setSortMinMaxCardsAC = (min: number, max: number) => {
+  return {
+    type: 'PACKS/SET-SORT-MIN-MAX-CARDS',
+    min,
+    max,
   } as const
 }
 
@@ -127,6 +139,7 @@ export type PacksActionsType =
   | ReturnType<typeof setCurrentPacksPageAC>
   | ReturnType<typeof setPagePacksCountAC>
   | ReturnType<typeof setSortByAllMyAC>
+  | ReturnType<typeof setSortMinMaxCardsAC>
 
 export type PackType = {
   _id: string

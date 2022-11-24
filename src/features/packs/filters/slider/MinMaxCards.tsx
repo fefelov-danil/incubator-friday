@@ -4,7 +4,7 @@ import Slider from '@mui/material/Slider/Slider'
 
 import s from './MinMaxCards.module.css'
 
-import { getPacksTC } from 'features/packs/packs-reducer'
+import { getPacksTC, setSortMinMaxCardsAC } from 'features/packs/packs-reducer'
 import { useAppDispatch, useAppSelector, useDebounce } from 'utils/hooks'
 
 export const MinMaxCards = () => {
@@ -21,8 +21,8 @@ export const MinMaxCards = () => {
 
   useEffect(() => {
     if (debouncedValue[1]) {
-      console.log(debouncedValue[1])
-      dispatch(getPacksTC({ min: debouncedValue[0], max: debouncedValue[1] }))
+      dispatch(setSortMinMaxCardsAC(debouncedValue[0], debouncedValue[1]))
+      dispatch(getPacksTC())
     }
   }, [debouncedValue])
 
