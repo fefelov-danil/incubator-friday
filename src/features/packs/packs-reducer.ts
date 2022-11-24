@@ -8,8 +8,8 @@ import { AppDispatch, RootState } from 'app/store'
 
 const packsInitialState = {
   cardPacks: null as PackType[] | null,
-  page: 0,
-  pageCount: 0,
+  page: 1,
+  pageCount: 5,
   cardPacksTotalCount: 0,
   maxCardsCount: 0,
   minCardsCount: 0,

@@ -1,8 +1,17 @@
-import React, { ChangeEvent, DetailedHTMLProps, InputHTMLAttributes, KeyboardEvent } from 'react'
+import React, {
+  ChangeEvent,
+  DetailedHTMLProps,
+  InputHTMLAttributes,
+  useEffect,
+  useState,
+} from 'react'
 
 import SearchIcon from '@mui/icons-material/Search'
 
 import s from './InputSearch.module.css'
+
+import { getPacksTC } from 'features/packs/packs-reducer'
+import { useAppDispatch, useDebounce } from 'utils/hooks'
 
 // Пропсы стандартного инпута
 type DefaultInputTextPropsType = DetailedHTMLProps<
@@ -10,44 +19,25 @@ type DefaultInputTextPropsType = DetailedHTMLProps<
   HTMLInputElement
 >
 
-type InputTextPropsType = DefaultInputTextPropsType & {
-  onChangeText?: (value: string) => void
-  onEnter?: () => void
-  error?: string
-  spanClassName?: string
-}
+export const InputSearch: React.FC<DefaultInputTextPropsType> = ({ ...restProps }) => {
+  const dispatch = useAppDispatch()
+  const [value, setValue] = useState<string | null>(null)
+  const debouncedValue = useDebounce<string | null>(value, 700)
 
-export const InputSearch: React.FC<InputTextPropsType> = ({
-  type,
-  onChange,
-  onChangeText,
-  onKeyDown,
-  onEnter,
-  error,
-  className,
-  spanClassName,
-  ...restProps
-}) => {
+  useEffect(() => {
+    if (debouncedValue !== null) {
+      dispatch(getPacksTC({ packName: debouncedValue }))
+    }
+  }, [debouncedValue])
+
   const onChangeCallback = (e: ChangeEvent<HTMLInputElement>) => {
-    onChange && onChange(e)
-    onChangeText && onChangeText(e.currentTarget.value)
-  }
-
-  const onKeyPressCallback = (e: KeyboardEvent<HTMLInputElement>) => {
-    onKeyDown && onKeyDown(e)
-    onEnter && e.key === 'Enter' && onEnter()
+    setValue(e.target.value)
   }
 
   return (
     <p className={s.inputContainer}>
       <SearchIcon sx={{ color: '#555', fontSize: 20 }} />
-      <input
-        type={'text'}
-        onChange={onChangeCallback}
-        onKeyDown={onKeyPressCallback}
-        className={`${className} ${s.inputSearch}`}
-        {...restProps}
-      />
+      <input type={'text'} onChange={onChangeCallback} className={s.inputSearch} {...restProps} />
     </p>
   )
 }
