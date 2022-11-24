@@ -13,9 +13,11 @@ export const AllOrMyPacks: React.FC = () => {
   const changeAllOrMyPacksHandler = (my: boolean) => {
     if (my) {
       dispatch(setSortByAllMyAC('my'))
+      dispatch(setSortMinMaxCardsAC(0, 0))
       dispatch(getPacksTC())
     } else {
       dispatch(setSortByAllMyAC('all'))
+      dispatch(setSortMinMaxCardsAC(0, 0))
       dispatch(getPacksTC())
     }
   }
