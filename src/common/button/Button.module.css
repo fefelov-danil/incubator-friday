@@ -8,12 +8,16 @@
   color: #fff;
   text-transform: uppercase;
 
-  background: #FF0808;
+  background: #ff0808;
   border: 0;
   border-radius: 25px;
 
   transition: 0.2s;
 }
 .button:hover {
-  background: #CC0000;
+  background: #cc0000;
+}
+
+.button:disabled {
+  background: #5c5c5c !important;
 }

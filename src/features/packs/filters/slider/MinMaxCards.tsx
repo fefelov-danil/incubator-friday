@@ -4,29 +4,46 @@ import Slider from '@mui/material/Slider/Slider'
 
 import s from './MinMaxCards.module.css'
 
-import { getPacksTC, setMinMaxFilterAC } from 'features/packs/packs-reducer'
+import {
+  getPacksTC,
+  setSortMinMaxCardsForAllAC,
+  setSortMinMaxCardsForMyAC,
+} from 'features/packs/packs-reducer'
 import { useAppDispatch, useAppSelector, useDebounce } from 'utils/hooks'
 
 export const MinMaxCards = () => {
   const dispatch = useAppDispatch()
   const maxCountCards = useAppSelector(state => state.packs.maxCardsCount)
-  const min = useAppSelector(state => state.packs.min)
-  const max = useAppSelector(state => state.packs.max)
+  const appStatus = useAppSelector(state => state.app.appStatus)
+  const sortByAllMy = useAppSelector(state => state.packs.sortByAllMy)
 
-  const [value, setValue] = useState<number[]>([0, maxCountCards])
+  let min: number, max: number
+
+  if (sortByAllMy === 'all') {
+    min = useAppSelector(state => state.packs.minForAll)
+    max = useAppSelector(state => state.packs.maxForAll)
+  } else {
+    min = useAppSelector(state => state.packs.minForMy)
+    max = useAppSelector(state => state.packs.maxForMy)
+  }
+
+  const [value, setValue] = useState<number[]>([min, max])
   const debouncedValue = useDebounce<number[]>(value, 500)
   const minDistance = 1
 
   useEffect(() => {
-    setValue([0, maxCountCards])
-  }, [maxCountCards])
+    setValue([min, max])
+  }, [min, max])
 
   useEffect(() => {
-    dispatch(setMinMaxFilterAC(debouncedValue[0], debouncedValue[1]))
-    // if (debouncedValue[0] !== min || debouncedValue[1] !== max) {
-    //   console.log(debouncedValue[1])
-    //   dispatch(getPacksTC({ min: debouncedValue[0], max: debouncedValue[1] }))
-    // }
+    if (debouncedValue[1] !== max || debouncedValue[0] !== min) {
+      if (sortByAllMy === 'all') {
+        dispatch(setSortMinMaxCardsForAllAC(debouncedValue[0], debouncedValue[1]))
+      } else {
+        dispatch(setSortMinMaxCardsForMyAC(debouncedValue[0], debouncedValue[1]))
+      }
+      dispatch(getPacksTC())
+    }
   }, [debouncedValue])
 
   const handleChange = (event: Event, newValue: number | number[], activeThumb: number) => {
@@ -59,8 +76,15 @@ export const MinMaxCards = () => {
 
   return (
     <div className={s.slider}>
-      <input type={'number'} className={s.minMax} value={value[0]} onChange={onChangeMin} />
+      <input
+        disabled={appStatus === 'loading'}
+        type={'number'}
+        className={s.minMax}
+        value={value[0]}
+        onChange={onChangeMin}
+      />
       <Slider
+        disabled={appStatus === 'loading'}
         getAriaLabel={() => 'Minimum distance'}
         value={value}
         onChange={handleChange}
@@ -69,7 +93,13 @@ export const MinMaxCards = () => {
         min={0}
         max={maxCountCards}
       />
-      <input type={'number'} className={s.minMax} value={value[1]} onChange={onChangeMax} />
+      <input
+        disabled={appStatus === 'loading'}
+        type={'number'}
+        className={s.minMax}
+        value={value[1]}
+        onChange={onChangeMax}
+      />
     </div>
   )
 }

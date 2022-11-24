@@ -1,5 +1,7 @@
 import React, { ButtonHTMLAttributes, DetailedHTMLProps } from 'react'
 
+import { useAppSelector } from '../../utils/hooks'
+
 import s from 'common/button/Button.module.css'
 
 type DefaultButtonPropsType = DetailedHTMLProps<
@@ -12,7 +14,9 @@ type ButtonPropsType = DefaultButtonPropsType & {
 }
 
 export const Button: React.FC<ButtonPropsType> = ({ className, ...restProps }) => {
+  const appStatus = useAppSelector(state => state.app.appStatus)
+
   const finalClassName = `${s.button} ${className}`
 
-  return <button className={finalClassName} {...restProps} />
+  return <button disabled={appStatus === 'loading'} className={finalClassName} {...restProps} />
 }

@@ -1,9 +1,8 @@
 import React from 'react'
 
-import { Navigate, Outlet, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { PageNotFound } from 'common/404/PageNotFound'
-import { PrivateRoutes } from 'common/routes/PrivateRoutes'
 import { ChangePassword } from 'features/auth/change-password/ChangePassword'
 import { Login } from 'features/auth/login/Login'
 import { PasswordRecovery } from 'features/auth/password-recovery/PasswordRecovery'
@@ -49,8 +48,8 @@ export const Pages = () => {
       <Routes>
         {isLoggedIn ? (
           <>
-            <Route path={'/'} element={<Navigate to={PATH.PROFILE} />} />
-            <Route path={PATH.LOGIN} element={<Navigate to={PATH.PROFILE} />} />
+            <Route path={'/'} element={<Navigate to={PATH.PACKS} />} />
+            <Route path={PATH.LOGIN} element={<Navigate to={PATH.PACKS} />} />
             <Route path={PATH.PROFILE} element={<Profile />} />
             <Route path={PATH.PACKS} element={<Packs />} />
             <Route path={PATH.CARDS} element={<Cards />} />
