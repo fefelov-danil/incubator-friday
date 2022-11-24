@@ -13,7 +13,7 @@ export const MinMaxCards = () => {
   const min = useAppSelector(state => state.packs.min)
   const max = useAppSelector(state => state.packs.max)
 
-  const [value, setValue] = useState<number[]>([min, max])
+  const [value, setValue] = useState<number[]>([0, maxCountCards])
   const debouncedValue = useDebounce<number[]>(value, 500)
   const minDistance = 1
 
@@ -22,7 +22,7 @@ export const MinMaxCards = () => {
   }, [maxCountCards])
 
   useEffect(() => {
-    if (debouncedValue[1] !== max || debouncedValue[0] !== min) {
+    if (debouncedValue[1] !== maxCountCards || debouncedValue[0] !== 0) {
       dispatch(setSortMinMaxCardsAC(debouncedValue[0], debouncedValue[1]))
       dispatch(getPacksTC())
     }

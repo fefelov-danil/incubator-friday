@@ -24,7 +24,16 @@ export const packsReducer = (
 ): PacksStateType => {
   switch (action.type) {
     case 'PACKS/SET-PACKS':
-      return { ...state, ...action.data }
+      return {
+        ...state,
+        cardPacks: action.data.cardPacks,
+        page: action.data.page,
+        pageCount: action.data.pageCount,
+        cardPacksTotalCount: action.data.cardPacksTotalCount,
+        maxCardsCount: action.data.maxCardsCount,
+        minCardsCount: action.data.minCardsCount,
+        max: state.max === 0 ? action.data.maxCardsCount : 0,
+      }
     case 'PACKS/SET-PAGE':
       return { ...state, page: action.page }
     case 'PACKS/SET-PAGE-COUNT':
