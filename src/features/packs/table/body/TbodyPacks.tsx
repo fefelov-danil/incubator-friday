@@ -74,7 +74,7 @@ export const TbodyPacks = () => {
           const date =
             new Date(pack.updated ? pack.updated : '').getDate() +
             '.' +
-            new Date(pack.updated ? pack.updated : '').getMonth() +
+            (new Date(pack.updated ? pack.updated : '').getMonth() + 1) +
             '.' +
             new Date(pack.updated ? pack.updated : '').getFullYear()
 
@@ -88,8 +88,8 @@ export const TbodyPacks = () => {
                 </NavLink>
               </TableCell>
               <TableCell align="right">{pack.cardsCount}</TableCell>
-              <TableCell align="right">{date}</TableCell>
               <TableCell align="right">{pack.user_name}</TableCell>
+              <TableCell align="right">{date}</TableCell>
               {renderActions(myId, pack.user_id ? pack.user_id : '', pack._id)}
             </TableRow>
           )

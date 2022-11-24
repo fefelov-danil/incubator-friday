@@ -1,37 +1,51 @@
 import React from 'react'
 
+import { ArrowDropUp } from '@mui/icons-material'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 
+import { useAppDispatch, useAppSelector } from '../../../../utils/hooks'
+import { getPacksTC, setSortPacksValueAC } from '../../packs-reducer'
+
 import s from 'features/packs/table/head/TheadPacks.module.css'
 
 export const TheadPacks = () => {
-  const sortBy = '1name'
+  const dispatch = useAppDispatch()
+
+  const onClickHandler = (sort: string) => {
+    dispatch(setSortPacksValueAC(sort))
+    dispatch(getPacksTC())
+  }
+  const sortPacksValue = useAppSelector(state => state.packs.sortPacksValue)
 
   const renderSortBy = (name: string, sort: string) => {
-    if (sortBy === 0 + sort) {
+    if (sortPacksValue === '1' + sort) {
       return (
         <TableCell>
-          <span className={s.arrowTop}>
+          <span className={s.arrowTop} onClick={() => onClickHandler('0' + sort)}>
             {name} <ArrowDropDownIcon />
           </span>
         </TableCell>
       )
     }
 
-    if (sortBy === 1 + sort) {
+    if (sortPacksValue === '0' + sort) {
       return (
         <TableCell>
-          <span className={s.arrowBottom}>
+          <span className={s.arrowBottom} onClick={() => onClickHandler('1' + sort)}>
             {name} <ArrowDropDownIcon />
           </span>
         </TableCell>
       )
     }
 
-    return <TableCell>{name}</TableCell>
+    return (
+      <TableCell>
+        <span onClick={() => onClickHandler('0' + sort)}> {name} </span>
+      </TableCell>
+    )
   }
 
   return (

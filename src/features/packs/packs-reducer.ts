@@ -2,6 +2,7 @@ import { AxiosError } from 'axios'
 
 import { setAppStatusAC } from '../../app/app-reducer'
 import { errorUtils } from '../../utils/errors-handler'
+import { useAppSelector } from '../../utils/hooks'
 
 import {
   CreatePackRequestType,
@@ -25,6 +26,7 @@ const packsInitialState = {
   maxForMy: 0,
   sortByAllMy: 'all' as 'all' | 'my',
   filterSearchValue: '',
+  sortPacksValue: '0updated',
 }
 
 export const packsReducer = (
@@ -59,6 +61,8 @@ export const packsReducer = (
       return { ...state, minForMy: action.minForMy, maxForMy: action.maxForMy }
     case 'PACKS/SET-FILTER-TO-PACKS-FROM-INPUT-SEARCH':
       return { ...state, filterSearchValue: action.searchValue }
+    case 'PACKS/SET-SORT-PACKS-VALUE':
+      return { ...state, sortPacksValue: action.sortPacksValue }
     default:
       return state
   }
@@ -116,6 +120,13 @@ export const setFilterToPacksFromInputSearchAC = (searchValue: string) => {
   } as const
 }
 
+export const setSortPacksValueAC = (sortPacksValue: string) => {
+  return {
+    type: 'PACKS/SET-SORT-PACKS-VALUE',
+    sortPacksValue,
+  } as const
+}
+
 // Thunks
 
 export const getPacksTC = () => async (dispatch: AppDispatch, getState: () => RootState) => {
@@ -127,6 +138,7 @@ export const getPacksTC = () => async (dispatch: AppDispatch, getState: () => Ro
   const min = sortByAllMy === 'all' ? getState().packs.minForAll : getState().packs.minForMy
   const max = sortByAllMy === 'all' ? getState().packs.maxForAll : getState().packs.maxForMy
   const filterSearchValue = getState().packs.filterSearchValue
+  const sortPacksValue = getState().packs.sortPacksValue
 
   const user_id = sortByAllMy === 'all' ? '' : myId
 
@@ -138,6 +150,7 @@ export const getPacksTC = () => async (dispatch: AppDispatch, getState: () => Ro
       min,
       max,
       packName: filterSearchValue,
+      sortPacks: sortPacksValue,
     })
 
     dispatch(setPacksAC(res.data))
@@ -217,6 +230,7 @@ export type PacksActionsType =
   | ReturnType<typeof setSortMinMaxCardsForAllAC>
   | ReturnType<typeof setSortMinMaxCardsForMyAC>
   | ReturnType<typeof setFilterToPacksFromInputSearchAC>
+  | ReturnType<typeof setSortPacksValueAC>
 
 export type PackType = {
   _id: string
