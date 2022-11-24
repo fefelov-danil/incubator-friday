@@ -4,7 +4,7 @@ import Slider from '@mui/material/Slider/Slider'
 
 import s from './MinMaxCards.module.css'
 
-import { getPacksTC, setSortMinMaxCardsAC } from 'features/packs/packs-reducer'
+import { getPacksTC, setMinMaxFilterAC } from 'features/packs/packs-reducer'
 import { useAppDispatch, useAppSelector, useDebounce } from 'utils/hooks'
 
 export const MinMaxCards = () => {
@@ -13,7 +13,7 @@ export const MinMaxCards = () => {
   const min = useAppSelector(state => state.packs.min)
   const max = useAppSelector(state => state.packs.max)
 
-  const [value, setValue] = useState<number[]>([min, max])
+  const [value, setValue] = useState<number[]>([0, maxCountCards])
   const debouncedValue = useDebounce<number[]>(value, 500)
   const minDistance = 1
 
@@ -22,10 +22,11 @@ export const MinMaxCards = () => {
   }, [maxCountCards])
 
   useEffect(() => {
-    if (debouncedValue[1] !== max || debouncedValue[0] !== min) {
-      dispatch(setSortMinMaxCardsAC(debouncedValue[0], debouncedValue[1]))
-      dispatch(getPacksTC())
-    }
+    dispatch(setMinMaxFilterAC(debouncedValue[0], debouncedValue[1]))
+    // if (debouncedValue[0] !== min || debouncedValue[1] !== max) {
+    //   console.log(debouncedValue[1])
+    //   dispatch(getPacksTC({ min: debouncedValue[0], max: debouncedValue[1] }))
+    // }
   }, [debouncedValue])
 
   const handleChange = (event: Event, newValue: number | number[], activeThumb: number) => {

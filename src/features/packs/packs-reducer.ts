@@ -2,7 +2,12 @@ import { AxiosError } from 'axios'
 
 import { errorUtils } from '../../utils/errors-handler'
 
-import { CreatePackRequestType, GetPacksResponseType, packsAPI } from './packs-API'
+import {
+  CreatePackRequestType,
+  GetPacksRequestType,
+  GetPacksResponseType,
+  packsAPI,
+} from './packs-API'
 
 import { AppDispatch, RootState } from 'app/store'
 
@@ -15,7 +20,6 @@ const packsInitialState = {
   minCardsCount: 0,
   min: 0,
   max: 0,
-  sortByAllMy: 'all' as 'all' | 'my',
 }
 
 export const packsReducer = (
@@ -29,9 +33,7 @@ export const packsReducer = (
       return { ...state, page: action.page }
     case 'PACKS/SET-PAGE-COUNT':
       return { ...state, pageCount: action.count }
-    case 'PACKS/SET-SORT-MY-ALL':
-      return { ...state, sortByAllMy: action.sortByAllMy }
-    case 'PACKS/SET-SORT-MIN-MAX-CARDS':
+    case 'PACK/SET-MIN-MAX-FILTER':
       return { ...state, min: action.min, max: action.max }
     default:
       return state
@@ -60,16 +62,9 @@ export const setPagePacksCountAC = (count: number) => {
   } as const
 }
 
-export const setSortByAllMyAC = (sortByAllMy: 'all' | 'my') => {
+export const setMinMaxFilterAC = (min: number, max: number) => {
   return {
-    type: 'PACKS/SET-SORT-MY-ALL',
-    sortByAllMy,
-  } as const
-}
-
-export const setSortMinMaxCardsAC = (min: number, max: number) => {
-  return {
-    type: 'PACKS/SET-SORT-MIN-MAX-CARDS',
+    type: 'PACK/SET-MIN-MAX-FILTER',
     min,
     max,
   } as const
@@ -77,18 +72,9 @@ export const setSortMinMaxCardsAC = (min: number, max: number) => {
 
 // Thunks
 
-export const getPacksTC = () => async (dispatch: AppDispatch, getState: () => RootState) => {
-  const page = getState().packs.page
-  const pageCount = getState().packs.pageCount
-  const myId = getState().auth.profile._id
-  const sortByAllMy = getState().packs.sortByAllMy
-  const min = getState().packs.min
-  const max = getState().packs.max
-
-  const user_id = sortByAllMy === 'all' ? '' : myId
-
+export const getPacksTC = (data: GetPacksRequestType) => async (dispatch: AppDispatch) => {
   try {
-    const res = await packsAPI.getPacks({ page, pageCount, user_id, min, max })
+    const res = await packsAPI.getPacks(data)
 
     dispatch(setPacksAC(res.data))
   } catch (err) {
@@ -98,50 +84,61 @@ export const getPacksTC = () => async (dispatch: AppDispatch, getState: () => Ro
   }
 }
 
-export const addPackTC = (data: CreatePackRequestType) => async (dispatch: AppDispatch) => {
-  try {
-    await packsAPI.addPack(data)
+export const addPackTC =
+  (data: CreatePackRequestType) => async (dispatch: AppDispatch, getState: () => RootState) => {
+    const page = getState().packs.page
+    const pageCount = getState().packs.pageCount
 
-    dispatch(getPacksTC())
-  } catch (err) {
-    const error = err as Error | AxiosError<{ error: string }>
+    try {
+      await packsAPI.addPack(data)
 
-    errorUtils(error, dispatch)
+      dispatch(getPacksTC({ page, pageCount }))
+    } catch (err) {
+      const error = err as Error | AxiosError<{ error: string }>
+
+      errorUtils(error, dispatch)
+    }
   }
-}
 
-export const deletePackTC = (id: string) => async (dispatch: AppDispatch) => {
-  try {
-    await packsAPI.deletePack({ id })
+export const deletePackTC =
+  (id: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
+    const page = getState().packs.page
+    const pageCount = getState().packs.pageCount
 
-    dispatch(getPacksTC())
-  } catch (err) {
-    const error = err as Error | AxiosError<{ error: string }>
+    try {
+      await packsAPI.deletePack({ id })
 
-    errorUtils(error, dispatch)
+      dispatch(getPacksTC({ page, pageCount }))
+    } catch (err) {
+      const error = err as Error | AxiosError<{ error: string }>
+
+      errorUtils(error, dispatch)
+    }
   }
-}
 
-export const updatePackTC = (data: PackType) => async (dispatch: AppDispatch) => {
-  try {
-    await packsAPI.updatePack(data)
+export const updatePackTC =
+  (data: PackType) => async (dispatch: AppDispatch, getState: () => RootState) => {
+    const page = getState().packs.page
+    const pageCount = getState().packs.pageCount
 
-    dispatch(getPacksTC())
-  } catch (err) {
-    const error = err as Error | AxiosError<{ error: string }>
+    try {
+      await packsAPI.updatePack(data)
 
-    errorUtils(error, dispatch)
+      dispatch(getPacksTC({ page, pageCount }))
+    } catch (err) {
+      const error = err as Error | AxiosError<{ error: string }>
+
+      errorUtils(error, dispatch)
+    }
   }
-}
 
 // Types
-export type PacksStateType = typeof packsInitialState
+type PacksStateType = typeof packsInitialState
 export type PacksActionsType =
   | ReturnType<typeof setPacksAC>
   | ReturnType<typeof setCurrentPacksPageAC>
   | ReturnType<typeof setPagePacksCountAC>
-  | ReturnType<typeof setSortByAllMyAC>
-  | ReturnType<typeof setSortMinMaxCardsAC>
+  | ReturnType<typeof setMinMaxFilterAC>
 
 export type PackType = {
   _id: string
