@@ -23,21 +23,16 @@ export const Packs = () => {
 
   const setCurrentPage = (newCurrentPage: number) => {
     dispatch(setCurrentPacksPageAC(newCurrentPage))
-    dispatch(getPacksTC({ page: newCurrentPage, pageCount }))
+    dispatch(getPacksTC())
   }
 
   const setPageItemsCount = (count: number) => {
     dispatch(setPagePacksCountAC(count))
-    dispatch(getPacksTC({ pageCount: count, page }))
+    dispatch(getPacksTC())
   }
 
   useEffect(() => {
-    dispatch(
-      getPacksTC({
-        page,
-        pageCount,
-      })
-    )
+    dispatch(getPacksTC())
   }, [])
 
   return (

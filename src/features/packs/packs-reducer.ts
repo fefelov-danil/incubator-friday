@@ -2,19 +2,14 @@ import { AxiosError } from 'axios'
 
 import { errorUtils } from '../../utils/errors-handler'
 
-import {
-  CreatePackRequestType,
-  GetPacksRequestType,
-  GetPacksResponseType,
-  packsAPI,
-} from './packs-API'
+import { CreatePackRequestType, GetPacksResponseType, packsAPI } from './packs-API'
 
 import { AppDispatch, RootState } from 'app/store'
 
 const packsInitialState = {
   cardPacks: null as PackType[] | null,
-  page: 1,
-  pageCount: 10,
+  page: 0,
+  pageCount: 0,
   cardPacksTotalCount: 0,
   maxCardsCount: 0,
   minCardsCount: 0,
@@ -70,73 +65,60 @@ export const setSortByAllMyAC = (sortByAllMy: 'all' | 'my') => {
 
 // Thunks
 
-export const getPacksTC =
-  (data: GetPacksRequestType) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const page = getState().packs.page
-    const pageCount = getState().packs.pageCount
-    const myId = getState().auth.profile._id
-    const sortByAllMy = getState().packs.sortByAllMy
+export const getPacksTC = () => async (dispatch: AppDispatch, getState: () => RootState) => {
+  const page = getState().packs.page
+  const pageCount = getState().packs.pageCount
+  const myId = getState().auth.profile._id
+  const sortByAllMy = getState().packs.sortByAllMy
 
-    const user_id = sortByAllMy === 'all' ? '' : myId
+  const user_id = sortByAllMy === 'all' ? '' : myId
 
-    try {
-      const res = await packsAPI.getPacks({ page, pageCount, user_id })
+  try {
+    const res = await packsAPI.getPacks({ page, pageCount, user_id })
 
-      dispatch(setPacksAC(res.data))
-    } catch (err) {
-      const error = err as Error | AxiosError<{ error: string }>
+    dispatch(setPacksAC(res.data))
+  } catch (err) {
+    const error = err as Error | AxiosError<{ error: string }>
 
-      errorUtils(error, dispatch)
-    }
+    errorUtils(error, dispatch)
   }
+}
 
-export const addPackTC =
-  (data: CreatePackRequestType) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const page = getState().packs.page
-    const pageCount = getState().packs.pageCount
+export const addPackTC = (data: CreatePackRequestType) => async (dispatch: AppDispatch) => {
+  try {
+    await packsAPI.addPack(data)
 
-    try {
-      await packsAPI.addPack(data)
+    dispatch(getPacksTC())
+  } catch (err) {
+    const error = err as Error | AxiosError<{ error: string }>
 
-      dispatch(getPacksTC({ page, pageCount }))
-    } catch (err) {
-      const error = err as Error | AxiosError<{ error: string }>
-
-      errorUtils(error, dispatch)
-    }
+    errorUtils(error, dispatch)
   }
+}
 
-export const deletePackTC =
-  (id: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const page = getState().packs.page
-    const pageCount = getState().packs.pageCount
+export const deletePackTC = (id: string) => async (dispatch: AppDispatch) => {
+  try {
+    await packsAPI.deletePack({ id })
 
-    try {
-      await packsAPI.deletePack({ id })
+    dispatch(getPacksTC())
+  } catch (err) {
+    const error = err as Error | AxiosError<{ error: string }>
 
-      dispatch(getPacksTC({ page, pageCount }))
-    } catch (err) {
-      const error = err as Error | AxiosError<{ error: string }>
-
-      errorUtils(error, dispatch)
-    }
+    errorUtils(error, dispatch)
   }
+}
 
-export const updatePackTC =
-  (data: PackType) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const page = getState().packs.page
-    const pageCount = getState().packs.pageCount
+export const updatePackTC = (data: PackType) => async (dispatch: AppDispatch) => {
+  try {
+    await packsAPI.updatePack(data)
 
-    try {
-      await packsAPI.updatePack(data)
+    dispatch(getPacksTC())
+  } catch (err) {
+    const error = err as Error | AxiosError<{ error: string }>
 
-      dispatch(getPacksTC({ page, pageCount }))
-    } catch (err) {
-      const error = err as Error | AxiosError<{ error: string }>
-
-      errorUtils(error, dispatch)
-    }
+    errorUtils(error, dispatch)
   }
+}
 
 // Types
 export type PacksStateType = typeof packsInitialState

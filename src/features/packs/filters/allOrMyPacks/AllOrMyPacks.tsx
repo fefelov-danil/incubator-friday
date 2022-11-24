@@ -12,10 +12,10 @@ export const AllOrMyPacks: React.FC = () => {
   const changeAllOrMyPacksHandler = (my: boolean) => {
     if (my) {
       dispatch(setSortByAllMyAC('my'))
-      dispatch(getPacksTC({}))
+      dispatch(getPacksTC())
     } else {
       dispatch(setSortByAllMyAC('all'))
-      dispatch(getPacksTC({}))
+      dispatch(getPacksTC())
     }
   }
 
