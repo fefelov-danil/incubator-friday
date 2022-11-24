@@ -8,7 +8,6 @@ import { InputSearch } from 'features/packs/filters/inputSearch/InputSearch'
 import { MinMaxCards } from 'features/packs/filters/slider/MinMaxCards'
 
 export const Filters = () => {
-
   const turnOffFilters = () => {
     console.log('filters off')
   }

@@ -26,7 +26,7 @@ export const InputSearch: React.FC<DefaultInputTextPropsType> = ({ ...restProps 
 
   useEffect(() => {
     if (debouncedValue !== null) {
-      dispatch(getPacksTC({ packName: debouncedValue }))
+      dispatch(getPacksTC())
     }
   }, [debouncedValue])
 

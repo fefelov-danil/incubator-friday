@@ -24,7 +24,7 @@ export const packsReducer = (
 ): PacksStateType => {
   switch (action.type) {
     case 'PACKS/SET-PACKS':
-      return { ...state, ...action.data, max: action.data.maxCardsCount }
+      return { ...state, ...action.data }
     case 'PACKS/SET-PAGE':
       return { ...state, page: action.page }
     case 'PACKS/SET-PAGE-COUNT':
@@ -82,11 +82,13 @@ export const getPacksTC = () => async (dispatch: AppDispatch, getState: () => Ro
   const pageCount = getState().packs.pageCount
   const myId = getState().auth.profile._id
   const sortByAllMy = getState().packs.sortByAllMy
+  const min = getState().packs.min
+  const max = getState().packs.max
 
   const user_id = sortByAllMy === 'all' ? '' : myId
 
   try {
-    const res = await packsAPI.getPacks({ page, pageCount, user_id })
+    const res = await packsAPI.getPacks({ page, pageCount, user_id, min, max })
 
     dispatch(setPacksAC(res.data))
   } catch (err) {
