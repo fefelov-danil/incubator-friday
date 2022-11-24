@@ -35,7 +35,11 @@ export const packsReducer = (
         cardPacksTotalCount: action.data.cardPacksTotalCount,
         maxCardsCount: action.data.maxCardsCount,
         minCardsCount: action.data.minCardsCount,
-        //max: state.max === 0 ? action.data.maxCardsCount : 0,
+        maxForAll: state.maxForAll === 0 ? action.data.maxCardsCount : state.maxForAll,
+        maxForMy:
+          state.maxForMy === 0 && state.sortByAllMy === 'my'
+            ? action.data.maxCardsCount
+            : state.maxForMy,
       }
     case 'PACKS/SET-PAGE':
       return { ...state, page: action.page }

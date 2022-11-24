@@ -20,6 +20,7 @@ export const AllOrMyPacks: React.FC = () => {
   const minForMy = useAppSelector(state => state.packs.minForMy)
   const maxForMy = useAppSelector(state => state.packs.maxForMy)
 
+  console.log(maxForMy)
   const changeAllOrMyPacksHandler = (my: boolean) => {
     if (my) {
       dispatch(setSortByAllMyAC('my'))
