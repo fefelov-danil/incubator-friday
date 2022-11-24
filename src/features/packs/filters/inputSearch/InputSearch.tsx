@@ -10,7 +10,7 @@ import SearchIcon from '@mui/icons-material/Search'
 
 import s from './InputSearch.module.css'
 
-import { getPacksTC } from 'features/packs/packs-reducer'
+import { getPacksTC, setFilterToPacksFromInputSearchAC } from 'features/packs/packs-reducer'
 import { useAppDispatch, useDebounce } from 'utils/hooks'
 
 // Пропсы стандартного инпута
@@ -26,6 +26,7 @@ export const InputSearch: React.FC<DefaultInputTextPropsType> = ({ ...restProps 
 
   useEffect(() => {
     if (debouncedValue !== null) {
+      dispatch(setFilterToPacksFromInputSearchAC(debouncedValue))
       dispatch(getPacksTC())
     }
   }, [debouncedValue])

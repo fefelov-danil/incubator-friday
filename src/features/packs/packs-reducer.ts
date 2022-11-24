@@ -2,8 +2,14 @@ import { AxiosError } from 'axios'
 
 import { setAppStatusAC } from '../../app/app-reducer'
 import { errorUtils } from '../../utils/errors-handler'
+import { useAppSelector } from '../../utils/hooks'
 
-import { CreatePackRequestType, GetPacksResponseType, packsAPI } from './packs-API'
+import {
+  CreatePackRequestType,
+  GetPacksRequestType,
+  GetPacksResponseType,
+  packsAPI,
+} from './packs-API'
 
 import { AppDispatch, RootState } from 'app/store'
 
@@ -19,6 +25,8 @@ const packsInitialState = {
   minForMy: 0,
   maxForMy: 0,
   sortByAllMy: 'all' as 'all' | 'my',
+  filterSearchValue: '',
+  sortPacksValue: '0updated',
 }
 
 export const packsReducer = (
@@ -51,6 +59,10 @@ export const packsReducer = (
       return { ...state, minForAll: action.minForAll, maxForAll: action.maxForAll }
     case 'PACKS/SET-SORT-MIN-MAX-CARDS-MY':
       return { ...state, minForMy: action.minForMy, maxForMy: action.maxForMy }
+    case 'PACKS/SET-FILTER-TO-PACKS-FROM-INPUT-SEARCH':
+      return { ...state, filterSearchValue: action.searchValue }
+    case 'PACKS/SET-SORT-PACKS-VALUE':
+      return { ...state, sortPacksValue: action.sortPacksValue }
     default:
       return state
   }
@@ -101,6 +113,20 @@ export const setSortMinMaxCardsForMyAC = (minForMy: number, maxForMy: number) =>
   } as const
 }
 
+export const setFilterToPacksFromInputSearchAC = (searchValue: string) => {
+  return {
+    type: 'PACKS/SET-FILTER-TO-PACKS-FROM-INPUT-SEARCH',
+    searchValue,
+  } as const
+}
+
+export const setSortPacksValueAC = (sortPacksValue: string) => {
+  return {
+    type: 'PACKS/SET-SORT-PACKS-VALUE',
+    sortPacksValue,
+  } as const
+}
+
 // Thunks
 
 export const getPacksTC = () => async (dispatch: AppDispatch, getState: () => RootState) => {
@@ -111,11 +137,21 @@ export const getPacksTC = () => async (dispatch: AppDispatch, getState: () => Ro
   const sortByAllMy = getState().packs.sortByAllMy
   const min = sortByAllMy === 'all' ? getState().packs.minForAll : getState().packs.minForMy
   const max = sortByAllMy === 'all' ? getState().packs.maxForAll : getState().packs.maxForMy
+  const filterSearchValue = getState().packs.filterSearchValue
+  const sortPacksValue = getState().packs.sortPacksValue
 
   const user_id = sortByAllMy === 'all' ? '' : myId
 
   try {
-    const res = await packsAPI.getPacks({ page, pageCount, user_id, min, max })
+    const res = await packsAPI.getPacks({
+      page,
+      pageCount,
+      user_id,
+      min,
+      max,
+      packName: filterSearchValue,
+      sortPacks: sortPacksValue,
+    })
 
     dispatch(setPacksAC(res.data))
   } catch (err) {
@@ -152,6 +188,18 @@ export const deletePackTC = (id: string) => async (dispatch: AppDispatch) => {
     const error = err as Error | AxiosError<{ error: string }>
 
     errorUtils(error, dispatch)
+  }
+}
+
+export const getFilteredPacksTC = (data: GetPacksRequestType) => async (dispatch: AppDispatch) => {
+  try {
+    const res = await packsAPI.getPacks(data)
+
+    dispatch(setPacksAC(res.data))
+  } catch (err) {
+    const error = err as Error | AxiosError<{ error: string }>
+
+    errorUtils(error, dispatch)
   } finally {
     dispatch(setAppStatusAC('succeeded'))
   }
@@ -181,6 +229,8 @@ export type PacksActionsType =
   | ReturnType<typeof setSortByAllMyAC>
   | ReturnType<typeof setSortMinMaxCardsForAllAC>
   | ReturnType<typeof setSortMinMaxCardsForMyAC>
+  | ReturnType<typeof setFilterToPacksFromInputSearchAC>
+  | ReturnType<typeof setSortPacksValueAC>
 
 export type PackType = {
   _id: string
