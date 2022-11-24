@@ -13,8 +13,10 @@ const packsInitialState = {
   cardPacksTotalCount: 0,
   maxCardsCount: 0,
   minCardsCount: 0,
-  min: 0,
-  max: 0,
+  minForAll: 0,
+  maxForAll: 0,
+  minForMy: 0,
+  maxForMy: 0,
   sortByAllMy: 'all' as 'all' | 'my',
 }
 
@@ -32,7 +34,7 @@ export const packsReducer = (
         cardPacksTotalCount: action.data.cardPacksTotalCount,
         maxCardsCount: action.data.maxCardsCount,
         minCardsCount: action.data.minCardsCount,
-        max: state.max === 0 ? action.data.maxCardsCount : 0,
+        //max: state.max === 0 ? action.data.maxCardsCount : 0,
       }
     case 'PACKS/SET-PAGE':
       return { ...state, page: action.page }
@@ -40,8 +42,10 @@ export const packsReducer = (
       return { ...state, pageCount: action.count }
     case 'PACKS/SET-SORT-MY-ALL':
       return { ...state, sortByAllMy: action.sortByAllMy }
-    case 'PACKS/SET-SORT-MIN-MAX-CARDS':
-      return { ...state, min: action.min, max: action.max }
+    case 'PACKS/SET-SORT-MIN-MAX-CARDS-All':
+      return { ...state, minForAll: action.minForAll, maxForAll: action.maxForAll }
+    case 'PACKS/SET-SORT-MIN-MAX-CARDS-MY':
+      return { ...state, minForMy: action.minForMy, maxForMy: action.maxForMy }
     default:
       return state
   }
@@ -76,11 +80,19 @@ export const setSortByAllMyAC = (sortByAllMy: 'all' | 'my') => {
   } as const
 }
 
-export const setSortMinMaxCardsAC = (min: number, max: number) => {
+export const setSortMinMaxCardsForAllAC = (minForAll: number, maxForAll: number) => {
   return {
-    type: 'PACKS/SET-SORT-MIN-MAX-CARDS',
-    min,
-    max,
+    type: 'PACKS/SET-SORT-MIN-MAX-CARDS-All',
+    minForAll,
+    maxForAll,
+  } as const
+}
+
+export const setSortMinMaxCardsForMyAC = (minForMy: number, maxForMy: number) => {
+  return {
+    type: 'PACKS/SET-SORT-MIN-MAX-CARDS-MY',
+    minForMy,
+    maxForMy,
   } as const
 }
 
@@ -91,8 +103,8 @@ export const getPacksTC = () => async (dispatch: AppDispatch, getState: () => Ro
   const pageCount = getState().packs.pageCount
   const myId = getState().auth.profile._id
   const sortByAllMy = getState().packs.sortByAllMy
-  const min = getState().packs.min
-  const max = getState().packs.max
+  const min = sortByAllMy === 'all' ? getState().packs.minForAll : getState().packs.minForMy
+  const max = sortByAllMy === 'all' ? getState().packs.maxForAll : getState().packs.maxForMy
 
   const user_id = sortByAllMy === 'all' ? '' : myId
 
@@ -150,7 +162,8 @@ export type PacksActionsType =
   | ReturnType<typeof setCurrentPacksPageAC>
   | ReturnType<typeof setPagePacksCountAC>
   | ReturnType<typeof setSortByAllMyAC>
-  | ReturnType<typeof setSortMinMaxCardsAC>
+  | ReturnType<typeof setSortMinMaxCardsForAllAC>
+  | ReturnType<typeof setSortMinMaxCardsForMyAC>
 
 export type PackType = {
   _id: string

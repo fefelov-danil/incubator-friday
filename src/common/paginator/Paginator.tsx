@@ -80,7 +80,6 @@ export const Paginator = ({
       <div className={s.changeItemsPerPageBlock}>
         <span>SHOW</span>
         <select
-          defaultValue={'5'}
           value={value}
           onChange={e => {
             onPageItemsCountChange(+e.currentTarget.value)

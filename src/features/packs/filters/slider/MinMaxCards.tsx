@@ -4,26 +4,44 @@ import Slider from '@mui/material/Slider/Slider'
 
 import s from './MinMaxCards.module.css'
 
-import { getPacksTC, setSortMinMaxCardsAC } from 'features/packs/packs-reducer'
+import {
+  getPacksTC,
+  setSortMinMaxCardsForAllAC,
+  setSortMinMaxCardsForMyAC,
+} from 'features/packs/packs-reducer'
 import { useAppDispatch, useAppSelector, useDebounce } from 'utils/hooks'
 
 export const MinMaxCards = () => {
   const dispatch = useAppDispatch()
   const maxCountCards = useAppSelector(state => state.packs.maxCardsCount)
-  const min = useAppSelector(state => state.packs.min)
-  const max = useAppSelector(state => state.packs.max)
 
-  const [value, setValue] = useState<number[]>([0, maxCountCards])
+  const sortByAllMy = useAppSelector(state => state.packs.sortByAllMy)
+
+  let min: number, max: number
+
+  if (sortByAllMy === 'all') {
+    min = useAppSelector(state => state.packs.minForAll)
+    max = useAppSelector(state => state.packs.maxForAll)
+  } else {
+    min = useAppSelector(state => state.packs.minForMy)
+    max = useAppSelector(state => state.packs.maxForMy)
+  }
+
+  const [value, setValue] = useState<number[]>([min, max])
   const debouncedValue = useDebounce<number[]>(value, 500)
   const minDistance = 1
 
   useEffect(() => {
-    setValue([0, maxCountCards])
-  }, [maxCountCards])
+    setValue([min, max])
+  }, [min, max])
 
   useEffect(() => {
-    if (debouncedValue[1] !== maxCountCards || debouncedValue[0] !== 0) {
-      dispatch(setSortMinMaxCardsAC(debouncedValue[0], debouncedValue[1]))
+    if (debouncedValue[1] !== max || debouncedValue[0] !== min) {
+      if (sortByAllMy === 'all') {
+        dispatch(setSortMinMaxCardsForAllAC(debouncedValue[0], debouncedValue[1]))
+      } else {
+        dispatch(setSortMinMaxCardsForMyAC(debouncedValue[0], debouncedValue[1]))
+      }
       dispatch(getPacksTC())
     }
   }, [debouncedValue])

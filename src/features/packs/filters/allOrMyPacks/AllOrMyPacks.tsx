@@ -1,30 +1,35 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../../../utils/hooks'
-import { getPacksTC, setSortByAllMyAC, setSortMinMaxCardsAC } from '../../packs-reducer'
+import {
+  getPacksTC,
+  setSortByAllMyAC,
+  setSortMinMaxCardsForAllAC,
+  setSortMinMaxCardsForMyAC,
+} from '../../packs-reducer'
 
 import s from './AllOrMyPacks.module.css'
 
 export const AllOrMyPacks: React.FC = () => {
   const dispatch = useAppDispatch()
   const sortByAllMy = useAppSelector(state => state.packs.sortByAllMy)
-  const max = useAppSelector(state => state.packs.maxCardsCount)
+
+  const minForAll = useAppSelector(state => state.packs.minForAll)
+  const maxForAll = useAppSelector(state => state.packs.maxForAll)
+  const minForMy = useAppSelector(state => state.packs.minForMy)
+  const maxForMy = useAppSelector(state => state.packs.maxForMy)
 
   const changeAllOrMyPacksHandler = (my: boolean) => {
     if (my) {
       dispatch(setSortByAllMyAC('my'))
-      dispatch(setSortMinMaxCardsAC(0, 0))
+      dispatch(setSortMinMaxCardsForMyAC(minForMy, maxForMy))
       dispatch(getPacksTC())
     } else {
       dispatch(setSortByAllMyAC('all'))
-      dispatch(setSortMinMaxCardsAC(0, 0))
+      dispatch(setSortMinMaxCardsForAllAC(minForAll, maxForAll))
       dispatch(getPacksTC())
     }
   }
-
-  useEffect(() => {
-    dispatch(setSortMinMaxCardsAC(0, max))
-  }, [max])
 
   return (
     <div className={s.buttons}>
