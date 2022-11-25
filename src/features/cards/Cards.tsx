@@ -58,7 +58,7 @@ export const Cards = () => {
   }, [openActions])
 
   const addNewCard = () => {
-    dispatch(createNewCardTC({ cardsPack_id }))
+    dispatch(createNewCardTC())
   }
   const learnToPack = () => {
     console.log('learnToPack')
@@ -122,12 +122,12 @@ export const Cards = () => {
 
   const setCurrentPage = (newCurrentPage: number) => {
     dispatch(setCurrentPacksPageAC(newCurrentPage))
-    dispatch(getCardsTC({ cardsPack_id, page: newCurrentPage }))
+    dispatch(getCardsTC())
   }
 
   const setPageItemsCount = (count: number) => {
     dispatch(setPagePacksCountAC(count))
-    dispatch(getCardsTC({ cardsPack_id, pageCount: count }))
+    dispatch(getCardsTC())
   }
 
   return (

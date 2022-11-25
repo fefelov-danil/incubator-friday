@@ -63,8 +63,8 @@ export const TbodyPacks = () => {
   }
 
   const openPack = (cardsPack_id: string) => {
-    dispatch(getCardsTC({ cardsPack_id, page, pageCount }))
     dispatch(setCurrentPackIdAC(cardsPack_id))
+    dispatch(getCardsTC())
   }
 
   return (

@@ -10,6 +10,7 @@ import {
   UpdateCardType,
 } from './cards-API'
 
+import { setAppStatusAC } from 'app/app-reducer'
 import { AppDispatch, RootState } from 'app/store'
 
 const cardsInitialState = {
@@ -21,6 +22,7 @@ const cardsInitialState = {
   pageCount: 5,
   packUserId: '',
   currentPackId: '',
+  sortCardsValue: '0updated',
 }
 
 export const cardsReducer = (
@@ -48,6 +50,8 @@ export const cardsReducer = (
       return { ...state, page: action.page }
     case 'CARDS/SET-PAGE-COUNT':
       return { ...state, pageCount: action.count }
+    case 'CARDS/SET-SORT-CARDS-VALUE':
+      return { ...state, sortCardsValue: action.sortCardsValue }
     default:
       return state
   }
@@ -83,14 +87,30 @@ export const setPageCardsCountAC = (count: number) => {
   } as const
 }
 
+export const setSortCardsValueAC = (sortCardsValue: string) => {
+  return {
+    type: 'CARDS/SET-SORT-CARDS-VALUE',
+    sortCardsValue,
+  } as const
+}
+
 // Thunks
 
-export const getCardsTC = (data: GetCardsRequestType) => async (dispatch: AppDispatch) => {
-  console.log('getCardsTC')
+export const getCardsTC = () => async (dispatch: AppDispatch, getState: () => RootState) => {
+  dispatch(setAppStatusAC('loading'))
+  const cardsPack_id = getState().cards.currentPackId
+  const page = getState().cards.page
+  const pageCount = getState().cards.pageCount
+
   try {
-    const res = await cardsAPI.getCards(data)
+    const res = await cardsAPI.getCards({
+      cardsPack_id,
+      page,
+      pageCount,
+    })
 
     dispatch(setCardsAC(res.data))
+    dispatch(setAppStatusAC('succeeded'))
 
     console.log(res.data)
   } catch (err) {
@@ -100,31 +120,28 @@ export const getCardsTC = (data: GetCardsRequestType) => async (dispatch: AppDis
   }
 }
 
-export const createNewCardTC =
-  (data: CreateCardRequestType) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const cardsPack_id = getState().cards.currentPackId
-    const page = getState().cards.page
-    const pageCount = getState().cards.pageCount
+export const createNewCardTC = () => async (dispatch: AppDispatch, getState: () => RootState) => {
+  const cardsPack_id = getState().cards.currentPackId
+  // const page = getState().cards.page
+  // const pageCount = getState().cards.pageCount
 
-    try {
-      await cardsAPI.addCard(data)
-      dispatch(getCardsTC({ cardsPack_id, page, pageCount }))
-    } catch (err) {
-      const error = err as Error | AxiosError<{ error: string }>
+  try {
+    await cardsAPI.addCard({
+      cardsPack_id,
+    })
+    dispatch(getCardsTC())
+  } catch (err) {
+    const error = err as Error | AxiosError<{ error: string }>
 
-      errorUtils(error, dispatch)
-    }
+    errorUtils(error, dispatch)
   }
+}
 
 export const deleteCardTC =
   (id: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const cardsPack_id = getState().cards.currentPackId
-    const page = getState().cards.page
-    const pageCount = getState().cards.pageCount
-
     try {
       await cardsAPI.deleteCard(id)
-      dispatch(getCardsTC({ cardsPack_id, page, pageCount }))
+      dispatch(getCardsTC())
     } catch (err) {
       const error = err as Error | AxiosError<{ error: string }>
 
@@ -140,7 +157,7 @@ export const updateCardTC =
 
     try {
       await cardsAPI.updateCard(data)
-      dispatch(getCardsTC({ cardsPack_id, page, pageCount }))
+      dispatch(getCardsTC())
     } catch (err) {
       const error = err as Error | AxiosError<{ error: string }>
 
@@ -156,6 +173,7 @@ export type CardsActionsType =
   | ReturnType<typeof setCurrentPackIdAC>
   | ReturnType<typeof setCurrentCardsPageAC>
   | ReturnType<typeof setPageCardsCountAC>
+  | ReturnType<typeof setSortCardsValueAC>
 
 export type CardType = {
   _id: string
