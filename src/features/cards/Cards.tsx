@@ -142,7 +142,7 @@ export const Cards = () => {
         {renderMainActions(myId, userPackId)}
         <div className={s.search}>
           <p className={s.filterName}>Search</p>
-          <InputSearch placeholder={'Provide your text'} />
+          <InputSearch whose={'cards'} placeholder={'Provide your text'} />
         </div>
         <CardsTable />
         <Paginator

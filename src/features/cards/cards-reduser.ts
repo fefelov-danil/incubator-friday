@@ -21,6 +21,7 @@ const cardsInitialState = {
   pageCount: 5,
   packUserId: '',
   currentPackId: '',
+  filterSearchValue: '',
 }
 
 export const cardsReducer = (
@@ -48,6 +49,8 @@ export const cardsReducer = (
       return { ...state, page: action.page }
     case 'CARDS/SET-PAGE-COUNT':
       return { ...state, pageCount: action.count }
+    case 'CARDS/SET-FILTER-TO-CARDS-FROM-INPUT-SEARCH':
+      return { ...state, filterSearchValue: action.searchValue }
     default:
       return state
   }
@@ -80,6 +83,13 @@ export const setPageCardsCountAC = (count: number) => {
   return {
     type: 'CARDS/SET-PAGE-COUNT',
     count,
+  } as const
+}
+
+export const setFilterToCardsFromInputSearchAC = (searchValue: string) => {
+  return {
+    type: 'CARDS/SET-FILTER-TO-CARDS-FROM-INPUT-SEARCH',
+    searchValue,
   } as const
 }
 
@@ -156,6 +166,7 @@ export type CardsActionsType =
   | ReturnType<typeof setCurrentPackIdAC>
   | ReturnType<typeof setCurrentCardsPageAC>
   | ReturnType<typeof setPageCardsCountAC>
+  | ReturnType<typeof setFilterToCardsFromInputSearchAC>
 
 export type CardType = {
   _id: string
