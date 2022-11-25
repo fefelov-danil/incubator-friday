@@ -4,12 +4,7 @@ import { setAppStatusAC } from '../../app/app-reducer'
 import { errorUtils } from '../../utils/errors-handler'
 import { setCurrentPackIdAC } from '../cards/cards-reducer'
 
-import {
-  CreatePackRequestType,
-  GetPacksRequestType,
-  GetPacksResponseType,
-  packsAPI,
-} from './packs-API'
+import { CreatePackRequestType, GetPacksResponseType, packsAPI } from './packs-API'
 
 import { AppDispatch, RootState } from 'app/store'
 
@@ -188,20 +183,6 @@ export const deletePackTC = (id: string, editFrom?: 'cards') => async (dispatch:
     const error = err as Error | AxiosError<{ error: string }>
 
     errorUtils(error, dispatch)
-  }
-}
-
-export const getFilteredPacksTC = (data: GetPacksRequestType) => async (dispatch: AppDispatch) => {
-  try {
-    const res = await packsAPI.getPacks(data)
-
-    dispatch(setPacksAC(res.data))
-  } catch (err) {
-    const error = err as Error | AxiosError<{ error: string }>
-
-    errorUtils(error, dispatch)
-  } finally {
-    dispatch(setAppStatusAC('succeeded'))
   }
 }
 
