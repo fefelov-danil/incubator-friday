@@ -8,10 +8,6 @@ import { InputSearch } from 'features/packs/filters/inputSearch/InputSearch'
 import { MinMaxCards } from 'features/packs/filters/slider/MinMaxCards'
 
 export const Filters = () => {
-  const turnOffFilters = () => {
-    console.log('filters off')
-  }
-
   return (
     <div className={s.filters}>
       <div className={s.search}>
@@ -27,7 +23,7 @@ export const Filters = () => {
         <MinMaxCards />
       </div>
       <div className={s.filtersOff}>
-        <FiltersOff turnOffFilters={turnOffFilters} />
+        <FiltersOff />
       </div>
     </div>
   )
