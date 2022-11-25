@@ -14,8 +14,6 @@ export const Packs = () => {
   const page = useAppSelector(state => state.packs.page)
   const pageCount = useAppSelector(state => state.packs.pageCount)
   const cardPacksTotalCount = useAppSelector(state => state.packs.cardPacksTotalCount)
-  const min = useAppSelector(state => state.packs.min)
-  const max = useAppSelector(state => state.packs.max)
   const dispatch = useAppDispatch()
 
   const addPack = () => {
@@ -25,22 +23,17 @@ export const Packs = () => {
 
   const setCurrentPage = (newCurrentPage: number) => {
     dispatch(setCurrentPacksPageAC(newCurrentPage))
-    dispatch(getPacksTC({ page: newCurrentPage, pageCount }))
+    dispatch(getPacksTC())
   }
 
   const setPageItemsCount = (count: number) => {
     dispatch(setPagePacksCountAC(count))
-    dispatch(getPacksTC({ pageCount: count, page }))
+    dispatch(getPacksTC())
   }
 
   useEffect(() => {
-    dispatch(
-      getPacksTC({
-        page,
-        pageCount,
-      })
-    )
-  }, [min, max])
+    dispatch(getPacksTC())
+  }, [])
 
   return (
     <div className={'container container-with-table'}>
