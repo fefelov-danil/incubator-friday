@@ -33,6 +33,61 @@
 
   font-size: 36px;
 }
+.titleAndBtn > div {
+  display: flex;
+  align-items: center;
+}
+.actions {
+  position: relative;
+}
+.actions .dotsForActions {
+  margin-left: 5px;
+  padding: 2px;
+
+  border: 1px solid #AFAFAF;
+}
+.actionsPopUp {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 8px);
+  left: 0;
+
+  display: none;
+
+  padding: 15px;
+
+  background: #fff;
+  border: 1px solid #dedede;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+.actionsPopUp.actionsIsOpened {
+  display: block;
+}
+.actions .action {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 12px;
+  padding: 0;
+
+  font-size: 16px;
+  color: #555;
+
+  background: transparent;
+  border: 0;
+}
+.actions .action:last-of-type {
+  margin-bottom: 0;
+}
+.actions .action svg {
+  margin-right: 5px;
+
+  color: #777;
+}
+.actions .action:hover {
+  text-decoration: underline;
+}
 p.filterName {
   margin-bottom: 6px;
 
