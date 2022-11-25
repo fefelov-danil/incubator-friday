@@ -2,13 +2,7 @@ import { AxiosError } from 'axios'
 
 import { errorUtils } from '../../utils/errors-handler'
 
-import {
-  cardsAPI,
-  CreateCardRequestType,
-  GetCardsRequestType,
-  GetCardsResponseType,
-  UpdateCardType,
-} from './cards-API'
+import { cardsAPI, GetCardsResponseType, UpdateCardType } from './cards-API'
 
 import { setAppStatusAC } from 'app/app-reducer'
 import { AppDispatch, RootState } from 'app/store'
@@ -110,13 +104,15 @@ export const getCardsTC = () => async (dispatch: AppDispatch, getState: () => Ro
   dispatch(setAppStatusAC('loading'))
   const cardsPack_id = getState().cards.currentPackId
   const page = getState().cards.page
-  const pageCount = getState().cards.pageCount
+  const pageCount = getState().packs.pageCount
+  const cardQuestion = getState().cards.filterSearchValue
 
   try {
     const res = await cardsAPI.getCards({
       cardsPack_id,
       page,
       pageCount,
+      cardQuestion,
     })
 
     dispatch(setCardsAC(res.data))
@@ -147,37 +143,31 @@ export const createNewCardTC = () => async (dispatch: AppDispatch, getState: () 
   }
 }
 
-export const deleteCardTC =
-  (id: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    try {
-      await cardsAPI.deleteCard(id)
-      dispatch(getCardsTC())
-    } catch (err) {
-      const error = err as Error | AxiosError<{ error: string }>
+export const deleteCardTC = (id: string) => async (dispatch: AppDispatch) => {
+  try {
+    await cardsAPI.deleteCard(id)
+    dispatch(getCardsTC())
+  } catch (err) {
+    const error = err as Error | AxiosError<{ error: string }>
 
-      errorUtils(error, dispatch)
-    }
+    errorUtils(error, dispatch)
   }
+}
 
-export const updateCardTC =
-  (data: UpdateCardType) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const cardsPack_id = getState().cards.currentPackId
-    const page = getState().cards.page
-    const pageCount = getState().cards.pageCount
+export const updateCardTC = (data: UpdateCardType) => async (dispatch: AppDispatch) => {
+  try {
+    await cardsAPI.updateCard(data)
+    dispatch(getCardsTC())
+  } catch (err) {
+    const error = err as Error | AxiosError<{ error: string }>
 
-    try {
-      await cardsAPI.updateCard(data)
-      dispatch(getCardsTC())
-    } catch (err) {
-      const error = err as Error | AxiosError<{ error: string }>
-
-      errorUtils(error, dispatch)
-    }
+    errorUtils(error, dispatch)
   }
+}
 
 // Types
 
-type CardsStateType = typeof cardsInitialState
+export type CardsStateType = typeof cardsInitialState
 export type CardsActionsType =
   | ReturnType<typeof setCardsAC>
   | ReturnType<typeof setCurrentPackIdAC>

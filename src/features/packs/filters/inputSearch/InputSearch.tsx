@@ -29,10 +29,6 @@ export const InputSearch: React.FC<InputSearchPropsType> = ({ whose, ...restProp
   const filterSearchValuePacks = useAppSelector(state => state.packs.filterSearchValue)
   const filterSearchValueCards = useAppSelector(state => state.cards.filterSearchValue)
 
-  const cardsPack_id = useAppSelector(state => state.cards.currentPackId)
-  const page = useAppSelector(state => state.cards.page)
-  const pageCount = useAppSelector(state => state.cards.pageCount)
-
   let filterSearchValue = whose === 'packs' ? filterSearchValuePacks : filterSearchValueCards
 
   const [value, setValue] = useState<string>(filterSearchValue)
@@ -45,14 +41,7 @@ export const InputSearch: React.FC<InputSearchPropsType> = ({ whose, ...restProp
         dispatch(getPacksTC())
       } else {
         dispatch(setFilterToCardsFromInputSearchAC(debouncedValue))
-        dispatch(
-          getCardsTC({
-            cardsPack_id,
-            page,
-            pageCount,
-            cardQuestion: debouncedValue,
-          })
-        )
+        dispatch(getCardsTC())
       }
     }
   }, [debouncedValue])
