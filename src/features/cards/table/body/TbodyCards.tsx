@@ -83,7 +83,7 @@ export const TbodyCards = () => {
           const date =
             new Date(card.updated).getDate() +
             '.' +
-            new Date(card.updated).getMonth() +
+            (new Date(card.updated).getMonth() + 1) +
             '.' +
             new Date(card.updated).getFullYear()
 

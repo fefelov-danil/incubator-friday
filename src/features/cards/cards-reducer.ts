@@ -95,12 +95,14 @@ export const getCardsTC = () => async (dispatch: AppDispatch, getState: () => Ro
   const cardsPack_id = getState().cards.currentPackId
   const page = getState().cards.page
   const pageCount = getState().cards.pageCount
+  const sortCards = getState().cards.sortCardsValue
 
   try {
     const res = await cardsAPI.getCards({
       cardsPack_id,
       page,
       pageCount,
+      sortCards,
     })
 
     dispatch(setCardsAC(res.data))

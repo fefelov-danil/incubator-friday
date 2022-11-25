@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { ArrowDropUp } from '@mui/icons-material'
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
 import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
