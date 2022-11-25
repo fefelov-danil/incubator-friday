@@ -10,12 +10,12 @@ import { NavLink } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 
-import { createNewCardTC, getCardsTC } from './cards-reduser'
 import s from './Cards.module.css'
 
 import { Button } from 'common/button/Button'
 import { Paginator } from 'common/paginator/Paginator'
 import { PATH } from 'common/routes/Pages'
+import { createNewCardTC, getCardsTC, setCurrentCardsPageAC } from 'features/cards/cards-reducer'
 import { CardsTable } from 'features/cards/table/CardsTable'
 import { InputSearch } from 'features/packs/filters/inputSearch/InputSearch'
 import {
@@ -121,7 +121,7 @@ export const Cards = () => {
   }
 
   const setCurrentPage = (newCurrentPage: number) => {
-    dispatch(setCurrentPacksPageAC(newCurrentPage))
+    dispatch(setCurrentCardsPageAC(newCurrentPage))
     dispatch(getCardsTC())
   }
 

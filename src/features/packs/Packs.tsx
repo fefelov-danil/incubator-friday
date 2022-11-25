@@ -17,7 +17,6 @@ export const Packs = () => {
   const dispatch = useAppDispatch()
 
   const addPack = () => {
-    console.log('add pack')
     dispatch(addPackTC({ cardsPack: { name: 'PAAACK!!!' } }))
   }
 

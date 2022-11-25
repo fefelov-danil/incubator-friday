@@ -11,9 +11,9 @@ import { NavLink } from 'react-router-dom'
 
 import { PATH } from '../../../../common/routes/Pages'
 import { useAppDispatch, useAppSelector } from '../../../../utils/hooks'
-import { getCardsTC, setCurrentPackIdAC } from '../../../cards/cards-reduser'
 import { deletePackTC, updatePackTC } from '../../packs-reducer'
 
+import { getCardsTC, setCurrentPackIdAC } from 'features/cards/cards-reducer'
 import s from 'features/packs/table/body/TbodyPacks.module.css'
 
 export const TbodyPacks = () => {
@@ -32,7 +32,6 @@ export const TbodyPacks = () => {
     dispatch(updatePackTC({ _id: packId, name: 'edited PACK' })) //  _id колоды обязательно
   }
   const deletePack = (packId: string) => {
-    console.log('delete pack')
     dispatch(deletePackTC(packId)) //  _id колоды
   }
 

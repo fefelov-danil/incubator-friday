@@ -9,17 +9,16 @@ import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
 import { useAppDispatch, useAppSelector } from '../../../../utils/hooks'
-import { deleteCardTC, updateCardTC } from '../../cards-reduser'
 
 import s from './TbodyCards.module.css'
+
+import { deleteCardTC, updateCardTC } from 'features/cards/cards-reducer'
 
 export const TbodyCards = () => {
   const dispatch = useAppDispatch()
 
   const cards = useAppSelector(state => state.cards.cards)
   const myId = useAppSelector(state => state.auth.profile._id)
-
-  console.log('cards')
 
   const editPack = (cardId: string) => {
     dispatch(updateCardTC({ _id: cardId, question: 'updated question' }))

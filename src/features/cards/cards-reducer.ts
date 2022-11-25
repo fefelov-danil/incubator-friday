@@ -2,13 +2,7 @@ import { AxiosError } from 'axios'
 
 import { errorUtils } from '../../utils/errors-handler'
 
-import {
-  cardsAPI,
-  CreateCardRequestType,
-  GetCardsRequestType,
-  GetCardsResponseType,
-  UpdateCardType,
-} from './cards-API'
+import { cardsAPI, GetCardsResponseType, UpdateCardType } from './cards-API'
 
 import { setAppStatusAC } from 'app/app-reducer'
 import { AppDispatch, RootState } from 'app/store'
@@ -111,8 +105,6 @@ export const getCardsTC = () => async (dispatch: AppDispatch, getState: () => Ro
 
     dispatch(setCardsAC(res.data))
     dispatch(setAppStatusAC('succeeded'))
-
-    console.log(res.data)
   } catch (err) {
     const error = err as Error | AxiosError<{ error: string }>
 
@@ -122,8 +114,6 @@ export const getCardsTC = () => async (dispatch: AppDispatch, getState: () => Ro
 
 export const createNewCardTC = () => async (dispatch: AppDispatch, getState: () => RootState) => {
   const cardsPack_id = getState().cards.currentPackId
-  // const page = getState().cards.page
-  // const pageCount = getState().cards.pageCount
 
   try {
     await cardsAPI.addCard({
@@ -151,10 +141,6 @@ export const deleteCardTC =
 
 export const updateCardTC =
   (data: UpdateCardType) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    const cardsPack_id = getState().cards.currentPackId
-    const page = getState().cards.page
-    const pageCount = getState().cards.pageCount
-
     try {
       await cardsAPI.updateCard(data)
       dispatch(getCardsTC())

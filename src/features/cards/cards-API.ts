@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { CardType } from './cards-reduser'
+import { CardType } from 'features/cards/cards-reducer'
 
 export const instance = axios.create({
   baseURL: 'https://neko-back.herokuapp.com/2.0',
