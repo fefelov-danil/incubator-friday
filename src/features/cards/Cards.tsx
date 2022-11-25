@@ -18,12 +18,7 @@ import { PATH } from 'common/routes/Pages'
 import { createNewCardTC, getCardsTC, setCurrentCardsPageAC } from 'features/cards/cards-reducer'
 import { CardsTable } from 'features/cards/table/CardsTable'
 import { InputSearch } from 'features/packs/filters/inputSearch/InputSearch'
-import {
-  deletePackTC,
-  setCurrentPacksPageAC,
-  setPagePacksCountAC,
-  updatePackTC,
-} from 'features/packs/packs-reducer'
+import { deletePackTC, setPagePacksCountAC, updatePackTC } from 'features/packs/packs-reducer'
 
 export const Cards = () => {
   const dispatch = useAppDispatch()
@@ -142,7 +137,7 @@ export const Cards = () => {
         {renderMainActions(myId, userPackId)}
         <div className={s.search}>
           <p className={s.filterName}>Search</p>
-          <InputSearch placeholder={'Provide your text'} />
+          <InputSearch whose={'cards'} placeholder={'Provide your text'} />
         </div>
         <CardsTable />
         <Paginator

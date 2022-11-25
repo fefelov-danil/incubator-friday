@@ -12,7 +12,7 @@ export const Filters = () => {
     <div className={s.filters}>
       <div className={s.search}>
         <p className={s.filterName}>Search</p>
-        <InputSearch placeholder={'Provide your text'} />
+        <InputSearch whose={'packs'} placeholder={'Provide your text'} />
       </div>
       <div className={s.allOrMyPacks}>
         <p className={s.filterName}>Show packs cards</p>

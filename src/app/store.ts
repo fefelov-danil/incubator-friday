@@ -20,6 +20,7 @@ export const store = createStore(rootReducer, loadState(), applyMiddleware(thunk
 store.subscribe(() => {
   saveState({
     packs: store.getState().packs,
+    cards: store.getState().cards,
   })
 })
 

@@ -1,3 +1,4 @@
+import { CardsStateType } from '../features/cards/cards-reduser'
 import { PacksStateType } from '../features/packs/packs-reducer'
 
 export const loadState = () => {
@@ -14,7 +15,7 @@ export const loadState = () => {
   }
 }
 
-export const saveState = (state: { packs: PacksStateType }) => {
+export const saveState = (state: { packs: PacksStateType; cards: CardsStateType }) => {
   try {
     const serializedState = JSON.stringify(state)
 
