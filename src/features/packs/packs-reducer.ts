@@ -2,7 +2,7 @@ import { AxiosError } from 'axios'
 
 import { setAppStatusAC } from '../../app/app-reducer'
 import { errorUtils } from '../../utils/errors-handler'
-import { useAppSelector } from '../../utils/hooks'
+import { setCurrentPackIdAC } from '../cards/cards-reducer'
 
 import {
   CreatePackRequestType,
@@ -178,12 +178,12 @@ export const addPackTC = (data: CreatePackRequestType) => async (dispatch: AppDi
   }
 }
 
-export const deletePackTC = (id: string) => async (dispatch: AppDispatch) => {
+export const deletePackTC = (id: string, editFrom?: 'cards') => async (dispatch: AppDispatch) => {
   dispatch(setAppStatusAC('loading'))
   try {
     await packsAPI.deletePack({ id })
-
-    dispatch(getPacksTC())
+    dispatch(setCurrentPackIdAC(''))
+    editFrom !== 'cards' && dispatch(getPacksTC())
   } catch (err) {
     const error = err as Error | AxiosError<{ error: string }>
 

@@ -1,4 +1,4 @@
-import { CardsStateType } from '../features/cards/cards-reduser'
+import { CardsStateType } from '../features/cards/cards-reducer'
 import { PacksStateType } from '../features/packs/packs-reducer'
 
 export const loadState = () => {

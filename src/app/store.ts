@@ -30,3 +30,4 @@ export type AllActionsType = AppActionsType | AuthActionsType | PacksActionsType
 
 // @ts-ignore
 window.store = store
+// @ts-ignore

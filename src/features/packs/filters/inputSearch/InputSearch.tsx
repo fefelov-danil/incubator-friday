@@ -8,7 +8,7 @@ import React, {
 
 import SearchIcon from '@mui/icons-material/Search'
 
-import { getCardsTC, setFilterToCardsFromInputSearchAC } from '../../../cards/cards-reduser'
+import { getCardsTC, setFilterToCardsFromInputSearchAC } from '../../../cards/cards-reducer'
 
 import s from './InputSearch.module.css'
 
@@ -26,10 +26,12 @@ type InputSearchPropsType = DefaultInputTextPropsType & {
 
 export const InputSearch: React.FC<InputSearchPropsType> = ({ whose, ...restProps }) => {
   const dispatch = useAppDispatch()
+
   const filterSearchValuePacks = useAppSelector(state => state.packs.filterSearchValue)
   const filterSearchValueCards = useAppSelector(state => state.cards.filterSearchValue)
   const contentPacks = useAppSelector(state => state.packs.cardPacks)
   const contentCards = useAppSelector(state => state.cards.cards)
+  const appStatus = useAppSelector(state => state.app.appStatus)
 
   let filterSearchValue = whose === 'packs' ? filterSearchValuePacks : filterSearchValueCards
   let content = whose === 'packs' ? contentPacks : contentCards
@@ -37,6 +39,10 @@ export const InputSearch: React.FC<InputSearchPropsType> = ({ whose, ...restProp
 
   const [value, setValue] = useState<string>(filterSearchValue)
   const debouncedValue = useDebounce<string>(value, 700)
+
+  useEffect(() => {
+    filterSearchValue === '' && setValue(filterSearchValue)
+  }, [filterSearchValue])
 
   useEffect(() => {
     if (debouncedValue !== filterSearchValue) {
@@ -58,6 +64,7 @@ export const InputSearch: React.FC<InputSearchPropsType> = ({ whose, ...restProp
     <p className={s.inputContainer}>
       <SearchIcon sx={{ color: '#555', fontSize: 20 }} />
       <input
+        disabled={appStatus === 'loading'}
         value={value}
         type={'text'}
         onChange={onChangeCallback}

@@ -6,7 +6,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
 import SchoolIcon from '@mui/icons-material/School'
 import IconButton from '@mui/material/IconButton/IconButton'
-import { NavLink } from 'react-router-dom'
+import { Navigate, NavLink } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 
@@ -62,7 +62,7 @@ export const Cards = () => {
     dispatch(updatePackTC({ _id: packId, name: 'edited PACK' }))
   }
   const deletePack = () => {
-    dispatch(deletePackTC(packId))
+    dispatch(deletePackTC(packId, 'cards'))
   }
 
   const renderMainActions = (myId: string, userId: string) => {
@@ -123,6 +123,10 @@ export const Cards = () => {
   const setPageItemsCount = (count: number) => {
     dispatch(setPagePacksCountAC(count))
     dispatch(getCardsTC())
+  }
+
+  if (cardsPack_id === '') {
+    return <Navigate to={PATH.PACKS} />
   }
 
   return (

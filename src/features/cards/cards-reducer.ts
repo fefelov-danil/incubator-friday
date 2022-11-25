@@ -145,6 +145,7 @@ export const deleteCardTC = (id: string) => async (dispatch: AppDispatch) => {
   try {
     await cardsAPI.deleteCard(id)
     dispatch(getCardsTC())
+    dispatch(setCurrentPackIdAC(''))
   } catch (err) {
     const error = err as Error | AxiosError<{ error: string }>
 
@@ -152,13 +153,12 @@ export const deleteCardTC = (id: string) => async (dispatch: AppDispatch) => {
   }
 }
 
-export const updateCardTC =
-  (data: UpdateCardType) => async (dispatch: AppDispatch) => {
-    try {
-      await cardsAPI.updateCard(data)
-      dispatch(getCardsTC())
-    } catch (err) {
-      const error = err as Error | AxiosError<{ error: string }>
+export const updateCardTC = (data: UpdateCardType) => async (dispatch: AppDispatch) => {
+  try {
+    await cardsAPI.updateCard(data)
+    dispatch(getCardsTC())
+  } catch (err) {
+    const error = err as Error | AxiosError<{ error: string }>
 
     errorUtils(error, dispatch)
   }
