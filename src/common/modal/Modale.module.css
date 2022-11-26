@@ -1,0 +1,72 @@
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: none;
+
+  width: 400px;
+
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.4);
+}
+.modal.modalIsOpened {
+  display: block;
+}
+.screenBg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: none;
+
+  width: 4000px;
+  height: 4000px;
+
+  opacity: 0.5;
+  background: #000;
+}
+.screenBgIsOpened {
+  display: block;
+}
+.titleAndClose h2 {
+  margin-bottom: 20px;
+  padding: 5px 30px;
+
+  font-size: 26px;
+  text-align: left;
+
+  background: #E8E8E8;
+  border-top-left-radius: 5px;
+}
+.titleAndClose .modalClose {
+  cursor: pointer;
+
+  position: absolute;
+  top: -11px;
+  right: -11px;
+
+  padding: 1px 1px 0px 1px;
+
+  line-height: 0.9;
+
+  background: #5B5B5B;
+  border-radius: 4px;
+
+  transition: 0.2s;
+}
+.titleAndClose .modalClose:hover {
+  background: #444;
+}
+.titleAndClose .modalClose svg {
+  font-size: 25px;
+  color: #fff;
+}
+.modalBody {
+  padding: 0 30px 20px 30px;
+
+  text-align: left;
+}
