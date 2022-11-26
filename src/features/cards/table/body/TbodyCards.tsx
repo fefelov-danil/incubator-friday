@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
@@ -8,11 +8,12 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
-import { useAppDispatch, useAppSelector } from '../../../../utils/hooks'
-
 import s from './TbodyCards.module.css'
 
+import { Button } from 'common/button/Button'
+import { Modal } from 'common/modal/Modal'
 import { deleteCardTC, updateCardTC } from 'features/cards/cards-reducer'
+import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 export const TbodyCards = () => {
   const dispatch = useAppDispatch()
@@ -20,11 +21,14 @@ export const TbodyCards = () => {
   const cards = useAppSelector(state => state.cards.cards)
   const myId = useAppSelector(state => state.auth.profile._id)
 
+  const [openModal, setOpenModal] = useState(false)
+
   const editPack = (cardId: string) => {
     dispatch(updateCardTC({ _id: cardId, question: 'updated question' }))
   }
   const deletePack = (cardId: string) => {
     dispatch(deleteCardTC(cardId))
+    setOpenModal(false)
   }
 
   const renderActions = (myId: string, userId: string, cardId: string) => {
@@ -34,9 +38,23 @@ export const TbodyCards = () => {
           <IconButton onClick={() => editPack(cardId)}>
             <EditIcon sx={{ fontSize: 19 }} />
           </IconButton>
-          <IconButton onClick={() => deletePack(cardId)}>
-            <DeleteIcon sx={{ fontSize: 19 }} />
-          </IconButton>
+          <Modal
+            title={'Delete card'}
+            childrenOpenModal={
+              <IconButton onClick={() => setOpenModal(true)}>
+                <DeleteIcon sx={{ fontSize: 19 }} />
+              </IconButton>
+            }
+            openFromProps={openModal}
+          >
+            <p>Do you really want to remove this card?</p>
+            <Button className={s.close} onClick={() => setOpenModal(false)}>
+              No, close
+            </Button>
+            <Button className={s.del} onClick={() => deletePack(cardId)}>
+              Delete
+            </Button>
+          </Modal>
         </div>
       )
     }

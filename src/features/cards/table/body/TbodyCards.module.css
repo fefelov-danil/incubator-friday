@@ -45,8 +45,30 @@
 
   line-height: 0.7;
 }
+.starsAndActions .actions {
+  display: flex;
+}
+.starsAndActions .actions p {
+  margin-bottom: 15px;
+}
 .starsAndActions .actions button {
   padding: 2px;
+}
+.actions button.del {
+  padding: 3px 15px 4px 15px;;
+
+  font-size: 15px;
+}
+.actions button.close {
+  margin-right: 12px;
+  padding: 3px 15px 4px 15px;;
+
+  font-size: 15px;
+
+  background: #868686;
+}
+.actions button.close:hover {
+  background: #656565;
 }
 .withActions {
   width: 190px;
