@@ -142,10 +142,12 @@ export const createNewCardTC = () => async (dispatch: AppDispatch, getState: () 
 }
 
 export const deleteCardTC = (id: string) => async (dispatch: AppDispatch) => {
+  dispatch(setAppStatusAC('loading'))
   try {
     await cardsAPI.deleteCard(id)
     dispatch(getCardsTC())
     dispatch(setCurrentPackIdAC(''))
+    dispatch(setAppStatusAC('succeeded'))
   } catch (err) {
     const error = err as Error | AxiosError<{ error: string }>
 
