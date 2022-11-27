@@ -21,7 +21,9 @@ export const TbodyCards = () => {
   const cards = useAppSelector(state => state.cards.cards)
   const myId = useAppSelector(state => state.auth.profile._id)
 
-  const [openModal, setOpenModal] = useState(false)
+  const [openModal, setOpenModal] = useState<string | boolean>('')
+
+  console.log(openModal, 'first log outside modal')
 
   const editPack = (cardId: string) => {
     dispatch(updateCardTC({ _id: cardId, question: 'updated question' }))
@@ -40,8 +42,9 @@ export const TbodyCards = () => {
           </IconButton>
           <Modal
             title={'Delete card'}
+            setOpenModal={setOpenModal}
             childrenOpenModal={
-              <IconButton onClick={() => setOpenModal(true)}>
+              <IconButton>
                 <DeleteIcon sx={{ fontSize: 19 }} />
               </IconButton>
             }

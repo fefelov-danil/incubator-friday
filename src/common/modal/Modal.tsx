@@ -8,7 +8,8 @@ type ModalProps = {
   title: string
   childrenOpenModal: React.ReactNode
   children: React.ReactNode
-  openFromProps?: boolean
+  openFromProps?: boolean | string
+  setOpenModal?: (openModal: boolean | string) => void
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -16,24 +17,29 @@ export const Modal: React.FC<ModalProps> = ({
   children,
   title,
   openFromProps,
+  setOpenModal,
 }) => {
-  const [openModal, setOpenModal] = useState(false)
+  const [open, setOpen] = useState(false)
+
+  console.log(open, 'first log inside modal')
 
   const modal = useRef(null as HTMLDivElement | null)
 
   useEffect(() => {
-    if (openFromProps !== undefined) {
-      setOpenModal(openFromProps)
+    console.log('useEffect modal')
+    if (openFromProps !== '') {
+      setOpen(!!openFromProps)
     }
   }, [openFromProps])
 
   useEffect(() => {
-    if (!openModal) return
+    if (!open) return
 
+    console.log('useEffect in')
     const handleClick = (e: any) => {
       if (!modal.current) return
       if (!modal.current.contains(e.target)) {
-        setOpenModal(false)
+        setOpen(false)
       }
     }
 
@@ -42,18 +48,25 @@ export const Modal: React.FC<ModalProps> = ({
     return () => {
       document.removeEventListener('click', handleClick)
     }
-  }, [openModal])
+  }, [open])
 
   return (
     <div>
-      <div className={openModal ? `${s.screenBg} ${s.screenBgIsOpened}` : `${s.screenBg}`}></div>
+      <div className={open ? `${s.screenBg} ${s.screenBgIsOpened}` : `${s.screenBg}`}></div>
       <div ref={modal}>
-        <div onClick={() => setOpenModal(true)}>{childrenOpenModal}</div>
-        <div className={openModal ? `${s.modal} ${s.modalIsOpened}` : `${s.modal}`}>
+        <div
+          onClick={() => {
+            setOpen(true)
+            setOpenModal && setOpenModal('')
+          }}
+        >
+          {childrenOpenModal}
+        </div>
+        <div className={open ? `${s.modal} ${s.modalIsOpened}` : `${s.modal}`}>
           <div className={s.titleAndClose}>
             <h2>{title}</h2>
             <div className={s.modalClose}>
-              <CloseIcon onClick={() => setOpenModal(false)} />
+              <CloseIcon onClick={() => setOpen(false)} />
             </div>
           </div>
           <div className={s.modalBody}>{children}</div>
