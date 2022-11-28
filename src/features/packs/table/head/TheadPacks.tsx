@@ -6,7 +6,7 @@ import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 
 import { useAppDispatch, useAppSelector } from '../../../../utils/hooks'
-import { getPacksTC, setSortPacksValueAC } from '../../packs-reducer'
+import { setSortPacksValueAC } from '../../packs-reducer'
 
 import s from 'features/packs/table/head/TheadPacks.module.css'
 
@@ -15,7 +15,6 @@ export const TheadPacks = () => {
 
   const onClickHandler = (sort: string) => {
     dispatch(setSortPacksValueAC(sort))
-    dispatch(getPacksTC())
   }
   const sortPacksValue = useAppSelector(state => state.packs.sortPacksValue)
 

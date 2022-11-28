@@ -4,28 +4,15 @@ import Slider from '@mui/material/Slider/Slider'
 
 import s from './MinMaxCards.module.css'
 
-import {
-  getPacksTC,
-  setSortMinMaxCardsForAllAC,
-  setSortMinMaxCardsForMyAC,
-} from 'features/packs/packs-reducer'
+import { setSortMinMaxCardsAC } from 'features/packs/packs-reducer'
 import { useAppDispatch, useAppSelector, useDebounce } from 'utils/hooks'
 
 export const MinMaxCards = () => {
   const dispatch = useAppDispatch()
-  const maxCountCards = useAppSelector(state => state.packs.maxCardsCount)
+  const maxCardsCount = useAppSelector(state => state.packs.maxCardsCount)
   const appStatus = useAppSelector(state => state.app.appStatus)
-  const sortByAllMy = useAppSelector(state => state.packs.sortByAllMy)
-
-  let min: number, max: number
-
-  if (sortByAllMy === 'all') {
-    min = useAppSelector(state => state.packs.minForAll)
-    max = useAppSelector(state => state.packs.maxForAll)
-  } else {
-    min = useAppSelector(state => state.packs.minForMy)
-    max = useAppSelector(state => state.packs.maxForMy)
-  }
+  const min = useAppSelector(state => state.packs.min)
+  const max = useAppSelector(state => state.packs.max)
 
   const [value, setValue] = useState<number[]>([min, max])
   const debouncedValue = useDebounce<number[]>(value, 500)
@@ -36,14 +23,11 @@ export const MinMaxCards = () => {
   }, [min, max])
 
   useEffect(() => {
-    if (debouncedValue[1] !== max || debouncedValue[0] !== min) {
-      if (sortByAllMy === 'all') {
-        dispatch(setSortMinMaxCardsForAllAC(debouncedValue[0], debouncedValue[1]))
-      } else {
-        dispatch(setSortMinMaxCardsForMyAC(debouncedValue[0], debouncedValue[1]))
-      }
-      dispatch(getPacksTC())
-    }
+    setValue([0, maxCardsCount])
+  }, [maxCardsCount])
+
+  useEffect(() => {
+    dispatch(setSortMinMaxCardsAC(debouncedValue[0], debouncedValue[1]))
   }, [debouncedValue])
 
   const handleChange = (event: Event, newValue: number | number[], activeThumb: number) => {
@@ -69,7 +53,7 @@ export const MinMaxCards = () => {
   const onChangeMax = (e: ChangeEvent<HTMLInputElement>) => {
     const currentValue = +e.currentTarget.value
 
-    if (currentValue > value[0] && currentValue <= maxCountCards) {
+    if (currentValue > value[0] && currentValue <= maxCardsCount) {
       setValue([value[0], +e.currentTarget.value])
     }
   }
@@ -91,7 +75,7 @@ export const MinMaxCards = () => {
         valueLabelDisplay="off"
         disableSwap
         min={0}
-        max={maxCountCards}
+        max={maxCardsCount}
       />
       <input
         disabled={appStatus === 'loading'}

@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
   cards: cardsReducer,
 })
 
-export const store = createStore(rootReducer, loadState(), applyMiddleware(thunk))
+export const store = createStore(rootReducer, applyMiddleware(thunk))
 
 store.subscribe(() => {
   saveState({

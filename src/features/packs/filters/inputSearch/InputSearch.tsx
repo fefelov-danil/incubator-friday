@@ -12,7 +12,7 @@ import { getCardsTC, setFilterToCardsFromInputSearchAC } from '../../../cards/ca
 
 import s from './InputSearch.module.css'
 
-import { getPacksTC, setFilterToPacksFromInputSearchAC } from 'features/packs/packs-reducer'
+import { setFilterToPacksFromInputSearchAC } from 'features/packs/packs-reducer'
 import { useAppDispatch, useAppSelector, useDebounce } from 'utils/hooks'
 
 type DefaultInputTextPropsType = DetailedHTMLProps<
@@ -48,10 +48,8 @@ export const InputSearch: React.FC<InputSearchPropsType> = ({ whose, ...restProp
     if (debouncedValue !== filterSearchValue) {
       if (whose === 'packs') {
         dispatch(setFilterToPacksFromInputSearchAC(debouncedValue))
-        dispatch(getPacksTC())
       } else {
         dispatch(setFilterToCardsFromInputSearchAC(debouncedValue))
-        dispatch(getCardsTC())
       }
     }
   }, [debouncedValue])

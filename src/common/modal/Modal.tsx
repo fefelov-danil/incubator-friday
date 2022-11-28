@@ -8,8 +8,8 @@ type ModalProps = {
   title: string
   childrenOpenModal: React.ReactNode
   children: React.ReactNode
-  openFromProps?: boolean | string
-  setOpenModal?: (openModal: boolean | string) => void
+  openFromProps?: boolean | null
+  setOpenModal?: (openModal: boolean | null) => void
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -21,13 +21,10 @@ export const Modal: React.FC<ModalProps> = ({
 }) => {
   const [open, setOpen] = useState(false)
 
-  console.log(open, 'first log inside modal')
-
   const modal = useRef(null as HTMLDivElement | null)
 
   useEffect(() => {
-    console.log('useEffect modal')
-    if (openFromProps !== '') {
+    if (openFromProps !== null) {
       setOpen(!!openFromProps)
     }
   }, [openFromProps])
@@ -35,7 +32,6 @@ export const Modal: React.FC<ModalProps> = ({
   useEffect(() => {
     if (!open) return
 
-    console.log('useEffect in')
     const handleClick = (e: any) => {
       if (!modal.current) return
       if (!modal.current.contains(e.target)) {
@@ -57,7 +53,7 @@ export const Modal: React.FC<ModalProps> = ({
         <div
           onClick={() => {
             setOpen(true)
-            setOpenModal && setOpenModal('')
+            setOpenModal && setOpenModal(null)
           }}
         >
           {childrenOpenModal}

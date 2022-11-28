@@ -21,9 +21,7 @@ export const TbodyCards = () => {
   const cards = useAppSelector(state => state.cards.cards)
   const myId = useAppSelector(state => state.auth.profile._id)
 
-  const [openModal, setOpenModal] = useState<string | boolean>('')
-
-  console.log(openModal, 'first log outside modal')
+  const [openModal, setOpenModal] = useState<boolean | null>(null)
 
   const editPack = (cardId: string) => {
     dispatch(updateCardTC({ _id: cardId, question: 'updated question' }))

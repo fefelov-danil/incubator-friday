@@ -7,11 +7,11 @@ import { setFilterToCardsFromInputSearchAC } from '../../../cards/cards-reducer'
 import s from './FiltersOff.module.css'
 
 import {
-  getPacksTC,
   setCurrentPacksPageAC,
   setFilterToPacksFromInputSearchAC,
+  setRerenderAC,
   setSortByAllMyAC,
-  setSortMinMaxCardsForAllAC,
+  setSortMinMaxCardsAC,
 } from 'features/packs/packs-reducer'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
@@ -23,10 +23,10 @@ export const FiltersOff = () => {
   const turnOffFilters = () => {
     dispatch(setCurrentPacksPageAC(1))
     dispatch(setSortByAllMyAC('all'))
-    dispatch(setSortMinMaxCardsForAllAC(0, maxCardsCount))
+    dispatch(setSortMinMaxCardsAC(0, maxCardsCount))
     dispatch(setFilterToPacksFromInputSearchAC(''))
     dispatch(setFilterToCardsFromInputSearchAC(''))
-    dispatch(getPacksTC())
+    dispatch(setRerenderAC(false))
   }
 
   return (
