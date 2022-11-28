@@ -22,7 +22,6 @@ export const Packs = () => {
   const page = useAppSelector(state => state.packs.page)
   const pageCount = useAppSelector(state => state.packs.pageCount)
   const cardPacksTotalCount = useAppSelector(state => state.packs.cardPacksTotalCount)
-  const sortByAllMy = useAppSelector(state => state.packs.sortByAllMy)
   const filterSearchValue = useAppSelector(state => state.packs.filterSearchValue)
   const sortPacksValue = useAppSelector(state => state.packs.sortPacksValue)
   const min = useAppSelector(state => state.packs.min)
@@ -42,19 +41,18 @@ export const Packs = () => {
   }
 
   useEffect(() => {
-    rerender ? dispatch(getPacksTC()) : dispatch(setRerenderAC(true))
+    if (!rerender) {
+      dispatch(setRerenderAC(true))
+
+      return
+    }
+
+    dispatch(getPacksTC())
 
     if (cardPacks === null) {
       dispatch(setRerenderAC(false))
     }
   }, [page, pageCount, filterSearchValue, sortPacksValue, min, max])
-
-  useEffect(() => {
-    if (cardPacks !== null) {
-      dispatch(getPacksTC(true))
-      dispatch(setRerenderAC(false))
-    }
-  }, [sortByAllMy])
 
   return (
     <div className={'container container-with-table'}>

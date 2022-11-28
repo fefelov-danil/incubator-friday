@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { useAppDispatch, useAppSelector } from '../../../../utils/hooks'
-import { setSortByAllMyAC } from '../../packs-reducer'
+import { getPacksTC, setRerenderAC, setSortByAllMyAC } from '../../packs-reducer'
 
 import s from './AllOrMyPacks.module.css'
 
@@ -12,6 +12,8 @@ export const AllOrMyPacks: React.FC = () => {
 
   const changeAllOrMyPacksHandler = (whosePacks: 'all' | 'my') => {
     dispatch(setSortByAllMyAC(whosePacks))
+    dispatch(getPacksTC(true))
+    dispatch(setRerenderAC(false))
   }
 
   return (
