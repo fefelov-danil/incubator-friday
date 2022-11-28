@@ -2,8 +2,6 @@ import React from 'react'
 
 import LogoutIcon from '@mui/icons-material/Logout'
 
-import { Paginator } from '../../../common/paginator/Paginator'
-
 import s from './Profile.module.css'
 
 import { EditableSpan } from 'common/editableSpan/EditableSpan'
@@ -25,14 +23,7 @@ export const Profile = () => {
     <div className={'formPage'}>
       <div className={s.profile}>
         <h1>Profile</h1>
-        {/*<Paginator*/}
-        {/*  totalItemsCount={54}*/}
-        {/*  pageSize={5}*/}
-        {/*  currentPage={5}*/}
-        {/*  portionSize={5}*/}
-        {/*  onPageChange={() => {}}*/}
-        {/*  name="PACKS"*/}
-        {/*/>*/}
+
         <p className={s.avatar}>
           <img src={profile.avatar} alt="" />
         </p>

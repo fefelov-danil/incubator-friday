@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 
+import { Input } from '@mui/material'
+
+import { Checkbox } from '../../common/checkbox/Checkbox'
+import { Modal } from '../../common/modal/Modal'
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 
 import {
@@ -17,6 +21,10 @@ import s from 'features/packs/Packs.module.css'
 import { PacksTable } from 'features/packs/table/PacksTable'
 
 export const Packs = () => {
+  const [openModal, setOpenModal] = useState<boolean | null>(null)
+  const [inputValue, setInputValue] = useState<string>('')
+  const [isChecked, setIsChecked] = useState<boolean>(false)
+
   const dispatch = useAppDispatch()
   const cardPacks = useAppSelector(state => state.packs.cardPacks)
   const page = useAppSelector(state => state.packs.page)
@@ -30,7 +38,10 @@ export const Packs = () => {
   const rerender = useAppSelector(state => state.packs.rerender)
 
   const addPack = () => {
-    dispatch(addPackTC({ cardsPack: { name: 'PAAACK!!!' } }))
+    dispatch(addPackTC({ cardsPack: { name: inputValue, private: isChecked } }))
+    setInputValue('')
+    setIsChecked(false)
+    setOpenModal(false)
   }
 
   const setCurrentPage = (newCurrentPage: number) => {
@@ -39,6 +50,14 @@ export const Packs = () => {
 
   const setPageItemsCount = (count: number) => {
     dispatch(setPagePacksCountAC(count))
+  }
+
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setInputValue(e.currentTarget.value)
+  }
+
+  const onCheckBoxChangeHandler = (e: boolean) => {
+    setIsChecked(e)
   }
 
   useEffect(() => {
@@ -61,7 +80,32 @@ export const Packs = () => {
       <div className={s.pacs}>
         <div className={s.titleAndBtn}>
           <h1>Packs list</h1>
-          <Button onClick={addPack}>Add new pack</Button>
+          <Modal
+            title={'Add new pack'}
+            childrenOpenModal={<Button onClick={() => setOpenModal(true)}>Add new pack</Button>}
+            openFromProps={openModal}
+          >
+            <div className={s.createPackModal}>
+              <div className={s.inputBlock}>
+                <Input onChange={onChangeHandler} value={inputValue} />
+                <Checkbox
+                  checked={isChecked}
+                  onChangeChecked={onCheckBoxChangeHandler}
+                  className={s.checkbox}
+                >
+                  Private pack
+                </Checkbox>
+              </div>
+              <div className={s.modalButtonBlock}>
+                <Button className={s.close} onClick={() => setOpenModal(false)}>
+                  No, cancel
+                </Button>
+                <Button className={s.createPack} onClick={addPack}>
+                  Add pack
+                </Button>
+              </div>
+            </div>
+          </Modal>
         </div>
         <Filters />
         <PacksTable />
