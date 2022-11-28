@@ -12,13 +12,11 @@ import {
   setFilterToPacksFromInputSearchAC,
   setRerenderAC,
   setSortByAllMyAC,
-  setSortMinMaxCardsAC,
 } from 'features/packs/packs-reducer'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 export const FiltersOff = () => {
   const dispatch = useAppDispatch()
-  const maxCardsCount = useAppSelector(state => state.packs.maxCardsCount)
   const appStatus = useAppSelector(state => state.app.appStatus)
 
   const turnOffFilters = () => {
