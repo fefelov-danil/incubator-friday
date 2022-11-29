@@ -106,7 +106,7 @@ export const Packs = () => {
     <div className={'container container-with-table'}>
       <div className={s.pacs}>
         <div className={s.titleAndBtn}>
-          <h1>Packs list</h1>
+          <h1>Packs list </h1>
           <Button onClick={addPack}>Add new pack</Button>
         </div>
         <Filters />
