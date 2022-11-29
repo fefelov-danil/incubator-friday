@@ -9,6 +9,7 @@ import { PasswordRecovery } from 'features/auth/password-recovery/PasswordRecove
 import { Profile } from 'features/auth/profile/Profile'
 import { Registration } from 'features/auth/registration/Registration'
 import { Cards } from 'features/cards/Cards'
+import { Learn } from 'features/learn/Learn'
 import { Packs } from 'features/packs/Packs'
 import { useAppSelector } from 'utils/hooks'
 
@@ -20,6 +21,7 @@ export const PATH = {
   PROFILE: '/profile',
   PACKS: '/packs',
   CARDS: '/cards',
+  LEARN: '/learn',
 }
 
 export const Pages = () => {
@@ -53,6 +55,7 @@ export const Pages = () => {
             <Route path={PATH.PROFILE} element={<Profile />} />
             <Route path={PATH.PACKS} element={<Packs />} />
             <Route path={PATH.CARDS} element={<Cards />} />
+            <Route path={PATH.LEARN} element={<Learn />} />
           </>
         ) : (
           <>

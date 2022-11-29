@@ -1,0 +1,14 @@
+.learn {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 20px;
+
+  background-color: rgba(235,235,235,.4);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+.learn h1 {
+  text-align: center;
+}
