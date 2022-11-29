@@ -41,7 +41,7 @@ export const InputSearch: React.FC<InputSearchPropsType> = ({ whose, ...restProp
   const debouncedValue = useDebounce<string>(value, 700)
 
   useEffect(() => {
-    filterSearchValue === '' && setValue(filterSearchValue)
+    setValue(filterSearchValue)
   }, [filterSearchValue])
 
   useEffect(() => {
