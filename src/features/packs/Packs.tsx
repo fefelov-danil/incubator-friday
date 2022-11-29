@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react'
 
+import { useSearchParams } from 'react-router-dom'
+
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 
 import { addPackTC, getPacksTC, setCurrentPacksPageAC, setPagePacksCountAC } from './packs-reducer'
@@ -13,8 +15,14 @@ import { PacksTable } from 'features/packs/table/PacksTable'
 export const Packs = () => {
   const page = useAppSelector(state => state.packs.page)
   const pageCount = useAppSelector(state => state.packs.pageCount)
+  const filterSearchValue = useAppSelector(state => state.packs.filterSearchValue)
+  const sortPacksValue = useAppSelector(state => state.packs.sortPacksValue)
+  const min = useAppSelector(state => state.packs.minForAll)
+  const max = useAppSelector(state => state.packs.maxForAll)
   const cardPacksTotalCount = useAppSelector(state => state.packs.cardPacksTotalCount)
+
   const dispatch = useAppDispatch()
+  const [searchParams, setSearchParams] = useSearchParams({})
 
   const addPack = () => {
     dispatch(addPackTC({ cardsPack: { name: 'PAAACK!!!' } }))
@@ -33,6 +41,17 @@ export const Packs = () => {
   useEffect(() => {
     dispatch(getPacksTC())
   }, [])
+
+  useEffect(() => {
+    setSearchParams({
+      page: `${page}`,
+      pageCount: `${pageCount}`,
+      filterSearchValue: `${filterSearchValue}`,
+      sortPacksValue: `${sortPacksValue}`,
+      min: `${min}`,
+      max: `${max}`,
+    })
+  }, [page, pageCount, filterSearchValue, sortPacksValue, min, max])
 
   return (
     <div className={'container container-with-table'}>

@@ -15,14 +15,14 @@ const rootReducer = combineReducers({
   cards: cardsReducer,
 })
 
-export const store = createStore(rootReducer, loadState(), applyMiddleware(thunk))
+export const store = createStore(rootReducer, applyMiddleware(thunk))
 
-store.subscribe(() => {
+/*store.subscribe(() => {
   saveState({
     packs: store.getState().packs,
     cards: store.getState().cards,
   })
-})
+})*/
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = ThunkDispatch<RootState, unknown, AllActionsType>
