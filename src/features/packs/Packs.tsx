@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
+
+import { useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 
@@ -6,8 +8,12 @@ import {
   addPackTC,
   getPacksTC,
   setCurrentPacksPageAC,
+  setFilterToPacksFromInputSearchAC,
   setPagePacksCountAC,
   setRerenderAC,
+  setSortByAllMyAC,
+  setSortMinMaxCardsAC,
+  setSortPacksValueAC,
 } from './packs-reducer'
 
 import { Button } from 'common/button/Button'
@@ -23,10 +29,44 @@ export const Packs = () => {
   const pageCount = useAppSelector(state => state.packs.pageCount)
   const cardPacksTotalCount = useAppSelector(state => state.packs.cardPacksTotalCount)
   const filterSearchValue = useAppSelector(state => state.packs.filterSearchValue)
+  const sortByAllMy = useAppSelector(state => state.packs.sortByAllMy)
   const sortPacksValue = useAppSelector(state => state.packs.sortPacksValue)
   const min = useAppSelector(state => state.packs.min)
   const max = useAppSelector(state => state.packs.max)
   const rerender = useAppSelector(state => state.packs.rerender)
+
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  useEffect(() => {
+    const fromUrlPage = searchParams.get('page')
+    const fromUrlPageCount = searchParams.get('pageCount')
+    const fromUrlFilterSearchValue = searchParams.get('filterSearchValue')
+    const fromUrlSortByAllMy = searchParams.get('sortByAllMy')
+    const fromUrlSortPacksValue = searchParams.get('sortPacksValue')
+    const fromUrlMin = searchParams.get('min')
+    const fromUrlMax = searchParams.get('max')
+
+    if (fromUrlPage !== null) {
+      dispatch(setCurrentPacksPageAC(Number(fromUrlPage)))
+    }
+    if (fromUrlPageCount !== null) {
+      dispatch(setPagePacksCountAC(Number(fromUrlPageCount)))
+    }
+    if (fromUrlFilterSearchValue !== null) {
+      dispatch(setFilterToPacksFromInputSearchAC(fromUrlFilterSearchValue))
+    }
+    if (fromUrlSortByAllMy === 'all' || fromUrlSortByAllMy === 'my') {
+      dispatch(setSortByAllMyAC(fromUrlSortByAllMy))
+    }
+    if (fromUrlSortPacksValue !== null) {
+      dispatch(setSortPacksValueAC(fromUrlSortPacksValue))
+    }
+    if (fromUrlMin !== null || fromUrlMax !== null) {
+      dispatch(
+        setSortMinMaxCardsAC(Number(searchParams.get('min')), Number(searchParams.get('max')))
+      )
+    }
+  }, [])
 
   const addPack = () => {
     dispatch(addPackTC({ cardsPack: { name: 'PAAACK!!!' } }))
@@ -41,6 +81,16 @@ export const Packs = () => {
   }
 
   useEffect(() => {
+    setSearchParams({
+      page: `${page}`,
+      pageCount: `${pageCount}`,
+      filterSearchValue: `${filterSearchValue}`,
+      sortByAllMy: `${sortByAllMy}`,
+      sortPacksValue: `${sortPacksValue}`,
+      min: `${min}`,
+      max: `${max}`,
+    })
+
     if (!rerender) {
       dispatch(setRerenderAC(true))
 
