@@ -55,9 +55,9 @@ export const Packs = () => {
         Number(searchParams.get('pageCount')) ? Number(searchParams.get('pageCount')) : 5
       )
     )
-    //dispatch(setFilterToPacksFromInputSearchAC(searchParams.get('filterSearchValue') + ''))
+    dispatch(setFilterToPacksFromInputSearchAC(searchParams.get('filterSearchValue') + ''))
     dispatch(setSortPacksValueAC(searchParams.get('sortPacksValue') + ''))
-    //dispatch(setSortMinMaxCardsAC(Number(searchParams.get('min')), Number(searchParams.get('max'))))
+    dispatch(setSortMinMaxCardsAC(Number(searchParams.get('min')), Number(searchParams.get('max'))))
   }, [])
 
   useEffect(() => {
