@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react'
 
+import { useLocation, useParams, useSearchParams } from 'react-router-dom'
+
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 
 import {
   addPackTC,
   getPacksTC,
   setCurrentPacksPageAC,
+  setFilterToPacksFromInputSearchAC,
   setPagePacksCountAC,
   setRerenderAC,
+  setSortMinMaxCardsAC,
+  setSortPacksValueAC,
 } from './packs-reducer'
 
 import { Button } from 'common/button/Button'
@@ -28,6 +33,9 @@ export const Packs = () => {
   const max = useAppSelector(state => state.packs.max)
   const rerender = useAppSelector(state => state.packs.rerender)
 
+  //const location = useLocation()
+  const [searchParams, setSearchParams] = useSearchParams()
+
   const addPack = () => {
     dispatch(addPackTC({ cardsPack: { name: 'PAAACK!!!' } }))
   }
@@ -41,15 +49,45 @@ export const Packs = () => {
   }
 
   useEffect(() => {
+    dispatch(setCurrentPacksPageAC(Number(searchParams.get('page'))))
+    dispatch(
+      setPagePacksCountAC(
+        Number(searchParams.get('pageCount')) ? Number(searchParams.get('pageCount')) : 5
+      )
+    )
+    //dispatch(setFilterToPacksFromInputSearchAC(searchParams.get('filterSearchValue') + ''))
+    dispatch(setSortPacksValueAC(searchParams.get('sortPacksValue') + ''))
+    //dispatch(setSortMinMaxCardsAC(Number(searchParams.get('min')), Number(searchParams.get('max'))))
+  }, [])
+
+  useEffect(() => {
+    console.log(
+      Number(searchParams.get('page')),
+      Number(searchParams.get('pageCount')),
+      searchParams.get('filterSearchValue') + '',
+      searchParams.get('sortPacksValue') + '',
+      Number(searchParams.get('min')),
+      Number(searchParams.get('max'))
+    )
+
     if (!rerender) {
       dispatch(setRerenderAC(true))
 
       return
     }
 
+    setSearchParams({
+      page: `${page}`,
+      pageCount: `${pageCount}`,
+      filterSearchValue: `${filterSearchValue}`,
+      sortPacksValue: `${sortPacksValue}`,
+      min: `${min}`,
+      max: `${max}`,
+    })
+
     dispatch(getPacksTC())
 
-    if (cardPacks === null) {
+    if (cardPacks !== null) {
       dispatch(setRerenderAC(false))
     }
   }, [page, pageCount, filterSearchValue, sortPacksValue, min, max])
