@@ -7,6 +7,7 @@ import React, {
 } from 'react'
 
 import SearchIcon from '@mui/icons-material/Search'
+import { useSearchParams } from 'react-router-dom'
 
 import { getCardsTC, setFilterToCardsFromInputSearchAC } from '../../../cards/cards-reducer'
 
@@ -41,7 +42,7 @@ export const InputSearch: React.FC<InputSearchPropsType> = ({ whose, ...restProp
   const debouncedValue = useDebounce<string>(value, 700)
 
   useEffect(() => {
-    filterSearchValue === '' && setValue(filterSearchValue)
+    setValue(filterSearchValue)
   }, [filterSearchValue])
 
   useEffect(() => {

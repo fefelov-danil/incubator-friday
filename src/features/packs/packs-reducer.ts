@@ -19,7 +19,7 @@ const packsInitialState = {
   maxForAll: 0,
   minForMy: 0,
   maxForMy: 0,
-  sortByAllMy: 'all' as 'all' | 'my',
+  sortByAllMy: 'all',
   filterSearchValue: '',
   sortPacksValue: '0updated',
 }
@@ -38,7 +38,10 @@ export const packsReducer = (
         cardPacksTotalCount: action.data.cardPacksTotalCount,
         maxCardsCount: action.data.maxCardsCount,
         minCardsCount: action.data.minCardsCount,
-        maxForAll: state.maxForAll === 0 ? action.data.maxCardsCount : state.maxForAll,
+        maxForAll:
+          state.maxForAll === 0 && state.sortByAllMy === 'all'
+            ? action.data.maxCardsCount
+            : state.maxForAll,
         maxForMy:
           state.maxForMy === 0 && state.sortByAllMy === 'my'
             ? action.data.maxCardsCount
@@ -85,7 +88,7 @@ export const setPagePacksCountAC = (count: number) => {
   } as const
 }
 
-export const setSortByAllMyAC = (sortByAllMy: 'all' | 'my') => {
+export const setSortByAllMyAC = (sortByAllMy: string) => {
   return {
     type: 'PACKS/SET-SORT-MY-ALL',
     sortByAllMy,

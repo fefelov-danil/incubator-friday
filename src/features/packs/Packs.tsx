@@ -4,7 +4,17 @@ import { useSearchParams } from 'react-router-dom'
 
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 
-import { addPackTC, getPacksTC, setCurrentPacksPageAC, setPagePacksCountAC } from './packs-reducer'
+import {
+  addPackTC,
+  getPacksTC,
+  setCurrentPacksPageAC,
+  setFilterToPacksFromInputSearchAC,
+  setPagePacksCountAC,
+  setSortByAllMyAC,
+  setSortMinMaxCardsForAllAC,
+  setSortMinMaxCardsForMyAC,
+  setSortPacksValueAC,
+} from './packs-reducer'
 
 import { Button } from 'common/button/Button'
 import { Paginator } from 'common/paginator/Paginator'
@@ -17,11 +27,15 @@ export const Packs = () => {
   const pageCount = useAppSelector(state => state.packs.pageCount)
   const filterSearchValue = useAppSelector(state => state.packs.filterSearchValue)
   const sortPacksValue = useAppSelector(state => state.packs.sortPacksValue)
-  const min = useAppSelector(state => state.packs.minForAll)
-  const max = useAppSelector(state => state.packs.maxForAll)
+  const minAll = useAppSelector(state => state.packs.minForAll)
+  const maxAll = useAppSelector(state => state.packs.maxForAll)
+  const minMy = useAppSelector(state => state.packs.minForMy)
+  const maxMy = useAppSelector(state => state.packs.maxForMy)
   const cardPacksTotalCount = useAppSelector(state => state.packs.cardPacksTotalCount)
+  const sortByAllMy = useAppSelector(state => state.packs.sortByAllMy)
 
   const dispatch = useAppDispatch()
+
   const [searchParams, setSearchParams] = useSearchParams({})
 
   const addPack = () => {
@@ -39,6 +53,30 @@ export const Packs = () => {
   }
 
   useEffect(() => {
+    dispatch(setCurrentPacksPageAC(Number(searchParams.get('page'))))
+
+    dispatch(
+      setPagePacksCountAC(
+        Number(searchParams.get('pageCount')) ? Number(searchParams.get('pageCount')) : 5
+      )
+    )
+
+    dispatch(setFilterToPacksFromInputSearchAC(searchParams.get('filterSearchValue') || ''))
+
+    dispatch(setSortPacksValueAC(searchParams.get('sortPacksValue') || ''))
+
+    dispatch(setSortByAllMyAC(searchParams.get('whose') || 'all'))
+
+    searchParams.get('whose') === 'all' &&
+      dispatch(
+        setSortMinMaxCardsForAllAC(Number(searchParams.get('min')), Number(searchParams.get('max')))
+      )
+
+    searchParams.get('whose') === 'my' &&
+      dispatch(
+        setSortMinMaxCardsForMyAC(Number(searchParams.get('min')), Number(searchParams.get('max')))
+      )
+
     dispatch(getPacksTC())
   }, [])
 
@@ -48,10 +86,21 @@ export const Packs = () => {
       pageCount: `${pageCount}`,
       filterSearchValue: `${filterSearchValue}`,
       sortPacksValue: `${sortPacksValue}`,
-      min: `${min}`,
-      max: `${max}`,
+      min: `${sortByAllMy === 'all' ? minAll : minMy}`,
+      max: `${sortByAllMy === 'all' ? maxAll : maxMy}`,
+      whose: `${sortByAllMy}`,
     })
-  }, [page, pageCount, filterSearchValue, sortPacksValue, min, max])
+  }, [
+    page,
+    pageCount,
+    filterSearchValue,
+    sortPacksValue,
+    minAll,
+    minMy,
+    maxAll,
+    maxMy,
+    sortByAllMy,
+  ])
 
   return (
     <div className={'container container-with-table'}>
