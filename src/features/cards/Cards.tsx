@@ -53,6 +53,10 @@ export const Cards = () => {
     }
   }, [openActions])
 
+  useEffect(() => {
+    dispatch(getCardsTC())
+  }, [page, pageCount, filterSearchValue])
+
   const addNewCard = () => dispatch(createNewCardTC())
   const editPack = () => dispatch(updatePackTC({ _id: packId, name: 'edited PACK' }))
   const deletePack = () => dispatch(deletePackTC(packId, 'cards'))
@@ -123,10 +127,6 @@ export const Cards = () => {
   if (cardsPack_id === '') {
     return <Navigate to={PATH.PACKS} />
   }
-
-  useEffect(() => {
-    dispatch(getCardsTC())
-  }, [page, pageCount, filterSearchValue])
 
   return (
     <div className={'container container-with-table'}>
