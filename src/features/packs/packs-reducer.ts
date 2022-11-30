@@ -115,6 +115,13 @@ export const setRerenderAC = (rerender: boolean) => {
   } as const
 }
 
+export const addNewPackAC = (name: string) => {
+  return {
+    type: 'PACKS/ADD-NEW-PACK',
+    name,
+  } as const
+}
+
 // Thunks
 
 export const getPacksTC =
@@ -209,6 +216,7 @@ export type PacksActionsType =
   | ReturnType<typeof setFilterToPacksFromInputSearchAC>
   | ReturnType<typeof setSortPacksValueAC>
   | ReturnType<typeof setRerenderAC>
+  | ReturnType<typeof addNewPackAC>
 
 export type PackType = {
   _id: string

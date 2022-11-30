@@ -19,3 +19,40 @@
   background: transparent;
   border: 0;
 }
+
+.actions button.del {
+  padding: 3px 15px 4px 15px;;
+
+  font-size: 15px;
+}
+
+.actions button.close {
+  margin-right: 12px;
+  padding: 3px 15px 4px 15px;;
+
+  font-size: 15px;
+
+  background: #868686;
+}
+
+.editPackModal{
+
+}
+
+.inputBlock > div{
+  display: block;
+
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+
+.modalButtonBlock{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  margin-top: 30px;
+}

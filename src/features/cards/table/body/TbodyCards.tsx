@@ -20,13 +20,14 @@ export const TbodyCards = () => {
 
   const cards = useAppSelector(state => state.cards.cards)
   const myId = useAppSelector(state => state.auth.profile._id)
+  const appStatus = useAppSelector(state => state.app.appStatus)
 
   const [openModal, setOpenModal] = useState<boolean | null>(null)
 
   const editPack = (cardId: string) => {
     dispatch(updateCardTC({ _id: cardId, question: 'updated question' }))
   }
-  const deletePack = (cardId: string) => {
+  const deleteCard = (cardId: string) => {
     dispatch(deleteCardTC(cardId))
     setOpenModal(false)
   }
@@ -42,7 +43,7 @@ export const TbodyCards = () => {
             title={'Delete card'}
             setOpenModal={setOpenModal}
             childrenOpenModal={
-              <IconButton>
+              <IconButton disabled={appStatus === 'loading'}>
                 <DeleteIcon sx={{ fontSize: 19 }} />
               </IconButton>
             }
@@ -52,7 +53,7 @@ export const TbodyCards = () => {
             <Button className={s.close} onClick={() => setOpenModal(false)}>
               No, close
             </Button>
-            <Button className={s.del} onClick={() => deletePack(cardId)}>
+            <Button className={s.del} onClick={() => deleteCard(cardId)}>
               Delete
             </Button>
           </Modal>
