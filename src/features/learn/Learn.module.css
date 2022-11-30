@@ -1,0 +1,150 @@
+.learn {
+  max-width: 550px;
+  margin: 50px auto;
+  padding: 50px;
+
+  background-color: rgba(235,235,235,.6);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+.learn hr {
+  max-width: 100px;
+  margin: 22px auto 35px auto;
+
+  border-top: 3px solid #FF0808;
+}
+.learn h1 {
+  margin-bottom: 0;
+
+  font-size: 38px;
+  text-align: center;
+}
+.question,
+.answer {
+  font-size: 19px;
+}
+.answer {
+  margin-bottom: 30px;
+}
+.tryCounts {
+  margin-bottom: 35px;
+
+  font-style: italic;
+  color: #555;
+}
+.rate{
+  position: relative;
+
+  margin-bottom: 25px;
+}
+
+h2 {
+  color: #AAAAAA;
+}
+.rate p {
+  font-size: 19px;
+}
+
+.rate ul{
+  overflow: auto;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.rate ul li{
+  position: relative;
+
+  display: block;
+
+  width: 100%;
+  margin-bottom: 15px;
+
+  background: #dedede;
+  border-radius: 5px;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+.rate ul li input[type=radio]{
+  position: absolute;
+
+  visibility: hidden;
+}
+
+.rate ul li label{
+  cursor: pointer;
+
+  position: relative;
+  z-index: 9;
+
+  display: block;
+
+  padding: 5px 10px 5px 34px;
+
+  font-size: 17px;
+  font-weight: 300;
+}
+
+.rate ul li .check{
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  left: 10px;
+  transform: translate(0, -50%);
+
+  display: block;
+
+  width: 16px;
+  height: 16px;
+
+  border: 2px solid #525252;
+  border-radius: 100%;
+
+  -webkit-transition: border .25s linear;
+  transition: border .25s linear;
+}
+
+.rate ul li:hover .check {
+  border: 2px solid #FF0808;
+}
+
+.rate ul li .check::before {
+  content: '';
+
+  position: absolute;
+  top: 2px;
+  left: 2px;
+
+  display: block;
+
+  width: 8px;
+  height: 8px;
+  margin: auto;
+
+  border-radius: 100%;
+
+  -webkit-transition: background 0.25s linear;
+  transition: background 0.25s linear;
+}
+
+.rate input[type=radio]:checked ~ .check {
+  border: 2px solid #FF0808;
+}
+
+.rate input[type=radio]:checked ~ .check::before{
+  background: #FF0808;
+}
+.btn {
+  margin-bottom: 0;
+
+  text-align: center;
+}
+.btn button {
+  padding: 8px 55px;
+
+  font-size: 18px;
+}

@@ -7,6 +7,7 @@ import { setFilterToCardsFromInputSearchAC } from '../../../cards/cards-reducer'
 import s from './FiltersOff.module.css'
 
 import {
+  getPacksTC,
   setCurrentPacksPageAC,
   setFilterToPacksFromInputSearchAC,
   setRerenderAC,
@@ -17,19 +18,33 @@ import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 export const FiltersOff = () => {
   const dispatch = useAppDispatch()
-  const maxCardsCount = useAppSelector(state => state.packs.maxCardsCount)
   const appStatus = useAppSelector(state => state.app.appStatus)
+  const page = useAppSelector(state => state.packs.page)
+  const filterSearchValue = useAppSelector(state => state.packs.filterSearchValue)
+  const min = useAppSelector(state => state.packs.min)
+  const max = useAppSelector(state => state.packs.max)
   const sortByAllMy = useAppSelector(state => state.packs.sortByAllMy)
+  const maxCardsCount = useAppSelector(state => state.packs.maxCardsCount)
 
-  const turnOffFilters = () => {
-    if (sortByAllMy === 'my') {
-      dispatch(setRerenderAC(false))
+  const turnOffFilters = async () => {
+    if (
+      page === 1 &&
+      filterSearchValue === '' &&
+      sortByAllMy === 'all' &&
+      min === 0 &&
+      max === maxCardsCount
+    ) {
+      return
     }
+
     dispatch(setCurrentPacksPageAC(1))
-    dispatch(setSortByAllMyAC('all'))
-    dispatch(setSortMinMaxCardsAC(0, maxCardsCount))
     dispatch(setFilterToPacksFromInputSearchAC(''))
     dispatch(setFilterToCardsFromInputSearchAC(''))
+    dispatch(setSortByAllMyAC('all'))
+    dispatch(setRerenderAC(false))
+    const res = await dispatch(getPacksTC(true))
+
+    dispatch(setSortMinMaxCardsAC(0, res ? res.maxCardsCount : 150))
   }
 
   return (

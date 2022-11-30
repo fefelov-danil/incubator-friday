@@ -30,6 +30,7 @@ export const Cards = () => {
   const page = useAppSelector(state => state.cards.page)
   const pageCount = useAppSelector(state => state.cards.pageCount)
   const cardsTotalCount = useAppSelector(state => state.cards.cardsTotalCount)
+  const filterSearchValue = useAppSelector(state => state.cards.filterSearchValue)
 
   const [openActions, setOpenActions] = useState(false)
 
@@ -52,25 +53,21 @@ export const Cards = () => {
     }
   }, [openActions])
 
-  const addNewCard = () => {
-    dispatch(createNewCardTC())
-  }
-  const learnToPack = () => {
-    console.log('learnToPack')
-  }
-  const editPack = () => {
-    dispatch(updatePackTC({ _id: packId, name: 'edited PACK' }))
-  }
-  const deletePack = () => {
-    dispatch(deletePackTC(packId, 'cards'))
-  }
+  useEffect(() => {
+    dispatch(getCardsTC())
+  }, [page, pageCount, filterSearchValue])
+
+  const addNewCard = () => dispatch(createNewCardTC())
+  const editPack = () => dispatch(updatePackTC({ _id: packId, name: 'edited PACK' }))
+  const deletePack = () => dispatch(deletePackTC(packId, 'cards'))
 
   const renderMainActions = (myId: string, userId: string) => {
     let packName
 
     if (cardPacks) {
-      packName = cardPacks.find(pack => pack._id === cardsPack_id)
-      packName = packName?.name
+      const pack = cardPacks.find(pack => pack._id === cardsPack_id)
+
+      packName = pack?.name
     }
 
     if (myId === userId) {
@@ -95,9 +92,9 @@ export const Cards = () => {
                 <button className={s.action} onClick={deletePack}>
                   <DeleteIcon sx={{ fontSize: 19 }} /> Delete
                 </button>
-                <button className={s.action} onClick={learnToPack}>
+                <NavLink className={s.action} to={PATH.LEARN}>
                   <SchoolIcon sx={{ fontSize: 19 }} /> Learn
-                </button>
+                </NavLink>
               </div>
             </div>
           </div>
@@ -109,7 +106,11 @@ export const Cards = () => {
       return (
         <div className={s.titleAndBtn}>
           <h1>{packName}</h1>
-          <Button onClick={learnToPack}>Lern to pack</Button>
+          <Button>
+            <NavLink className={s.learnBtn} to={PATH.LEARN}>
+              Learn to pack
+            </NavLink>
+          </Button>
         </div>
       )
     }
@@ -117,12 +118,10 @@ export const Cards = () => {
 
   const setCurrentPage = (newCurrentPage: number) => {
     dispatch(setCurrentCardsPageAC(newCurrentPage))
-    dispatch(getCardsTC())
   }
 
   const setPageItemsCount = (count: number) => {
     dispatch(setPagePacksCountAC(count))
-    dispatch(getCardsTC())
   }
 
   if (cardsPack_id === '') {

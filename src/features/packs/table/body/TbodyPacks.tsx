@@ -16,7 +16,7 @@ import { PATH } from '../../../../common/routes/Pages'
 import { useAppDispatch, useAppSelector } from '../../../../utils/hooks'
 import { deletePackTC, updatePackTC } from '../../packs-reducer'
 
-import { getCardsTC, setCurrentPackIdAC } from 'features/cards/cards-reducer'
+import { setCurrentPackIdAC } from 'features/cards/cards-reducer'
 import s from 'features/packs/table/body/TbodyPacks.module.css'
 
 export const TbodyPacks = () => {
@@ -125,7 +125,6 @@ export const TbodyPacks = () => {
 
   const openPack = (cardsPack_id: string) => {
     dispatch(setCurrentPackIdAC(cardsPack_id))
-    dispatch(getCardsTC())
   }
 
   return (

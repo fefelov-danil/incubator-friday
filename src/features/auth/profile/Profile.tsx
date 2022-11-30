@@ -23,7 +23,6 @@ export const Profile = () => {
     <div className={'formPage'}>
       <div className={s.profile}>
         <h1>Profile</h1>
-
         <p className={s.avatar}>
           <img src={profile.avatar} alt="" />
         </p>
