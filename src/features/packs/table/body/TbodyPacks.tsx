@@ -11,6 +11,7 @@ import TableRow from '@mui/material/TableRow'
 import { NavLink } from 'react-router-dom'
 
 import { Button } from '../../../../common/button/Button'
+import { Checkbox } from '../../../../common/checkbox/Checkbox'
 import { Modal } from '../../../../common/modal/Modal'
 import { PATH } from '../../../../common/routes/Pages'
 import { useAppDispatch, useAppSelector } from '../../../../utils/hooks'
@@ -24,6 +25,7 @@ export const TbodyPacks = () => {
   const [openRenameModal, setOpenRenameModal] = useState<boolean | null>(null)
 
   const [inputValue, setInputValue] = useState<string | undefined>('')
+  const [isChecked, setIsChecked] = useState<boolean | undefined>(false)
 
   const dispatch = useAppDispatch()
 
@@ -31,21 +33,26 @@ export const TbodyPacks = () => {
   const myId = useAppSelector(state => state.auth.profile._id)
   const appStatus = useAppSelector(state => state.app.appStatus)
 
-  const getPackName = (packId: string) => {
+  const getPackParam = (packId: string) => {
     if (cardPacks !== null && cardPacks.length > 0) {
       const pack = cardPacks.find(p => p._id === packId)
 
       if (pack) {
         setInputValue(pack.name)
+        setIsChecked(pack.private)
       }
     }
+  }
+
+  const onCheckBoxChangeHandler = (e: boolean) => {
+    setIsChecked(e)
   }
 
   const studyPack = (packId: string) => {
     console.log('study', packId)
   }
   const editPack = (packId: string) => {
-    dispatch(updatePackTC({ _id: packId, name: inputValue })) //  _id колоды обязательно
+    dispatch(updatePackTC({ _id: packId, name: inputValue, private: isChecked })) //  _id колоды обязательно
     setOpenRenameModal(false)
     setInputValue('')
   }
@@ -69,7 +76,7 @@ export const TbodyPacks = () => {
             title={'Pack name'}
             setOpenModal={setOpenRenameModal}
             childrenOpenModal={
-              <IconButton onClick={() => getPackName(packId)} disabled={appStatus === 'loading'}>
+              <IconButton onClick={() => getPackParam(packId)} disabled={appStatus === 'loading'}>
                 <EditIcon sx={{ fontSize: 19 }} />
               </IconButton>
             }
@@ -78,6 +85,13 @@ export const TbodyPacks = () => {
             <div className={s.editPackModal}>
               <div className={s.inputBlock}>
                 <Input onChange={onChangeHandler} value={inputValue} />
+                <Checkbox
+                  checked={isChecked}
+                  onChangeChecked={onCheckBoxChangeHandler}
+                  className={s.checkbox}
+                >
+                  Private pack
+                </Checkbox>
               </div>
               <div className={s.modalButtonBlock}>
                 <Button className={s.close} onClick={() => setOpenRenameModal(false)}>
@@ -94,7 +108,7 @@ export const TbodyPacks = () => {
             title={'Delete pack'}
             setOpenModal={setOpenModal}
             childrenOpenModal={
-              <IconButton onClick={() => getPackName(packId)} disabled={appStatus === 'loading'}>
+              <IconButton onClick={() => getPackParam(packId)} disabled={appStatus === 'loading'}>
                 <DeleteIcon sx={{ fontSize: 19 }} />
               </IconButton>
             }

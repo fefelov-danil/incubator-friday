@@ -97,3 +97,25 @@ p.filterName {
 
   font-size: 18px;
 }
+
+.createCardModal{
+ z-index: 999;
+}
+
+.inputBlock > div{
+  display: block;
+
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+
+.modalButtonBlock{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  margin-top: 30px;
+}
