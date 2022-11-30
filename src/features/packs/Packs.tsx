@@ -81,7 +81,6 @@ export const Packs = () => {
   }
 
   useEffect(() => {
-    console.log(rerender)
     setSearchParams({
       page: `${page}`,
       pageCount: `${pageCount}`,
