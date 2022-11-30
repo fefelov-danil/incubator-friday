@@ -30,6 +30,7 @@ export const Cards = () => {
   const page = useAppSelector(state => state.cards.page)
   const pageCount = useAppSelector(state => state.cards.pageCount)
   const cardsTotalCount = useAppSelector(state => state.cards.cardsTotalCount)
+  const filterSearchValue = useAppSelector(state => state.cards.filterSearchValue)
 
   const [openActions, setOpenActions] = useState(false)
 
@@ -113,17 +114,19 @@ export const Cards = () => {
 
   const setCurrentPage = (newCurrentPage: number) => {
     dispatch(setCurrentCardsPageAC(newCurrentPage))
-    dispatch(getCardsTC())
   }
 
   const setPageItemsCount = (count: number) => {
     dispatch(setPagePacksCountAC(count))
-    dispatch(getCardsTC())
   }
 
   if (cardsPack_id === '') {
     return <Navigate to={PATH.PACKS} />
   }
+
+  useEffect(() => {
+    dispatch(getCardsTC())
+  }, [page, pageCount, filterSearchValue])
 
   return (
     <div className={'container container-with-table'}>

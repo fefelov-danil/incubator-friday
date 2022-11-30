@@ -4,7 +4,7 @@ import Slider from '@mui/material/Slider/Slider'
 
 import s from './MinMaxCards.module.css'
 
-import { setRerenderAC, setSortMinMaxCardsAC } from 'features/packs/packs-reducer'
+import { setSortMinMaxCardsAC } from 'features/packs/packs-reducer'
 import { useAppDispatch, useAppSelector, useDebounce } from 'utils/hooks'
 
 export const MinMaxCards = () => {
@@ -16,6 +16,7 @@ export const MinMaxCards = () => {
   const rerender = useAppSelector(state => state.packs.rerender)
 
   const [value, setValue] = useState<number[]>([min, max])
+
   const debouncedValue = useDebounce<number[]>(value, 500)
   const minDistance = 1
 
