@@ -81,9 +81,6 @@
   background: transparent;
   border: 0;
 }
-.actions .action:last-of-type {
-  margin-bottom: 0;
-}
 .actions .action svg {
   margin-right: 5px;
 
