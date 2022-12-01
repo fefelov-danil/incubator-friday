@@ -1,18 +1,32 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+
+import CircularProgress from '@mui/material/CircularProgress'
+import { Navigate } from 'react-router-dom'
 
 import s from './Learn.module.css'
 
 import { Button } from 'common/button/Button'
 import { InputRadio } from 'common/inputRadio/InputRadio'
+import { PATH } from 'common/routes/Pages'
 import { CardType } from 'features/cards/cards-reducer'
+import { getLearnCardsTC } from 'features/learn/learn-reducer'
 import { getCard } from 'utils/get-cards'
-import { useAppSelector } from 'utils/hooks'
+import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 export const Learn = () => {
-  const cardPacks = useAppSelector(state => state.packs.cardPacks)
-  const cards = useAppSelector(state => state.cards.cards) as CardType[]
+  const dispatch = useAppDispatch()
+  const learnLoading = useAppSelector(state => state.learn.learnLoading)
+  const cards = useAppSelector(state => state.learn.cards) as CardType[]
   const cardsPack_id = useAppSelector(state => state.cards.currentPackId)
+  const cardPacks = useAppSelector(state => state.packs.cardPacks)
+
   const grades = ['Did not know', 'Forgot', 'A lot of thought', 'Confused', 'Knew the answer']
+
+  useEffect(() => {
+    if (cardsPack_id !== '') {
+      dispatch(getLearnCardsTC(cardsPack_id))
+    }
+  }, [])
 
   const [hideAnswer, setHideAnswer] = useState(true)
 
@@ -27,6 +41,18 @@ export const Learn = () => {
     created: '',
     updated: '',
   })
+
+  if (cardsPack_id === '') {
+    return <Navigate to={PATH.PACKS} />
+  }
+
+  if (learnLoading) {
+    return (
+      <div className={s.learnLoading}>
+        <CircularProgress size={80} />
+      </div>
+    )
+  }
 
   if (card.answer === 'initial answer') {
     setCard(getCard(cards))
@@ -65,11 +91,7 @@ export const Learn = () => {
               {grades.map((grade, i) => {
                 return (
                   <li key={i}>
-                    <InputRadio name={'grade'} id={'grade' + i} />
-                    <label htmlFor={'grade' + i}>{grade}</label>
-                    <div className={s.check}>
-                      <div className={s.inside}></div>
-                    </div>
+                    <InputRadio name={'grade'} id={'grade' + i} value={grade} />
                   </li>
                 )
               })}
