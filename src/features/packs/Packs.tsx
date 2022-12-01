@@ -143,11 +143,11 @@ export const Packs = () => {
                   Private pack
                 </Checkbox>
               </div>
-              <div className={s.modalButtonBlock}>
-                <Button className={s.close} onClick={() => setOpenModal(false)}>
+              <div className={'modalButtonBlock'}>
+                <Button className={'close'} onClick={() => setOpenModal(false)}>
                   No, cancel
                 </Button>
-                <Button className={s.createPack} onClick={addPack}>
+                <Button className={'createPack'} onClick={addPack}>
                   Add pack
                 </Button>
               </div>

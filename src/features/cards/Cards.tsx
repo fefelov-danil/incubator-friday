@@ -15,6 +15,7 @@ import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 import s from './Cards.module.css'
 
 import { Button } from 'common/button/Button'
+import { InputText } from 'common/inputText/InputText'
 import { Paginator } from 'common/paginator/Paginator'
 import { PATH } from 'common/routes/Pages'
 import { createNewCardTC, getCardsTC, setCurrentCardsPageAC } from 'features/cards/cards-reducer'
@@ -142,7 +143,9 @@ export const Cards = () => {
             openFromProps={openModal}
           >
             <div className={s.createCardModal}>
-              <p>Choose a question format</p>
+              <p>
+                <b>Choose a question format</b>
+              </p>
               <select
                 value={questionTypeValue}
                 onChange={e => {
@@ -154,18 +157,28 @@ export const Cards = () => {
                 <option value="Pic">Pic</option>
               </select>
               <div className={s.inputBlock}>
-                Question
-                <Input onChange={onQuestionChangeHandler} value={inputQuestionValue} />
+                <p>
+                  <b>Question</b>
+                </p>
+                <InputText
+                  onChange={onQuestionChangeHandler}
+                  placeholder={'Enter your question'}
+                  value={inputQuestionValue}
+                />
+                <p>
+                  <b>Answer</b>
+                </p>
+                <InputText
+                  onChange={onAnswerChangeHandler}
+                  placeholder={'Enter your answer'}
+                  value={inputAnswerValue}
+                />
               </div>
-              <div className={s.inputBlock}>
-                Answer
-                <Input onChange={onAnswerChangeHandler} value={inputAnswerValue} />
-              </div>
-              <div className={s.modalButtonBlock}>
-                <Button className={s.close} onClick={() => setOpenModal(false)}>
+              <div className={'modalButtonBlock'}>
+                <Button className={'close'} onClick={() => setOpenModal(false)}>
                   Cancel
                 </Button>
-                <Button className={s.createPack} onClick={addNewCard}>
+                <Button className={'createPack'} onClick={addNewCard}>
                   Add card
                 </Button>
               </div>

@@ -98,10 +98,6 @@ p.filterName {
   font-size: 18px;
 }
 
-.createCardModal{
- z-index: 999;
-}
-
 .inputBlock > div{
   display: block;
 
@@ -109,13 +105,24 @@ p.filterName {
   margin-bottom: 30px;
 }
 
+.createCardModal p {
+  margin-bottom: 8px;
+}
+.createCardModal .inputBlock p:last-of-type {
+  margin-top: 20px;
+}
 
-.modalButtonBlock{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
+.createCardModal select {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 9px 5px;
+
+  border: 1px solid #a7a7a7;
+  border-radius: 5px;
+}
+
+.inputBlock input {
+  display: block;
 
   width: 100%;
-  margin-top: 30px;
 }
