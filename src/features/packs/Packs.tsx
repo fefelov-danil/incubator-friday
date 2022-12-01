@@ -26,10 +26,6 @@ import s from 'features/packs/Packs.module.css'
 import { PacksTable } from 'features/packs/table/PacksTable'
 
 export const Packs = () => {
-  const [openModal, setOpenModal] = useState<boolean | null>(null)
-  const [inputValue, setInputValue] = useState<string>('')
-  const [isChecked, setIsChecked] = useState<boolean>(false)
-
   const dispatch = useAppDispatch()
   const cardPacks = useAppSelector(state => state.packs.cardPacks)
   const page = useAppSelector(state => state.packs.page)
@@ -41,6 +37,10 @@ export const Packs = () => {
   const min = useAppSelector(state => state.packs.min)
   const max = useAppSelector(state => state.packs.max)
   const rerender = useAppSelector(state => state.packs.rerender)
+
+  const [openModal, setOpenModal] = useState<boolean | null>(null)
+  const [inputValue, setInputValue] = useState<string>('')
+  const [isChecked, setIsChecked] = useState<boolean>(false)
 
   const [searchParams, setSearchParams] = useSearchParams()
 

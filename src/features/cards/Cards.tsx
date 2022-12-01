@@ -1,13 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
 
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
 import SchoolIcon from '@mui/icons-material/School'
+import { Input } from '@mui/material'
 import IconButton from '@mui/material/IconButton/IconButton'
 import { Navigate, NavLink } from 'react-router-dom'
 
+import { Modal } from '../../common/modal/Modal'
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 
 import s from './Cards.module.css'
@@ -33,8 +35,24 @@ export const Cards = () => {
   const filterSearchValue = useAppSelector(state => state.cards.filterSearchValue)
 
   const [openActions, setOpenActions] = useState(false)
+  const [openModal, setOpenModal] = useState<boolean | null>(null)
+  const [inputQuestionValue, setInputQuestionValue] = useState<string>('')
+  const [inputAnswerValue, setInputAnswerValue] = useState<string>('')
+  const [questionTypeValue, setQuestionTypeValue] = useState<string>('Text')
 
   const actions = useRef(null as HTMLDivElement | null)
+
+  const onQuestionChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setInputQuestionValue(e.currentTarget.value)
+  }
+
+  const onAnswerChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setInputAnswerValue(e.currentTarget.value)
+  }
+
+  const onTypeQuestionChangeHandler = (value: string) => {
+    setQuestionTypeValue(value)
+  }
 
   useEffect(() => {
     if (!openActions) return
@@ -57,8 +75,28 @@ export const Cards = () => {
     dispatch(getCardsTC())
   }, [page, pageCount, filterSearchValue])
 
-  const addNewCard = () => dispatch(createNewCardTC())
+  const addNewCard = () => {
+    setOpenModal(false)
+    if (questionTypeValue === 'Text') {
+      dispatch(
+        createNewCardTC({ cardsPack_id, question: inputQuestionValue, answer: inputAnswerValue })
+      )
+    } else {
+      dispatch(
+        createNewCardTC({
+          cardsPack_id,
+          question: inputQuestionValue,
+          answer: inputAnswerValue,
+          questionImg: 'Pic',
+        })
+      )
+    }
+    setInputQuestionValue('')
+    setInputAnswerValue('')
+  }
+
   const editPack = () => dispatch(updatePackTC({ _id: packId, name: 'edited PACK' }))
+
   const deletePack = () => dispatch(deletePackTC(packId, 'cards'))
 
   const renderMainActions = (myId: string, userId: string) => {
@@ -98,7 +136,41 @@ export const Cards = () => {
               </div>
             </div>
           </div>
-          <Button onClick={addNewCard}>Add New Card</Button>
+          <Modal
+            title={'Add new card'}
+            childrenOpenModal={<Button onClick={() => setOpenModal(true)}>Add new card</Button>}
+            openFromProps={openModal}
+          >
+            <div className={s.createCardModal}>
+              <p>Choose a question format</p>
+              <select
+                value={questionTypeValue}
+                onChange={e => {
+                  onTypeQuestionChangeHandler(e.currentTarget.value)
+                }}
+                id="select"
+              >
+                <option value="Text">Text</option>
+                <option value="Pic">Pic</option>
+              </select>
+              <div className={s.inputBlock}>
+                Question
+                <Input onChange={onQuestionChangeHandler} value={inputQuestionValue} />
+              </div>
+              <div className={s.inputBlock}>
+                Answer
+                <Input onChange={onAnswerChangeHandler} value={inputAnswerValue} />
+              </div>
+              <div className={s.modalButtonBlock}>
+                <Button className={s.close} onClick={() => setOpenModal(false)}>
+                  Cancel
+                </Button>
+                <Button className={s.createPack} onClick={addNewCard}>
+                  Add card
+                </Button>
+              </div>
+            </div>
+          </Modal>
         </div>
       )
     }
