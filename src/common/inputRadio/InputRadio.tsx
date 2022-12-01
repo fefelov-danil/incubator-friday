@@ -9,14 +9,18 @@ type DefaultInputRadioPropsType = DetailedHTMLProps<
 >
 
 type InputPasswordPropsType = DefaultInputRadioPropsType & {
+  value: string
   onChangeRadio?: (value: string) => void
   spanClassName?: string
 }
 
 export const InputRadio: React.FC<InputPasswordPropsType> = ({
   type,
+  value,
+  name,
   onChange,
   onKeyDown,
+  id,
   className,
   spanClassName,
   ...restProps
@@ -25,5 +29,20 @@ export const InputRadio: React.FC<InputPasswordPropsType> = ({
     onChange && onChange(e)
   }
 
-  return <input type="radio" onChange={onChangeCallback} className={s.inputRadio} {...restProps} />
+  return (
+    <div className={s.inpContainer}>
+      <input
+        type="radio"
+        name={name}
+        id={id}
+        value={value}
+        onChange={onChangeCallback}
+        {...restProps}
+      />
+      <label htmlFor={id}>{value}</label>
+      <div className={s.check}>
+        <div className={s.inside}></div>
+      </div>
+    </div>
+  )
 }
