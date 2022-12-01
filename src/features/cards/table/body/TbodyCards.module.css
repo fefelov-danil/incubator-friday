@@ -1,0 +1,85 @@
+.tableBody td {
+  padding: 8px 12px;
+}
+.tableBody th {
+  width: 30%;
+}
+.tableBody td:first-of-type {
+  width: 30%;
+}
+.tableBody .text {
+  overflow: hidden;
+  display: inline-block;
+
+  max-width: 300px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.actions button {
+  padding: 4px;
+}
+.packName button {
+  padding: 0;
+
+  background: transparent;
+  border: 0;
+}
+.stars > div {
+  position: relative;
+
+  display: inline-block;
+}
+.stars > div svg:last-of-type {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.starsAndActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.starsAndActions .stars {
+  margin-right: 15px;
+
+  line-height: 0.7;
+}
+.starsAndActions .actions {
+  display: flex;
+}
+.starsAndActions .actions p {
+  margin-bottom: 15px;
+}
+.actions button {
+  padding: 2px;
+}
+
+.withActions {
+  width: 190px;
+}
+.withoutActions {
+  width: 144px;
+}
+
+.actions .editCardModal p {
+  margin-bottom: 8px;
+}
+.editCardModal .inputBlock p:last-of-type {
+  margin-top: 20px;
+}
+
+.editCardModal select {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 9px 5px;
+
+  border: 1px solid #a7a7a7;
+  border-radius: 5px;
+}
+
+.inputBlock input {
+  display: block;
+
+  width: 100%;
+}

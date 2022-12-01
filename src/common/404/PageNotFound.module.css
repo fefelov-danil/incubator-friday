@@ -1,0 +1,21 @@
+.errorNotFound {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 100%;
+  max-width: 1100px;
+  padding: 50px 70px 70px 70px;
+
+  background-color: rgba(235,235,235,.4);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+.errorNotFound h1 {
+  margin-bottom: 0;
+
+  font-size: 80px;
+}
