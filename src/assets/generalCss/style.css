@@ -175,3 +175,27 @@ span.MuiSlider-root {
 span.css-eg0mwd-MuiSlider-thumb:hover, span.css-eg0mwd-MuiSlider-thumb.Mui-focusVisible {
   box-shadow: 0 0 0 8px rgb(255 0 0 / 16%);
 }
+
+/* Modal buttons */
+.modalButtonBlock {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  margin-top: 30px;
+}
+.modalButtonBlock button.close,
+.modalButtonBlock button.del,
+.modalButtonBlock button.createPack{
+  padding: 5px 28px 6px 28px;
+
+  font-size: 15px;
+}
+.modalButtonBlock button.close {
+  background: #868686;
+}
+.modalButtonBlock button.close:hover {
+  background: #656565;
+}
