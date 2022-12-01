@@ -1,6 +1,11 @@
 .tableBody td {
   padding: 8px 12px;
 }
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
 .actions button {
   padding: 4px;
 }
@@ -35,18 +40,12 @@
   background: #868686;
 }
 
-.editPackModal{
-
-}
-
 .inputBlock > div{
   display: block;
 
   width: 100%;
   margin-bottom: 30px;
 }
-
-
 .modalButtonBlock{
   display: flex;
   flex-direction: row;
