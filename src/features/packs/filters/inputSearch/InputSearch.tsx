@@ -7,6 +7,7 @@ import React, {
 } from 'react'
 
 import SearchIcon from '@mui/icons-material/Search'
+import { useSearchParams } from 'react-router-dom'
 
 import { getCardsTC, setFilterToCardsFromInputSearchAC } from '../../../cards/cards-reducer'
 
