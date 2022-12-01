@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 
-import { useLocation, useParams, useSearchParams } from 'react-router-dom'
+import { Input } from '@mui/material'
+import { useSearchParams } from 'react-router-dom'
 
+import { Checkbox } from '../../common/checkbox/Checkbox'
+import { Modal } from '../../common/modal/Modal'
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 
 import {
@@ -11,6 +14,7 @@ import {
   setFilterToPacksFromInputSearchAC,
   setPagePacksCountAC,
   setRerenderAC,
+  setSortByAllMyAC,
   setSortMinMaxCardsAC,
   setSortPacksValueAC,
 } from './packs-reducer'
@@ -28,16 +32,54 @@ export const Packs = () => {
   const pageCount = useAppSelector(state => state.packs.pageCount)
   const cardPacksTotalCount = useAppSelector(state => state.packs.cardPacksTotalCount)
   const filterSearchValue = useAppSelector(state => state.packs.filterSearchValue)
+  const sortByAllMy = useAppSelector(state => state.packs.sortByAllMy)
   const sortPacksValue = useAppSelector(state => state.packs.sortPacksValue)
   const min = useAppSelector(state => state.packs.min)
   const max = useAppSelector(state => state.packs.max)
   const rerender = useAppSelector(state => state.packs.rerender)
 
-  //const location = useLocation()
+  const [openModal, setOpenModal] = useState<boolean | null>(null)
+  const [inputValue, setInputValue] = useState<string>('')
+  const [isChecked, setIsChecked] = useState<boolean>(false)
+
   const [searchParams, setSearchParams] = useSearchParams()
 
+  useEffect(() => {
+    const fromUrlPage = searchParams.get('page')
+    const fromUrlPageCount = searchParams.get('pageCount')
+    const fromUrlFilterSearchValue = searchParams.get('filterSearchValue')
+    const fromUrlSortByAllMy = searchParams.get('sortByAllMy')
+    const fromUrlSortPacksValue = searchParams.get('sortPacksValue')
+    const fromUrlMin = searchParams.get('min')
+    const fromUrlMax = searchParams.get('max')
+
+    if (fromUrlPage !== null) {
+      dispatch(setCurrentPacksPageAC(Number(fromUrlPage)))
+    }
+    if (fromUrlPageCount !== null) {
+      dispatch(setPagePacksCountAC(Number(fromUrlPageCount)))
+    }
+    if (fromUrlFilterSearchValue !== null) {
+      dispatch(setFilterToPacksFromInputSearchAC(fromUrlFilterSearchValue))
+    }
+    if (fromUrlSortByAllMy === 'all' || fromUrlSortByAllMy === 'my') {
+      dispatch(setSortByAllMyAC(fromUrlSortByAllMy))
+    }
+    if (fromUrlSortPacksValue !== null) {
+      dispatch(setSortPacksValueAC(fromUrlSortPacksValue))
+    }
+    if (fromUrlMin !== null || fromUrlMax !== null) {
+      dispatch(
+        setSortMinMaxCardsAC(Number(searchParams.get('min')), Number(searchParams.get('max')))
+      )
+    }
+  }, [])
+
   const addPack = () => {
-    dispatch(addPackTC({ cardsPack: { name: 'PAAACK!!!' } }))
+    dispatch(addPackTC({ cardsPack: { name: inputValue, private: isChecked } }))
+    setInputValue('')
+    setIsChecked(false)
+    setOpenModal(false)
   }
 
   const setCurrentPage = (newCurrentPage: number) => {
@@ -48,27 +90,24 @@ export const Packs = () => {
     dispatch(setPagePacksCountAC(count))
   }
 
-  useEffect(() => {
-    dispatch(setCurrentPacksPageAC(Number(searchParams.get('page'))))
-    dispatch(
-      setPagePacksCountAC(
-        Number(searchParams.get('pageCount')) ? Number(searchParams.get('pageCount')) : 5
-      )
-    )
-    dispatch(setFilterToPacksFromInputSearchAC(searchParams.get('filterSearchValue') + ''))
-    dispatch(setSortPacksValueAC(searchParams.get('sortPacksValue') + ''))
-    dispatch(setSortMinMaxCardsAC(Number(searchParams.get('min')), Number(searchParams.get('max'))))
-  }, [])
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setInputValue(e.currentTarget.value)
+  }
+
+  const onCheckBoxChangeHandler = (e: boolean) => {
+    setIsChecked(e)
+  }
 
   useEffect(() => {
-    console.log(
-      Number(searchParams.get('page')),
-      Number(searchParams.get('pageCount')),
-      searchParams.get('filterSearchValue') + '',
-      searchParams.get('sortPacksValue') + '',
-      Number(searchParams.get('min')),
-      Number(searchParams.get('max'))
-    )
+    setSearchParams({
+      page: `${page}`,
+      pageCount: `${pageCount}`,
+      filterSearchValue: `${filterSearchValue}`,
+      sortByAllMy: `${sortByAllMy}`,
+      sortPacksValue: `${sortPacksValue}`,
+      min: `${min}`,
+      max: `${max}`,
+    })
 
     if (!rerender) {
       dispatch(setRerenderAC(true))
@@ -76,18 +115,9 @@ export const Packs = () => {
       return
     }
 
-    setSearchParams({
-      page: `${page}`,
-      pageCount: `${pageCount}`,
-      filterSearchValue: `${filterSearchValue}`,
-      sortPacksValue: `${sortPacksValue}`,
-      min: `${min}`,
-      max: `${max}`,
-    })
-
     dispatch(getPacksTC())
 
-    if (cardPacks !== null) {
+    if (cardPacks === null) {
       dispatch(setRerenderAC(false))
     }
   }, [page, pageCount, filterSearchValue, sortPacksValue, min, max])
@@ -97,7 +127,32 @@ export const Packs = () => {
       <div className={s.pacs}>
         <div className={s.titleAndBtn}>
           <h1>Packs list</h1>
-          <Button onClick={addPack}>Add new pack</Button>
+          <Modal
+            title={'Add new pack'}
+            childrenOpenModal={<Button onClick={() => setOpenModal(true)}>Add new pack</Button>}
+            openFromProps={openModal}
+          >
+            <div className={s.createPackModal}>
+              <div className={s.inputBlock}>
+                <Input onChange={onChangeHandler} value={inputValue} />
+                <Checkbox
+                  checked={isChecked}
+                  onChangeChecked={onCheckBoxChangeHandler}
+                  className={s.checkbox}
+                >
+                  Private pack
+                </Checkbox>
+              </div>
+              <div className={'modalButtonBlock'}>
+                <Button className={'close'} onClick={() => setOpenModal(false)}>
+                  No, cancel
+                </Button>
+                <Button className={'createPack'} onClick={addPack}>
+                  Add pack
+                </Button>
+              </div>
+            </div>
+          </Modal>
         </div>
         <Filters />
         <PacksTable />

@@ -1,7 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import Slider from '@mui/material/Slider/Slider'
-import { useSearchParams } from 'react-router-dom'
 
 import s from './MinMaxCards.module.css'
 
@@ -14,10 +13,10 @@ export const MinMaxCards = () => {
   const appStatus = useAppSelector(state => state.app.appStatus)
   const min = useAppSelector(state => state.packs.min)
   const max = useAppSelector(state => state.packs.max)
-
-  const [searchParams, setSearchParams] = useSearchParams()
+  const rerender = useAppSelector(state => state.packs.rerender)
 
   const [value, setValue] = useState<number[]>([min, max])
+
   const debouncedValue = useDebounce<number[]>(value, 500)
   const minDistance = 1
 
@@ -26,7 +25,9 @@ export const MinMaxCards = () => {
   }, [min, max])
 
   useEffect(() => {
-    setValue([Number(searchParams.get('min')), Number(searchParams.get('max'))])
+    if (!rerender) {
+      setValue([0, maxCardsCount])
+    }
   }, [maxCardsCount])
 
   useEffect(() => {

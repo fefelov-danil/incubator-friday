@@ -1,5 +1,6 @@
 .modal {
   position: fixed;
+  z-index: 10;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -17,6 +18,7 @@
 }
 .screenBg {
   position: absolute;
+  z-index: 10;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -31,12 +33,14 @@
 }
 .screenBgIsOpened {
   display: block;
+
 }
 .titleAndClose h2 {
   margin-bottom: 20px;
   padding: 5px 30px;
 
   font-size: 26px;
+  color: #222;
   text-align: left;
 
   background: #E8E8E8;

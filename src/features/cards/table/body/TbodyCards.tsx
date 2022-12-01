@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { ChangeEvent, useState } from 'react'
 
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
@@ -11,6 +11,7 @@ import TableRow from '@mui/material/TableRow'
 import s from './TbodyCards.module.css'
 
 import { Button } from 'common/button/Button'
+import { InputText } from 'common/inputText/InputText'
 import { Modal } from 'common/modal/Modal'
 import { deleteCardTC, updateCardTC } from 'features/cards/cards-reducer'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
@@ -20,41 +21,130 @@ export const TbodyCards = () => {
 
   const cards = useAppSelector(state => state.cards.cards)
   const myId = useAppSelector(state => state.auth.profile._id)
+  const appStatus = useAppSelector(state => state.app.appStatus)
 
   const [openModal, setOpenModal] = useState<boolean | null>(null)
+  const [openRenameModal, setOpenRenameModal] = useState<boolean | null>(null)
+  const [inputQuestionValue, setInputQuestionValue] = useState<string>('')
+  const [inputAnswerValue, setInputAnswerValue] = useState<string>('')
+  const [questionTypeValue, setQuestionTypeValue] = useState<string>('Text')
+
+  const getInputValues = (cardId: string) => {
+    const card = cards?.find(c => c._id === cardId)
+
+    if (card) {
+      setInputQuestionValue(card.question)
+      setInputAnswerValue(card.answer)
+    }
+    if (card?.questionImg && card?.questionImg !== '') {
+      setQuestionTypeValue('Pic')
+    } else {
+      setQuestionTypeValue('Text')
+    }
+  }
 
   const editPack = (cardId: string) => {
-    dispatch(updateCardTC({ _id: cardId, question: 'updated question' }))
+    questionTypeValue === 'Text'
+      ? dispatch(
+          updateCardTC({ _id: cardId, question: inputQuestionValue, answer: inputAnswerValue })
+        )
+      : dispatch(
+          updateCardTC({
+            _id: cardId,
+            question: inputQuestionValue,
+            answer: inputAnswerValue,
+            questionImg: 'Pic',
+          })
+        )
+    setOpenRenameModal(false)
   }
-  const deletePack = (cardId: string) => {
+
+  const deleteCard = (cardId: string) => {
     dispatch(deleteCardTC(cardId))
     setOpenModal(false)
+  }
+
+  const onQuestionChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setInputQuestionValue(e.currentTarget.value)
+  }
+
+  const onAnswerChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setInputAnswerValue(e.currentTarget.value)
+  }
+
+  const onTypeQuestionChangeHandler = (value: string) => {
+    setQuestionTypeValue(value)
   }
 
   const renderActions = (myId: string, userId: string, cardId: string) => {
     if (myId === userId) {
       return (
         <div className={s.actions}>
-          <IconButton onClick={() => editPack(cardId)}>
-            <EditIcon sx={{ fontSize: 19 }} />
-          </IconButton>
+          <Modal
+            setOpenModal={setOpenRenameModal}
+            title={'Edit card'}
+            childrenOpenModal={
+              <IconButton onClick={() => getInputValues(cardId)} disabled={appStatus === 'loading'}>
+                <EditIcon sx={{ fontSize: 19 }} />
+              </IconButton>
+            }
+            openFromProps={openRenameModal}
+          >
+            <div className={s.editCardModal}>
+              <p>
+                <b>Choose a question format</b>
+              </p>
+              <select
+                value={questionTypeValue}
+                onChange={e => {
+                  onTypeQuestionChangeHandler(e.currentTarget.value)
+                }}
+                id="select"
+              >
+                <option value="Text">Text question</option>
+                <option value="Pic">Picture</option>
+              </select>
+              <div className={s.inputBlock}>
+                <p>
+                  <b>Question</b>
+                </p>
+                <InputText onChange={onQuestionChangeHandler} value={inputQuestionValue} />
+                <p>
+                  <b>Answer</b>
+                </p>
+                <InputText onChange={onAnswerChangeHandler} value={inputAnswerValue} />
+              </div>
+              <div className={'modalButtonBlock'}>
+                <Button className={'close'} onClick={() => setOpenRenameModal(false)}>
+                  Cancel
+                </Button>
+                <Button className={'createPack'} onClick={() => editPack(cardId)}>
+                  Save
+                </Button>
+              </div>
+            </div>
+          </Modal>
           <Modal
             title={'Delete card'}
             setOpenModal={setOpenModal}
             childrenOpenModal={
-              <IconButton>
+              <IconButton onClick={() => getInputValues(cardId)} disabled={appStatus === 'loading'}>
                 <DeleteIcon sx={{ fontSize: 19 }} />
               </IconButton>
             }
             openFromProps={openModal}
           >
-            <p>Do you really want to remove this card?</p>
-            <Button className={s.close} onClick={() => setOpenModal(false)}>
-              No, close
-            </Button>
-            <Button className={s.del} onClick={() => deletePack(cardId)}>
-              Delete
-            </Button>
+            <p>
+              Do you really want to delete card - <b>{inputQuestionValue}</b>
+            </p>
+            <div className={'modalButtonBlock'}>
+              <Button className={'close'} onClick={() => setOpenModal(false)}>
+                Close
+              </Button>
+              <Button className={'del'} onClick={() => deleteCard(cardId)}>
+                Delete
+              </Button>
+            </div>
           </Modal>
         </div>
       )

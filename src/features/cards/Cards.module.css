@@ -37,6 +37,10 @@
   display: flex;
   align-items: center;
 }
+.learnBtn {
+  font-family: 'Oswald', sans-serif;
+  color: #fff;
+}
 .actions {
   position: relative;
 }
@@ -92,4 +96,33 @@ p.filterName {
   margin-bottom: 6px;
 
   font-size: 18px;
+}
+
+.inputBlock > div{
+  display: block;
+
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.createCardModal p {
+  margin-bottom: 8px;
+}
+.createCardModal .inputBlock p:last-of-type {
+  margin-top: 20px;
+}
+
+.createCardModal select {
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 9px 5px;
+
+  border: 1px solid #a7a7a7;
+  border-radius: 5px;
+}
+
+.inputBlock input {
+  display: block;
+
+  width: 100%;
 }

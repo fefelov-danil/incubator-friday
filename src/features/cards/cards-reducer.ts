@@ -2,7 +2,7 @@ import { AxiosError } from 'axios'
 
 import { errorUtils } from '../../utils/errors-handler'
 
-import { cardsAPI, GetCardsResponseType, UpdateCardType } from './cards-API'
+import { cardsAPI, CreateCardRequestType, GetCardsResponseType, UpdateCardType } from './cards-API'
 
 import { setAppStatusAC } from 'app/app-reducer'
 import { AppDispatch, RootState } from 'app/store'
@@ -126,13 +126,9 @@ export const getCardsTC = () => async (dispatch: AppDispatch, getState: () => Ro
   }
 }
 
-export const createNewCardTC = () => async (dispatch: AppDispatch, getState: () => RootState) => {
-  const cardsPack_id = getState().cards.currentPackId
-
+export const createNewCardTC = (data: CreateCardRequestType) => async (dispatch: AppDispatch) => {
   try {
-    await cardsAPI.addCard({
-      cardsPack_id,
-    })
+    await cardsAPI.addCard(data)
     dispatch(getCardsTC())
   } catch (err) {
     const error = err as Error | AxiosError<{ error: string }>
@@ -155,9 +151,11 @@ export const deleteCardTC = (id: string) => async (dispatch: AppDispatch) => {
 }
 
 export const updateCardTC = (data: UpdateCardType) => async (dispatch: AppDispatch) => {
+  dispatch(setAppStatusAC('loading'))
   try {
     await cardsAPI.updateCard(data)
     dispatch(getCardsTC())
+    dispatch(setAppStatusAC('succeeded'))
   } catch (err) {
     const error = err as Error | AxiosError<{ error: string }>
 
@@ -186,4 +184,5 @@ export type CardType = {
   user_id: string
   created: string
   updated: string
+  questionImg?: string
 }

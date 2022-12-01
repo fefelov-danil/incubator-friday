@@ -44,8 +44,6 @@ export const packsReducer = (
       return { ...state, pageCount: action.count }
     case 'PACKS/SET-SORT-MY-ALL':
       return { ...state, sortByAllMy: action.sortByAllMy }
-    case 'PACKS/SET-SORT-MIN-MAX-COUNT-CARDS':
-      return { ...state, minCardsCount: action.minCardsCount, maxCardsCount: action.maxCardsCount }
     case 'PACKS/SET-SORT-MIN-MAX-CARDS':
       return { ...state, min: action.min, max: action.max }
     case 'PACKS/SET-FILTER-TO-PACKS-FROM-INPUT-SEARCH':
@@ -96,14 +94,6 @@ export const setSortMinMaxCardsAC = (min: number, max: number) => {
   } as const
 }
 
-export const setSortMinMaxCountCardsAC = (minCardsCount: number, maxCardsCount: number) => {
-  return {
-    type: 'PACKS/SET-SORT-MIN-MAX-COUNT-CARDS',
-    minCardsCount,
-    maxCardsCount,
-  } as const
-}
-
 export const setFilterToPacksFromInputSearchAC = (searchValue: string) => {
   return {
     type: 'PACKS/SET-FILTER-TO-PACKS-FROM-INPUT-SEARCH',
@@ -122,6 +112,13 @@ export const setRerenderAC = (rerender: boolean) => {
   return {
     type: 'PACKS/SET-RERENDER',
     rerender,
+  } as const
+}
+
+export const addNewPackAC = (name: string) => {
+  return {
+    type: 'PACKS/ADD-NEW-PACK',
+    name,
   } as const
 }
 
@@ -154,6 +151,8 @@ export const getPacksTC =
       })
 
       dispatch(setPacksAC(res.data))
+
+      return res.data
     } catch (err) {
       const error = err as Error | AxiosError<{ error: string }>
 
@@ -214,10 +213,10 @@ export type PacksActionsType =
   | ReturnType<typeof setPagePacksCountAC>
   | ReturnType<typeof setSortByAllMyAC>
   | ReturnType<typeof setSortMinMaxCardsAC>
-  | ReturnType<typeof setSortMinMaxCountCardsAC>
   | ReturnType<typeof setFilterToPacksFromInputSearchAC>
   | ReturnType<typeof setSortPacksValueAC>
   | ReturnType<typeof setRerenderAC>
+  | ReturnType<typeof addNewPackAC>
 
 export type PackType = {
   _id: string
