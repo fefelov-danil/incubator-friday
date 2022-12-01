@@ -68,62 +68,66 @@ export const TbodyPacks = () => {
   const renderActions = (myId: string, userId: string, packId: string) => {
     if (myId === userId) {
       return (
-        <TableCell className={s.actions} align="right">
-          <IconButton disabled={appStatus === 'loading'} onClick={() => studyPack(packId)}>
-            <SchoolIcon sx={{ fontSize: 19 }} />
-          </IconButton>
-          <Modal
-            title={'Pack name'}
-            setOpenModal={setOpenRenameModal}
-            childrenOpenModal={
-              <IconButton onClick={() => getPackParam(packId)} disabled={appStatus === 'loading'}>
-                <EditIcon sx={{ fontSize: 19 }} />
-              </IconButton>
-            }
-            openFromProps={openRenameModal}
-          >
-            <div className={s.editPackModal}>
-              <div className={s.inputBlock}>
-                <Input onChange={onChangeHandler} value={inputValue} />
-                <Checkbox
-                  checked={isChecked}
-                  onChangeChecked={onCheckBoxChangeHandler}
-                  className={s.checkbox}
-                >
-                  Private pack
-                </Checkbox>
+        <TableCell align="right">
+          <div className={s.actions}>
+            <IconButton disabled={appStatus === 'loading'} onClick={() => studyPack(packId)}>
+              <SchoolIcon sx={{ fontSize: 19 }} />
+            </IconButton>
+            <Modal
+              title={'Pack name'}
+              setOpenModal={setOpenRenameModal}
+              childrenOpenModal={
+                <IconButton onClick={() => getPackParam(packId)} disabled={appStatus === 'loading'}>
+                  <EditIcon sx={{ fontSize: 19 }} />
+                </IconButton>
+              }
+              openFromProps={openRenameModal}
+            >
+              <div className={s.editPackModal}>
+                <div className={s.inputBlock}>
+                  <Input onChange={onChangeHandler} value={inputValue} />
+                  <Checkbox
+                    checked={isChecked}
+                    onChangeChecked={onCheckBoxChangeHandler}
+                    className={s.checkbox}
+                  >
+                    Private pack
+                  </Checkbox>
+                </div>
+                <div className={s.modalButtonBlock}>
+                  <Button className={s.close} onClick={() => setOpenRenameModal(false)}>
+                    Cancel
+                  </Button>
+                  <Button className={s.del} onClick={() => editPack(packId)}>
+                    Save
+                  </Button>
+                </div>
               </div>
+            </Modal>
+
+            <Modal
+              title={'Delete pack'}
+              setOpenModal={setOpenModal}
+              childrenOpenModal={
+                <IconButton onClick={() => getPackParam(packId)} disabled={appStatus === 'loading'}>
+                  <DeleteIcon sx={{ fontSize: 19 }} />
+                </IconButton>
+              }
+              openFromProps={openModal}
+            >
+              <p>
+                Do you really want to remove <b>{inputValue}</b>?
+              </p>
               <div className={s.modalButtonBlock}>
-                <Button className={s.close} onClick={() => setOpenRenameModal(false)}>
+                <Button className={s.close} onClick={() => setOpenModal(false)}>
                   Cancel
                 </Button>
-                <Button className={s.del} onClick={() => editPack(packId)}>
-                  Save
+                <Button className={s.del} onClick={() => deletePack(packId)}>
+                  Delete
                 </Button>
               </div>
-            </div>
-          </Modal>
-
-          <Modal
-            title={'Delete pack'}
-            setOpenModal={setOpenModal}
-            childrenOpenModal={
-              <IconButton onClick={() => getPackParam(packId)} disabled={appStatus === 'loading'}>
-                <DeleteIcon sx={{ fontSize: 19 }} />
-              </IconButton>
-            }
-            openFromProps={openModal}
-          >
-            <p>
-              Do you really want to remove <b>{inputValue}</b>?
-            </p>
-            <Button className={s.close} onClick={() => setOpenModal(false)}>
-              No, close
-            </Button>
-            <Button className={s.del} onClick={() => deletePack(packId)}>
-              Delete
-            </Button>
-          </Modal>
+            </Modal>
+          </div>
         </TableCell>
       )
     } else {

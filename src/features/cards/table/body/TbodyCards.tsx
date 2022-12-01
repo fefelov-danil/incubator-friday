@@ -3,7 +3,6 @@ import React, { ChangeEvent, useState } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import StarIcon from '@mui/icons-material/Star'
-import { Input } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
@@ -12,6 +11,7 @@ import TableRow from '@mui/material/TableRow'
 import s from './TbodyCards.module.css'
 
 import { Button } from 'common/button/Button'
+import { InputText } from 'common/inputText/InputText'
 import { Modal } from 'common/modal/Modal'
 import { deleteCardTC, updateCardTC } from 'features/cards/cards-reducer'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
@@ -91,7 +91,9 @@ export const TbodyCards = () => {
             openFromProps={openRenameModal}
           >
             <div className={s.editCardModal}>
-              <p>Choose a question format</p>
+              <p>
+                <b>Choose a question format</b>
+              </p>
               <select
                 value={questionTypeValue}
                 onChange={e => {
@@ -99,22 +101,24 @@ export const TbodyCards = () => {
                 }}
                 id="select"
               >
-                <option value="Text">Text</option>
-                <option value="Pic">Pic</option>
+                <option value="Text">Text question</option>
+                <option value="Pic">Picture</option>
               </select>
               <div className={s.inputBlock}>
-                Question
-                <Input onChange={onQuestionChangeHandler} value={inputQuestionValue} />
+                <p>
+                  <b>Question</b>
+                </p>
+                <InputText onChange={onQuestionChangeHandler} value={inputQuestionValue} />
+                <p>
+                  <b>Answer</b>
+                </p>
+                <InputText onChange={onAnswerChangeHandler} value={inputAnswerValue} />
               </div>
-              <div className={s.inputBlock}>
-                Answer
-                <Input onChange={onAnswerChangeHandler} value={inputAnswerValue} />
-              </div>
-              <div className={s.modalButtonBlock}>
-                <Button className={s.close} onClick={() => setOpenRenameModal(false)}>
+              <div className={'modalButtonBlock'}>
+                <Button className={'close'} onClick={() => setOpenRenameModal(false)}>
                   Cancel
                 </Button>
-                <Button className={s.createPack} onClick={() => editPack(cardId)}>
+                <Button className={'createPack'} onClick={() => editPack(cardId)}>
                   Save
                 </Button>
               </div>
@@ -133,12 +137,14 @@ export const TbodyCards = () => {
             <p>
               Do you really want to delete card - <b>{inputQuestionValue}</b>
             </p>
-            <Button className={s.close} onClick={() => setOpenModal(false)}>
-              Close
-            </Button>
-            <Button className={s.del} onClick={() => deleteCard(cardId)}>
-              Delete
-            </Button>
+            <div className={'modalButtonBlock'}>
+              <Button className={'close'} onClick={() => setOpenModal(false)}>
+                Close
+              </Button>
+              <Button className={'del'} onClick={() => deleteCard(cardId)}>
+                Delete
+              </Button>
+            </div>
           </Modal>
         </div>
       )
