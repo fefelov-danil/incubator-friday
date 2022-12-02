@@ -157,7 +157,7 @@ export const Cards = () => {
                 >
                   <div className={s.editPackModal}>
                     <div className={s.inputBlock}>
-                      <Input onChange={onChangeHandler} value={inputValue} />
+                      <InputText onChange={onChangeHandler} value={inputValue} />
                       <Checkbox
                         checked={isChecked}
                         onChangeChecked={onCheckBoxChangeHandler}
