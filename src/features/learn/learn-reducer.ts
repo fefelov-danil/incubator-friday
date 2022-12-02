@@ -1,20 +1,18 @@
 import { AxiosError } from 'axios'
 
+import { setAppStatusAC } from 'app/app-reducer'
 import { AppDispatch, RootState } from 'app/store'
 import { cardsAPI, GetCardsResponseType } from 'features/cards/cards-API'
 import { CardType } from 'features/cards/cards-reducer'
+import { learnAPI } from 'features/learn/learn-API'
 import { errorUtils } from 'utils/errors-handler'
 
 const learnInitialState = {
   cards: null as CardType[] | null,
   cardsTotalCount: 0,
-  maxGrade: 0,
-  minGrade: 0,
-  page: 1,
-  pageCount: 5,
+  pageCount: 150,
   packUserId: '',
-  sortCardsValue: '0updated',
-  filterSearchValue: '',
+  questionsCompleted: false,
   learnLoading: true,
 }
 
@@ -28,20 +26,18 @@ export const learnReducer = (
         ...state,
         cards: action.data.cards,
         cardsTotalCount: action.data.cardsTotalCount,
-        maxGrade: action.data.maxGrade,
-        minGrade: action.data.minGrade,
-        page: action.data.page,
-        pageCount: action.data.pageCount,
         packUserId: action.data.packUserId,
       }
-    case 'LEARN/SET-LEARN-LOADING':
+    case 'LEARN/DEL-STUDIED-CARD':
       return {
         ...state,
-        learnLoading: action.learnLoading,
+        cards: action.cards,
       }
+    case 'LEARN/QUESTIONS-COMPLETED':
+      return { ...state, questionsCompleted: action.completed }
+    default:
+      return state
   }
-
-  return state
 }
 
 // Actions
@@ -52,29 +48,34 @@ export const setLearnCardsAC = (data: GetCardsResponseType) => {
   } as const
 }
 
-export const setLearnLoading = (learnLoading: boolean) => {
+export const deleteStudiedCardAC = (cards: CardType[]) => {
   return {
-    type: 'LEARN/SET-LEARN-LOADING',
-    learnLoading,
+    type: 'LEARN/DEL-STUDIED-CARD',
+    cards,
+  } as const
+}
+
+export const questionsCompletedAC = (completed: boolean) => {
+  return {
+    type: 'LEARN/QUESTIONS-COMPLETED',
+    completed,
   } as const
 }
 
 // Thunks
-export const getLearnCardsTC =
+export const getCardsForLearnTC =
   (cardsPack_id: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
-    dispatch(setLearnLoading(true))
-    const page = 1
-    const pageCount = getState().packs.pageCount
+    dispatch(setAppStatusAC('loading'))
+    const pageCount = getState().learn.pageCount
 
     try {
       const res = await cardsAPI.getCards({
         cardsPack_id,
-        page,
         pageCount,
       })
 
       dispatch(setLearnCardsAC(res.data))
-      dispatch(setLearnLoading(false))
+      dispatch(setAppStatusAC('succeeded'))
     } catch (err) {
       const error = err as Error | AxiosError<{ error: string }>
 
@@ -82,8 +83,27 @@ export const getLearnCardsTC =
     }
   }
 
+export const setGrade = (grade: number, card_id: string) => async (dispatch: AppDispatch) => {
+  dispatch(setAppStatusAC('loading'))
+  try {
+    const res = await learnAPI.updateGrade({
+      grade,
+      card_id,
+    })
+
+    dispatch(setAppStatusAC('succeeded'))
+
+    return res.data
+  } catch (err) {
+    const error = err as Error | AxiosError<{ error: string }>
+
+    errorUtils(error, dispatch)
+  }
+}
+
 // Types
 export type LearnInitialStateType = typeof learnInitialState
 export type LearnActionsType =
   | ReturnType<typeof setLearnCardsAC>
-  | ReturnType<typeof setLearnLoading>
+  | ReturnType<typeof deleteStudiedCardAC>
+  | ReturnType<typeof questionsCompletedAC>
