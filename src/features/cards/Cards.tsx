@@ -5,7 +5,6 @@ import EditIcon from '@mui/icons-material/Edit'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
 import SchoolIcon from '@mui/icons-material/School'
-import { Input } from '@mui/material'
 import IconButton from '@mui/material/IconButton/IconButton'
 import { Navigate, NavLink } from 'react-router-dom'
 
@@ -21,6 +20,7 @@ import { Paginator } from 'common/paginator/Paginator'
 import { PATH } from 'common/routes/Pages'
 import { createNewCardTC, getCardsTC, setCurrentCardsPageAC } from 'features/cards/cards-reducer'
 import { CardsTable } from 'features/cards/table/CardsTable'
+import { setCardsPackIdInLearnAC } from 'features/learn/learn-reducer'
 import { InputSearch } from 'features/packs/filters/inputSearch/InputSearch'
 import { deletePackTC, setPagePacksCountAC, updatePackTC } from 'features/packs/packs-reducer'
 
@@ -75,6 +75,10 @@ export const Cards = () => {
       document.removeEventListener('click', handleClick)
     }
   }, [openActions])
+
+  useEffect(() => {
+    dispatch(setCardsPackIdInLearnAC(cardsPack_id))
+  }, [cardsPack_id])
 
   useEffect(() => {
     dispatch(getCardsTC())

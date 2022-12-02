@@ -34,13 +34,13 @@ const grades = ['Did not know', 'Forgot', 'A lot of thought', 'Confused', 'Knew 
 export const Learn = () => {
   const dispatch = useAppDispatch()
   const cards = useAppSelector(state => state.learn.cards)
-  const cardsPack_id = useAppSelector(state => state.cards.currentPackId)
+  const cardsPack_id = useAppSelector(state => state.learn.cardsPack_id)
   const questionsCompleted = useAppSelector(state => state.learn.questionsCompleted)
   const cardPacks = useAppSelector(state => state.packs.cardPacks)
 
   useEffect(() => {
     if (cardsPack_id !== '') {
-      dispatch(getCardsForLearnTC(cardsPack_id))
+      dispatch(getCardsForLearnTC())
       dispatch(questionsCompletedAC(false))
     }
   }, [])
@@ -71,6 +71,7 @@ export const Learn = () => {
   }
 
   const nextQuestion = async () => {
+    setHideAnswer(true)
     await dispatch(setGrade(currentGrade, card._id))
 
     if (cards && cards.length === 1) {
@@ -81,9 +82,10 @@ export const Learn = () => {
 
     if (cards) {
       const index = cards.findIndex(c => c._id === card._id)
-      const newCards = cards.splice(index, 1)
 
-      dispatch(deleteStudiedCardAC(newCards))
+      cards.splice(index, 1)
+
+      dispatch(deleteStudiedCardAC([...cards]))
     }
   }
 
