@@ -9,6 +9,7 @@ import { Input } from '@mui/material'
 import IconButton from '@mui/material/IconButton/IconButton'
 import { Navigate, NavLink } from 'react-router-dom'
 
+import { Checkbox } from '../../common/checkbox/Checkbox'
 import { Modal } from '../../common/modal/Modal'
 import { useAppDispatch, useAppSelector } from '../../utils/hooks'
 
@@ -37,9 +38,12 @@ export const Cards = () => {
 
   const [openActions, setOpenActions] = useState(false)
   const [openModal, setOpenModal] = useState<boolean | null>(null)
+  const [openRenameModal, setOpenRenameModal] = useState<boolean | null>(null)
   const [inputQuestionValue, setInputQuestionValue] = useState<string>('')
   const [inputAnswerValue, setInputAnswerValue] = useState<string>('')
   const [questionTypeValue, setQuestionTypeValue] = useState<string>('Text')
+  const [inputValue, setInputValue] = useState<string | undefined>('')
+  const [isChecked, setIsChecked] = useState<boolean | undefined>(false)
 
   const actions = useRef(null as HTMLDivElement | null)
 
@@ -96,9 +100,21 @@ export const Cards = () => {
     setInputAnswerValue('')
   }
 
-  const editPack = () => dispatch(updatePackTC({ _id: packId, name: 'edited PACK' }))
+  const editPack = () => {
+    dispatch(updatePackTC({ _id: cardsPack_id, name: inputValue, private: isChecked })) //  _id колоды обязательно
+    setOpenRenameModal(false)
+    setInputValue('')
+  }
 
   const deletePack = () => dispatch(deletePackTC(packId, 'cards'))
+
+  const onChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setInputValue(e.currentTarget.value)
+  }
+
+  const onCheckBoxChangeHandler = (e: boolean) => {
+    setIsChecked(e)
+  }
 
   const renderMainActions = (myId: string, userId: string) => {
     let packName
@@ -125,9 +141,37 @@ export const Cards = () => {
                     : `${s.actionsPopUp} ${s.actionsIsClosed}`
                 }
               >
-                <button className={s.action} onClick={editPack}>
-                  <EditIcon sx={{ fontSize: 19 }} /> Edit
-                </button>
+                <Modal
+                  title={'Pack name'}
+                  setOpenModal={setOpenRenameModal}
+                  childrenOpenModal={
+                    <button className={s.action}>
+                      <EditIcon sx={{ fontSize: 19 }} /> Edit
+                    </button>
+                  }
+                  openFromProps={openRenameModal}
+                >
+                  <div className={s.editPackModal}>
+                    <div className={s.inputBlock}>
+                      <Input onChange={onChangeHandler} value={inputValue} />
+                      <Checkbox
+                        checked={isChecked}
+                        onChangeChecked={onCheckBoxChangeHandler}
+                        className={s.checkbox}
+                      >
+                        Private pack
+                      </Checkbox>
+                    </div>
+                    <div className={s.modalButtonBlock}>
+                      <Button className={s.close} onClick={() => setOpenRenameModal(false)}>
+                        Cancel
+                      </Button>
+                      <Button className={s.del} onClick={() => editPack()}>
+                        Save
+                      </Button>
+                    </div>
+                  </div>
+                </Modal>
                 <button className={s.action} onClick={deletePack}>
                   <DeleteIcon sx={{ fontSize: 19 }} /> Delete
                 </button>

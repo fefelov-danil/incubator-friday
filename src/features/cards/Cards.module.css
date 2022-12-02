@@ -48,7 +48,7 @@
   margin-left: 5px;
   padding: 2px;
 
-  border: 1px solid #AFAFAF;
+  border: 1px solid #afafaf;
 }
 .actionsPopUp {
   position: absolute;
@@ -95,7 +95,7 @@ p.filterName {
   font-size: 18px;
 }
 
-.inputBlock > div{
+.inputBlock > div {
   display: block;
 
   width: 100%;
@@ -122,4 +122,14 @@ p.filterName {
   display: block;
 
   width: 100%;
+}
+
+.modalButtonBlock {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  margin-top: 30px;
 }
