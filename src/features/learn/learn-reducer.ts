@@ -8,6 +8,7 @@ import { learnAPI } from 'features/learn/learn-API'
 import { errorUtils } from 'utils/errors-handler'
 
 const learnInitialState = {
+  cardsPack_id: '',
   cards: null as CardType[] | null,
   cardsTotalCount: 0,
   pageCount: 150,
@@ -35,6 +36,8 @@ export const learnReducer = (
       }
     case 'LEARN/QUESTIONS-COMPLETED':
       return { ...state, questionsCompleted: action.completed }
+    case 'LEARN/SET-CARDS-PACK-ID':
+      return { ...state, cardsPack_id: action.cardsPack_id }
     default:
       return state
   }
@@ -62,11 +65,19 @@ export const questionsCompletedAC = (completed: boolean) => {
   } as const
 }
 
+export const setCardsPackIdInLearnAC = (cardsPack_id: string) => {
+  return {
+    type: 'LEARN/SET-CARDS-PACK-ID',
+    cardsPack_id,
+  } as const
+}
+
 // Thunks
 export const getCardsForLearnTC =
-  (cardsPack_id: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
+  () => async (dispatch: AppDispatch, getState: () => RootState) => {
     dispatch(setAppStatusAC('loading'))
     const pageCount = getState().learn.pageCount
+    const cardsPack_id = getState().learn.cardsPack_id
 
     try {
       const res = await cardsAPI.getCards({
@@ -107,3 +118,4 @@ export type LearnActionsType =
   | ReturnType<typeof setLearnCardsAC>
   | ReturnType<typeof deleteStudiedCardAC>
   | ReturnType<typeof questionsCompletedAC>
+  | ReturnType<typeof setCardsPackIdInLearnAC>

@@ -18,6 +18,7 @@ import { useAppDispatch, useAppSelector } from '../../../../utils/hooks'
 import { deletePackTC, updatePackTC } from '../../packs-reducer'
 
 import { setCurrentPackIdAC } from 'features/cards/cards-reducer'
+import { setCardsPackIdInLearnAC } from 'features/learn/learn-reducer'
 import s from 'features/packs/table/body/TbodyPacks.module.css'
 
 export const TbodyPacks = () => {
@@ -49,7 +50,7 @@ export const TbodyPacks = () => {
   }
 
   const studyPack = (packId: string) => {
-    console.log('study', packId)
+    dispatch(setCardsPackIdInLearnAC(packId))
   }
   const editPack = (packId: string) => {
     dispatch(updatePackTC({ _id: packId, name: inputValue, private: isChecked }))
@@ -70,9 +71,11 @@ export const TbodyPacks = () => {
       return (
         <TableCell align="right">
           <div className={s.actions}>
-            <IconButton disabled={appStatus === 'loading'} onClick={() => studyPack(packId)}>
-              <SchoolIcon sx={{ fontSize: 19 }} />
-            </IconButton>
+            <NavLink to={PATH.LEARN} onClick={() => studyPack(packId)}>
+              <IconButton disabled={appStatus === 'loading'}>
+                <SchoolIcon sx={{ fontSize: 19 }} />
+              </IconButton>
+            </NavLink>
             <Modal
               title={'Pack name'}
               setOpenModal={setOpenRenameModal}
@@ -134,9 +137,11 @@ export const TbodyPacks = () => {
       return (
         <TableCell align="right">
           <div className={s.actions}>
-            <IconButton disabled={appStatus === 'loading'} onClick={() => studyPack(packId)}>
-              <SchoolIcon sx={{ fontSize: 19 }} />
-            </IconButton>
+            <NavLink to={PATH.LEARN} onClick={() => studyPack(packId)}>
+              <IconButton disabled={appStatus === 'loading'}>
+                <SchoolIcon sx={{ fontSize: 19 }} />
+              </IconButton>
+            </NavLink>
           </div>
         </TableCell>
       )
