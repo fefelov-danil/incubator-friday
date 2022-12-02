@@ -1,62 +1,54 @@
-import React, { useEffect, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 
-import CircularProgress from '@mui/material/CircularProgress'
-import { Navigate } from 'react-router-dom'
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
+import { Navigate, NavLink } from 'react-router-dom'
 
 import s from './Learn.module.css'
 
 import { Button } from 'common/button/Button'
 import { InputRadio } from 'common/inputRadio/InputRadio'
 import { PATH } from 'common/routes/Pages'
-import { CardType } from 'features/cards/cards-reducer'
-import { getLearnCardsTC } from 'features/learn/learn-reducer'
+import { CardType, setCurrentPackIdAC } from 'features/cards/cards-reducer'
+import {
+  deleteStudiedCardAC,
+  getCardsForLearnTC,
+  questionsCompletedAC,
+  setGrade,
+} from 'features/learn/learn-reducer'
 import { getCard } from 'utils/get-cards'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
+const initialCard = {
+  _id: '',
+  answer: 'initial answer',
+  question: 'initial question',
+  cardsPack_id: '',
+  grade: 0,
+  shots: 0,
+  user_id: '',
+  created: '',
+  updated: '',
+}
+const grades = ['Did not know', 'Forgot', 'A lot of thought', 'Confused', 'Knew the answer']
+
 export const Learn = () => {
   const dispatch = useAppDispatch()
-  const learnLoading = useAppSelector(state => state.learn.learnLoading)
-  const cards = useAppSelector(state => state.learn.cards) as CardType[]
+  const cards = useAppSelector(state => state.learn.cards)
   const cardsPack_id = useAppSelector(state => state.cards.currentPackId)
+  const questionsCompleted = useAppSelector(state => state.learn.questionsCompleted)
   const cardPacks = useAppSelector(state => state.packs.cardPacks)
-
-  const grades = ['Did not know', 'Forgot', 'A lot of thought', 'Confused', 'Knew the answer']
 
   useEffect(() => {
     if (cardsPack_id !== '') {
-      dispatch(getLearnCardsTC(cardsPack_id))
+      dispatch(getCardsForLearnTC(cardsPack_id))
+      dispatch(questionsCompletedAC(false))
     }
   }, [])
 
   const [hideAnswer, setHideAnswer] = useState(true)
+  const [currentGrade, setCurrentGrade] = useState(1)
 
-  const [card, setCard] = useState<CardType>({
-    _id: '',
-    answer: 'initial answer',
-    question: 'initial question',
-    cardsPack_id: '',
-    grade: 0,
-    shots: 0,
-    user_id: '',
-    created: '',
-    updated: '',
-  })
-
-  if (cardsPack_id === '') {
-    return <Navigate to={PATH.PACKS} />
-  }
-
-  if (learnLoading) {
-    return (
-      <div className={s.learnLoading}>
-        <CircularProgress size={80} />
-      </div>
-    )
-  }
-
-  if (card.answer === 'initial answer') {
-    setCard(getCard(cards))
-  }
+  const [card, setCard] = useState<CardType>(initialCard)
 
   let packName
 
@@ -66,8 +58,67 @@ export const Learn = () => {
     packName = pack?.name
   }
 
+  useEffect(() => {
+    if (cards) {
+      setCard(getCard(cards))
+    }
+  }, [cards])
+
+  const updateGrade = (e: ChangeEvent<HTMLInputElement>) => {
+    const grade = e.target.value
+
+    setCurrentGrade(grades.findIndex(g => g === grade) + 1)
+  }
+
+  const nextQuestion = async () => {
+    await dispatch(setGrade(currentGrade, card._id))
+
+    if (cards && cards.length === 1) {
+      dispatch(questionsCompletedAC(true))
+
+      return
+    }
+
+    if (cards) {
+      const index = cards.findIndex(c => c._id === card._id)
+      const newCards = cards.splice(index, 1)
+
+      dispatch(deleteStudiedCardAC(newCards))
+    }
+  }
+
+  const backToCardsHandler = () => {
+    dispatch(setCurrentPackIdAC(cardsPack_id))
+  }
+
+  if (cardsPack_id === '') {
+    return <Navigate to={PATH.PACKS} />
+  }
+
+  if (questionsCompleted) {
+    return (
+      <div className={`container ${s.learn}`}>
+        <h1>{packName}</h1>
+        <hr />
+        <p className={s.done}>You answered all the questions.</p>
+        <div className={s.buttons}>
+          <NavLink to={PATH.CARDS}>
+            <Button onClick={backToCardsHandler}>Back to cards</Button>
+          </NavLink>
+          <NavLink to={PATH.PACKS}>
+            <Button>Go to packs</Button>
+          </NavLink>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={`container ${s.learn}`}>
+      <NavLink className={s.backToCards} to={PATH.CARDS} onClick={backToCardsHandler}>
+        <ArrowBackIosNewIcon />
+        Back to cards
+      </NavLink>
       <h1>{packName}</h1>
       <hr />
       <p className={s.question}>
@@ -91,14 +142,19 @@ export const Learn = () => {
               {grades.map((grade, i) => {
                 return (
                   <li key={i}>
-                    <InputRadio name={'grade'} id={'grade' + i} value={grade} />
+                    <InputRadio
+                      name={'grade'}
+                      id={'grade' + i}
+                      onChange={updateGrade}
+                      value={grade}
+                    />
                   </li>
                 )
               })}
             </ul>
           </div>
           <p className={s.btn}>
-            <Button onClick={() => {}}>Next question</Button>
+            <Button onClick={nextQuestion}>Next question</Button>
           </p>
         </div>
       )}
