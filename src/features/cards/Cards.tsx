@@ -157,7 +157,11 @@ export const Cards = () => {
                 >
                   <div className={s.editPackModal}>
                     <div className={s.inputBlock}>
-                      <InputText onChange={onChangeHandler} value={inputValue} />
+                      <InputText
+                        onChange={onChangeHandler}
+                        placeholder={'Enter name'}
+                        value={inputValue}
+                      />
                       <Checkbox
                         checked={isChecked}
                         onChangeChecked={onCheckBoxChangeHandler}
@@ -166,11 +170,11 @@ export const Cards = () => {
                         Private pack
                       </Checkbox>
                     </div>
-                    <div className={s.modalButtonBlock}>
-                      <Button className={s.close} onClick={() => setOpenRenameModal(false)}>
+                    <div className={'modalButtonBlock'}>
+                      <Button className={'close'} onClick={() => setOpenRenameModal(false)}>
                         Cancel
                       </Button>
-                      <Button className={s.del} onClick={() => editPack()}>
+                      <Button className={'del'} onClick={() => editPack()}>
                         Save
                       </Button>
                     </div>
