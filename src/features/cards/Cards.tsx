@@ -35,6 +35,7 @@ export const Cards = () => {
   const pageCount = useAppSelector(state => state.cards.pageCount)
   const cardsTotalCount = useAppSelector(state => state.cards.cardsTotalCount)
   const filterSearchValue = useAppSelector(state => state.cards.filterSearchValue)
+  const appStatus = useAppSelector(state => state.app.appStatus)
 
   const [openActions, setOpenActions] = useState(false)
   const [openModal, setOpenModal] = useState<boolean | null>(null)
@@ -106,7 +107,10 @@ export const Cards = () => {
     setInputValue('')
   }
 
-  const deletePack = () => dispatch(deletePackTC(packId, 'cards'))
+  const deletePack = () => {
+    dispatch(deletePackTC(cardsPack_id, 'cards'))
+    setOpenModal(false)
+  }
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setInputValue(e.currentTarget.value)
@@ -114,6 +118,17 @@ export const Cards = () => {
 
   const onCheckBoxChangeHandler = (e: boolean) => {
     setIsChecked(e)
+  }
+
+  const getPackParam = (packId: string) => {
+    if (cardPacks !== null && cardPacks.length > 0) {
+      const pack = cardPacks.find(p => p._id === packId)
+
+      if (pack) {
+        setInputValue(pack.name)
+        setIsChecked(pack.private)
+      }
+    }
   }
 
   const renderMainActions = (myId: string, userId: string) => {
@@ -145,7 +160,11 @@ export const Cards = () => {
                   title={'Pack name'}
                   setOpenModal={setOpenRenameModal}
                   childrenOpenModal={
-                    <button className={s.action}>
+                    <button
+                      className={s.action}
+                      onClick={() => getPackParam(packId)}
+                      disabled={appStatus === 'loading'}
+                    >
                       <EditIcon sx={{ fontSize: 19 }} /> Edit
                     </button>
                   }
@@ -172,9 +191,34 @@ export const Cards = () => {
                     </div>
                   </div>
                 </Modal>
-                <button className={s.action} onClick={deletePack}>
-                  <DeleteIcon sx={{ fontSize: 19 }} /> Delete
-                </button>
+
+                <Modal
+                  title={'Delete pack'}
+                  setOpenModal={setOpenModal}
+                  childrenOpenModal={
+                    <button
+                      className={s.action}
+                      onClick={() => getPackParam(packId)}
+                      disabled={appStatus === 'loading'}
+                    >
+                      <DeleteIcon sx={{ fontSize: 19 }} /> Delete
+                    </button>
+                  }
+                  openFromProps={openModal}
+                >
+                  <p>
+                    Do you really want to remove <b>{inputValue}</b>?
+                  </p>
+                  <div className={s.modalButtonBlock}>
+                    <Button className={s.close} onClick={() => setOpenModal(false)}>
+                      Cancel
+                    </Button>
+                    <Button className={s.del} onClick={() => deletePack()}>
+                      Delete
+                    </Button>
+                  </div>
+                </Modal>
+
                 <NavLink className={s.action} to={PATH.LEARN}>
                   <SchoolIcon sx={{ fontSize: 19 }} /> Learn
                 </NavLink>

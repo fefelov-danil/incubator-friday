@@ -52,12 +52,12 @@ export const TbodyPacks = () => {
     console.log('study', packId)
   }
   const editPack = (packId: string) => {
-    dispatch(updatePackTC({ _id: packId, name: inputValue, private: isChecked })) //  _id колоды обязательно
+    dispatch(updatePackTC({ _id: packId, name: inputValue, private: isChecked }))
     setOpenRenameModal(false)
     setInputValue('')
   }
   const deletePack = (packId: string) => {
-    dispatch(deletePackTC(packId)) //  _id колоды
+    dispatch(deletePackTC(packId))
     setOpenModal(false)
   }
 
