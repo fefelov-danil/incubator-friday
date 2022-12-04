@@ -9,6 +9,16 @@
   background-position: center top;
   background-size: cover;
 }
+.linear_progress_container {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+
+  width: 100%;
+  height: fit-content;
+
+  background-color: white;
+}
 .app .appLoading {
   position: fixed;
   top: 0;

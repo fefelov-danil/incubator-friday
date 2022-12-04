@@ -1,20 +1,16 @@
 import React from 'react'
 
-import LinearProgress from '@mui/material/LinearProgress'
 import { NavLink } from 'react-router-dom'
-
-import { useAppSelector } from '../../utils/hooks'
 
 import logo from 'assets/images/logo.png'
 import { Button } from 'common/button/Button'
 import s from 'common/header/Header.module.css'
 import { PATH } from 'common/routes/Pages'
+import { useAppSelector } from 'utils/hooks'
 
 export const Header = () => {
   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
   const profile = useAppSelector(state => state.auth.profile)
-
-  const status = useAppSelector(state => state.app.appStatus)
 
   return (
     <div className={s.header}>
@@ -34,9 +30,6 @@ export const Header = () => {
             </NavLink>
           )}
         </div>
-      </div>
-      <div className={s.linear_progress_container}>
-        {status === 'loading' && <LinearProgress />}
       </div>
     </div>
   )

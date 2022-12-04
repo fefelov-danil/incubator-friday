@@ -45,13 +45,3 @@
 
     border-radius: 50%;
 }
-
-.linear_progress_container {
-  position: absolute;
-  bottom: 0;
-
-  width: 100%;
-  height: fit-content;
-
-  background-color: white;
-}
