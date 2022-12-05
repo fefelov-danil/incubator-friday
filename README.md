@@ -9,3 +9,11 @@ React, Redux, TypeScript, Axios, Thunk middleware, Formik, React Router, Eslint.
 
 ### Our team:
 Fefelov Danil (telegram - @Danil_Fefelov)
+
+### Installation:
+
+`yarn install`
+
+### Start:
+
+`yarn start`
