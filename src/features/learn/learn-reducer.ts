@@ -9,6 +9,7 @@ import { errorUtils } from 'utils/errors-handler'
 
 const learnInitialState = {
   cardsPack_id: '',
+  packName: '',
   cards: null as CardType[] | null,
   cardsTotalCount: 0,
   pageCount: 150,
@@ -25,6 +26,7 @@ export const learnReducer = (
     case 'LEARN/SET-LEARN-CARDS':
       return {
         ...state,
+        packName: action.data.packName,
         cards: action.data.cards,
         cardsTotalCount: action.data.cardsTotalCount,
         packUserId: action.data.packUserId,
