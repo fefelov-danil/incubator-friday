@@ -1,11 +1,10 @@
 import { AxiosError } from 'axios'
 
-import { errorUtils } from '../../utils/errors-handler'
-
 import { cardsAPI, CreateCardRequestType, GetCardsResponseType, UpdateCardType } from './cards-API'
 
 import { setAppStatusAC } from 'app/app-reducer'
 import { AppDispatch, RootState } from 'app/store'
+import { errorUtils } from 'utils/errors-handler'
 
 const cardsInitialState = {
   cards: null as CardType[] | null,
@@ -104,7 +103,7 @@ export const getCardsTC = () => async (dispatch: AppDispatch, getState: () => Ro
   dispatch(setAppStatusAC('loading'))
   const cardsPack_id = getState().cards.currentPackId
   const page = getState().cards.page
-  const pageCount = getState().packs.pageCount
+  const pageCount = getState().cards.pageCount
   const cardQuestion = getState().cards.filterSearchValue
   const sortCards = getState().cards.sortCardsValue
 

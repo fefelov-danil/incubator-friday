@@ -11,14 +11,17 @@ import s from './Cards.module.css'
 import { Button } from 'common/button/Button'
 import { Paginator } from 'common/paginator/Paginator'
 import { PATH } from 'common/routes/Pages'
-import { getCardsTC, setCurrentCardsPageAC } from 'features/cards/cards-reducer'
+import {
+  getCardsTC,
+  setCurrentCardsPageAC,
+  setPageCardsCountAC,
+} from 'features/cards/cards-reducer'
 import { AddNewCardModal } from 'features/cards/modals/AddNewCardModal'
 import { DeleteModal } from 'features/cards/modals/DeleteModal'
 import { EditModals } from 'features/cards/modals/EditModals'
 import { CardsTable } from 'features/cards/table/CardsTable'
 import { setCardsPackIdInLearnAC } from 'features/learn/learn-reducer'
 import { InputSearch } from 'features/packs/filters/inputSearch/InputSearch'
-import { setPagePacksCountAC } from 'features/packs/packs-reducer'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 export const Cards = () => {
@@ -65,7 +68,7 @@ export const Cards = () => {
   }
 
   const setPageItemsCount = (count: number) => {
-    dispatch(setPagePacksCountAC(count))
+    dispatch(setPageCardsCountAC(count))
   }
 
   if (cardsPack_id === '') {

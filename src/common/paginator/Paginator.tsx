@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 
-import { useAppSelector } from '../../utils/hooks'
-
 import s from './Paginator.module.css'
+
+import { useAppSelector } from 'utils/hooks'
 
 type PaginatorPropsType = {
   totalItemsCount: number
@@ -23,7 +23,6 @@ export const Paginator = ({
   name,
   onPageItemsCountChange,
 }: PaginatorPropsType) => {
-  const value = useAppSelector(state => state.packs.pageCount)
   const appStatus = useAppSelector(state => state.app.appStatus)
 
   let pageCount = Math.ceil(totalItemsCount / pageSize)
@@ -84,7 +83,7 @@ export const Paginator = ({
         <span>SHOW</span>
         <select
           disabled={appStatus === 'loading'}
-          value={value}
+          value={pageSize}
           onChange={e => {
             onPageItemsCountChange(+e.currentTarget.value)
           }}
@@ -92,7 +91,7 @@ export const Paginator = ({
         >
           <option value="5">5</option>
           <option value="10">10</option>
-          <option value="15">15</option>
+          <option value="20">20</option>
         </select>
         <span>{name} PER PAGE</span>
       </div>
