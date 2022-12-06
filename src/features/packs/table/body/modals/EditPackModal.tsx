@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState } from 'react'
+import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 
 import EditIcon from '@mui/icons-material/Edit'
 import { Input } from '@mui/material'
@@ -33,6 +33,10 @@ export const EditPackModal: FC<EditPackModalPropsType> = ({
   const [inputValue, setInputValue] = useState(packName)
   const [isChecked, setIsChecked] = useState(packPrivate)
   const [cover, setCover] = useState<undefined | string>(deckCover)
+
+  useEffect(() => {
+    setCover(deckCover)
+  }, [deckCover])
 
   const onCheckBoxChangeHandler = (checked: boolean) => {
     setIsChecked(checked)
