@@ -15,6 +15,7 @@ import { Button } from '../../../../common/button/Button'
 import { Checkbox } from '../../../../common/checkbox/Checkbox'
 import { Modal } from '../../../../common/modal/Modal'
 import { PATH } from '../../../../common/routes/Pages'
+import { SelectImage } from '../../../../common/selectImage/SelectImage'
 import { useAppDispatch, useAppSelector } from '../../../../utils/hooks'
 import { deletePackTC, updatePackTC } from '../../packs-reducer'
 
@@ -28,6 +29,7 @@ export const TbodyPacks = () => {
 
   const [inputValue, setInputValue] = useState<string | undefined>('')
   const [isChecked, setIsChecked] = useState<boolean | undefined>(false)
+  const [cover, setCover] = useState<undefined | string>(undefined)
 
   const dispatch = useAppDispatch()
 
@@ -42,6 +44,7 @@ export const TbodyPacks = () => {
       if (pack) {
         setInputValue(pack.name)
         setIsChecked(pack.private)
+        setCover(pack.deckCover)
       }
     }
   }
@@ -54,9 +57,10 @@ export const TbodyPacks = () => {
     dispatch(setCardsPackIdInLearnAC(packId))
   }
   const editPack = (packId: string) => {
-    dispatch(updatePackTC({ _id: packId, name: inputValue, private: isChecked }))
+    dispatch(updatePackTC({ _id: packId, name: inputValue, private: isChecked, deckCover: cover }))
     setOpenRenameModal(false)
     setInputValue('')
+    setCover(undefined)
   }
   const deletePack = (packId: string) => {
     dispatch(deletePackTC(packId))
@@ -88,6 +92,12 @@ export const TbodyPacks = () => {
               openFromProps={openRenameModal}
             >
               <div className={s.editPackModal}>
+                <div className={s.coverBlock}>
+                  <div className={s.selectCover}>
+                    <SelectImage setCoverImg={setCover} />
+                  </div>
+                  <img src={cover || defaultCover} alt="pack cover" />
+                </div>
                 <div className={s.inputBlock}>
                   <Input onChange={onChangeHandler} value={inputValue} />
                   <Checkbox
