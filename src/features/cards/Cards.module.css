@@ -44,6 +44,17 @@
 .actions {
   position: relative;
 }
+.actions .learnDisabled {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 0;
+
+  color: #b4b4b4;
+}
+.actions .learnDisabled svg {
+  margin-right: 5px;
+}
 .actions .dotsForActions {
   margin-left: 5px;
   padding: 2px;
