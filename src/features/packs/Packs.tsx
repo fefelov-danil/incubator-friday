@@ -1,16 +1,8 @@
-import React, { ChangeEvent, useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
-import { Input } from '@mui/material'
 import { useSearchParams } from 'react-router-dom'
 
-import defaultCover from '../../../src/assets/images/default-pack-cover.png'
-import { Checkbox } from '../../common/checkbox/Checkbox'
-import { Modal } from '../../common/modal/Modal'
-import { SelectImage } from '../../common/selectImage/SelectImage'
-import { useAppDispatch, useAppSelector } from '../../utils/hooks'
-
 import {
-  addPackTC,
   getPacksTC,
   setCurrentPacksPageAC,
   setFilterToPacksFromInputSearchAC,
@@ -21,11 +13,12 @@ import {
   setSortPacksValueAC,
 } from './packs-reducer'
 
-import { Button } from 'common/button/Button'
 import { Paginator } from 'common/paginator/Paginator'
 import { Filters } from 'features/packs/filters/Filters'
+import { AddNewPackModal } from 'features/packs/modals/AddNewPackModal'
 import s from 'features/packs/Packs.module.css'
 import { PacksTable } from 'features/packs/table/PacksTable'
+import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 export const Packs = () => {
   const dispatch = useAppDispatch()
@@ -39,11 +32,6 @@ export const Packs = () => {
   const min = useAppSelector(state => state.packs.min)
   const max = useAppSelector(state => state.packs.max)
   const rerender = useAppSelector(state => state.packs.rerender)
-
-  const [openModal, setOpenModal] = useState<boolean | null>(null)
-  const [inputValue, setInputValue] = useState<string>('')
-  const [isChecked, setIsChecked] = useState<boolean>(false)
-  const [cover, setCover] = useState<undefined | string>(undefined)
 
   const [searchParams, setSearchParams] = useSearchParams()
 
@@ -78,28 +66,12 @@ export const Packs = () => {
     }
   }, [])
 
-  const addPack = () => {
-    dispatch(addPackTC({ cardsPack: { name: inputValue, private: isChecked, deckCover: cover } }))
-    setInputValue('')
-    setIsChecked(false)
-    setOpenModal(false)
-    setCover(undefined)
-  }
-
   const setCurrentPage = (newCurrentPage: number) => {
     dispatch(setCurrentPacksPageAC(newCurrentPage))
   }
 
   const setPageItemsCount = (count: number) => {
     dispatch(setPagePacksCountAC(count))
-  }
-
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setInputValue(e.currentTarget.value)
-  }
-
-  const onCheckBoxChangeHandler = (e: boolean) => {
-    setIsChecked(e)
   }
 
   useEffect(() => {
@@ -131,38 +103,7 @@ export const Packs = () => {
       <div className={s.pacs}>
         <div className={s.titleAndBtn}>
           <h1>Packs list</h1>
-          <Modal
-            title={'Add new pack'}
-            childrenOpenModal={<Button onClick={() => setOpenModal(true)}>Add new pack</Button>}
-            openFromProps={openModal}
-          >
-            <div className={s.createPackModal}>
-              <div className={s.coverBlock}>
-                <div className={s.selectCover}>
-                  <SelectImage setCoverImg={setCover} />
-                </div>
-                <img src={cover || defaultCover} alt="pack cover" />
-              </div>
-              <div className={s.inputBlock}>
-                <Input onChange={onChangeHandler} value={inputValue} />
-                <Checkbox
-                  checked={isChecked}
-                  onChangeChecked={onCheckBoxChangeHandler}
-                  className={s.checkbox}
-                >
-                  Private pack
-                </Checkbox>
-              </div>
-              <div className={'modalButtonBlock'}>
-                <Button className={'close'} onClick={() => setOpenModal(false)}>
-                  No, cancel
-                </Button>
-                <Button className={'createPack'} onClick={addPack}>
-                  Add pack
-                </Button>
-              </div>
-            </div>
-          </Modal>
+          <AddNewPackModal />
         </div>
         <Filters />
         <PacksTable />
