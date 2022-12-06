@@ -1,7 +1,8 @@
 import React, { ChangeEvent } from 'react'
 
-import CloudUploadIcon from '@mui/icons-material/CloudUpload'
+import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined'
 import { IconButton } from '@mui/material'
+import { grey } from '@mui/material/colors'
 
 import { convertFileToBase64 } from '../../utils/converToBase64'
 import { errorUtils } from '../../utils/errors-handler'
@@ -30,8 +31,8 @@ export const SelectImage: React.FC<SelectImagePropsType> = ({ setCoverImg }) => 
   return (
     <label>
       <input type="file" onChange={uploadHandler} style={{ display: 'none' }} />
-      <IconButton component="span">
-        <CloudUploadIcon />
+      <IconButton style={{ backgroundColor: 'grey' }} component="span">
+        <CameraAltOutlinedIcon sx={{ color: grey[50] }} />
       </IconButton>
     </label>
   )
