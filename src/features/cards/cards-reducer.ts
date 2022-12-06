@@ -7,6 +7,7 @@ import { AppDispatch, RootState } from 'app/store'
 import { errorUtils } from 'utils/errors-handler'
 
 const cardsInitialState = {
+  packName: '',
   cards: null as CardType[] | null,
   cardsTotalCount: 0,
   maxGrade: 0,
@@ -27,6 +28,7 @@ export const cardsReducer = (
     case 'CARDS/SET-CARDS':
       return {
         ...state,
+        packName: action.data.packName,
         cards: action.data.cards,
         cardsTotalCount: action.data.cardsTotalCount,
         maxGrade: action.data.maxGrade,

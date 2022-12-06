@@ -10,8 +10,8 @@ import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 export const DeleteModal = () => {
   const dispatch = useAppDispatch()
+  const packName = useAppSelector(state => state.cards.packName)
   const cardsPack_id = useAppSelector(state => state.cards.currentPackId)
-  const cardPacks = useAppSelector(state => state.packs.cardPacks)
   const appStatus = useAppSelector(state => state.app.appStatus)
 
   const [openModal, setOpenModal] = useState<boolean | null>(null)
@@ -19,14 +19,6 @@ export const DeleteModal = () => {
   const deletePack = () => {
     dispatch(deletePackTC(cardsPack_id, 'cards'))
     setOpenModal(false)
-  }
-
-  let packName
-
-  if (cardPacks) {
-    const pack = cardPacks.find(pack => pack._id === cardsPack_id)
-
-    packName = pack?.name
   }
 
   return (

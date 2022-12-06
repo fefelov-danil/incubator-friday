@@ -4,7 +4,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert'
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
 import SchoolIcon from '@mui/icons-material/School'
 import IconButton from '@mui/material/IconButton/IconButton'
-import { Navigate, NavLink } from 'react-router-dom'
+import { Navigate, NavLink, useSearchParams } from 'react-router-dom'
 
 import s from './Cards.module.css'
 
@@ -14,8 +14,10 @@ import { PATH } from 'common/routes/Pages'
 import {
   getCardsTC,
   setCurrentCardsPageAC,
+  setCurrentPackIdAC,
   setPageCardsCountAC,
 } from 'features/cards/cards-reducer'
+import { CardsTitleAndActions } from 'features/cards/cardsTitleAndActions/CardsTitleAndActions'
 import { AddNewCardModal } from 'features/cards/modals/AddNewCardModal'
 import { DeleteModal } from 'features/cards/modals/DeleteModal'
 import { EditModals } from 'features/cards/modals/EditModals'
@@ -26,40 +28,33 @@ import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 export const Cards = () => {
   const dispatch = useAppDispatch()
-  const myId = useAppSelector(state => state.auth.profile._id)
-  const cardPacks = useAppSelector(state => state.packs.cardPacks)
-  const userPackId = useAppSelector(state => state.cards.packUserId)
   const cardsPack_id = useAppSelector(state => state.cards.currentPackId)
   const page = useAppSelector(state => state.cards.page)
   const pageCount = useAppSelector(state => state.cards.pageCount)
   const cardsTotalCount = useAppSelector(state => state.cards.cardsTotalCount)
   const filterSearchValue = useAppSelector(state => state.cards.filterSearchValue)
 
-  const [openActions, setOpenActions] = useState(false)
-  const actions = useRef(null as HTMLDivElement | null)
+  const [urlParams, setUrlParams] = useSearchParams()
 
   useEffect(() => {
-    if (!openActions) return
+    const fromUrlCurrentPackId = urlParams.get('currentPackId')
 
-    const handleClick = (e: any) => {
-      if (!actions.current) return
-      if (!actions.current.contains(e.target)) {
-        setOpenActions(false)
-      }
+    if (fromUrlCurrentPackId !== null) {
+      dispatch(setCurrentPackIdAC(fromUrlCurrentPackId))
     }
-
-    document.addEventListener('click', handleClick)
-
-    return () => {
-      document.removeEventListener('click', handleClick)
-    }
-  }, [openActions])
+  }, [])
 
   useEffect(() => {
     dispatch(setCardsPackIdInLearnAC(cardsPack_id))
   }, [cardsPack_id])
 
   useEffect(() => {
+    if (cardsPack_id) {
+      setUrlParams({
+        currentPackId: `${cardsPack_id}`,
+      })
+    }
+
     dispatch(getCardsTC())
   }, [page, pageCount, filterSearchValue])
 
@@ -71,61 +66,6 @@ export const Cards = () => {
     dispatch(setPageCardsCountAC(count))
   }
 
-  if (cardsPack_id === '') {
-    return <Navigate to={PATH.PACKS} />
-  }
-
-  const renderMainActions = (myId: string, userId: string) => {
-    let packName
-
-    if (cardPacks) {
-      const pack = cardPacks.find(pack => pack._id === cardsPack_id)
-
-      packName = pack?.name
-    }
-
-    if (myId === userId) {
-      return (
-        <div className={s.titleAndBtn}>
-          <div>
-            <h1>{packName}</h1>
-            <div ref={actions} className={s.actions}>
-              <IconButton onClick={() => setOpenActions(!openActions)} className={s.dotsForActions}>
-                <MoreVertIcon />
-              </IconButton>
-              <div
-                className={
-                  openActions
-                    ? `${s.actionsPopUp} ${s.actionsIsOpened}`
-                    : `${s.actionsPopUp} ${s.actionsIsClosed}`
-                }
-              >
-                <EditModals />
-                <DeleteModal />
-                <NavLink className={s.action} to={PATH.LEARN}>
-                  <SchoolIcon sx={{ fontSize: 19 }} /> Learn
-                </NavLink>
-              </div>
-            </div>
-          </div>
-          <AddNewCardModal />
-        </div>
-      )
-    }
-    if (myId !== userId) {
-      return (
-        <div className={s.titleAndBtn}>
-          <h1>{packName}</h1>
-          <Button>
-            <NavLink className={s.learnBtn} to={PATH.LEARN}>
-              Learn to pack
-            </NavLink>
-          </Button>
-        </div>
-      )
-    }
-  }
-
   return (
     <div className={'container container-with-table'}>
       <div className={s.cards}>
@@ -135,7 +75,7 @@ export const Cards = () => {
             Back to Packs List
           </NavLink>
         </p>
-        {renderMainActions(myId, userPackId)}
+        <CardsTitleAndActions />
         <div className={s.search}>
           <p className={s.filterName}>Search</p>
           <InputSearch whose={'cards'} placeholder={'Provide your text'} />

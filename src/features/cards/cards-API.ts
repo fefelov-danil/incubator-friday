@@ -35,6 +35,7 @@ export type GetCardsRequestType = {
 }
 
 export type GetCardsResponseType = {
+  packName: string
   cards: CardType[]
   cardsTotalCount: number
   maxGrade: number
