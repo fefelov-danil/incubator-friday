@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
-import { Navigate, NavLink } from 'react-router-dom'
+import { NavLink, useSearchParams } from 'react-router-dom'
 
 import s from './Learn.module.css'
 
@@ -13,6 +13,7 @@ import {
   deleteStudiedCardAC,
   getCardsForLearnTC,
   questionsCompletedAC,
+  setCardsPackIdInLearnAC,
   setGrade,
 } from 'features/learn/learn-reducer'
 import { QuestionsCompleted } from 'features/learn/questionsCompleted/QuestionsCompleted'
@@ -35,29 +36,35 @@ const grades = ['Did not know', 'Forgot', 'A lot of thought', 'Confused', 'Knew 
 export const Learn = () => {
   const dispatch = useAppDispatch()
   const cards = useAppSelector(state => state.learn.cards)
+  const packName = useAppSelector(state => state.learn.packName)
   const cardsPack_id = useAppSelector(state => state.learn.cardsPack_id)
   const questionsCompleted = useAppSelector(state => state.learn.questionsCompleted)
-  const cardPacks = useAppSelector(state => state.packs.cardPacks)
+
+  const [urlParams, setUrlParams] = useSearchParams()
+
+  useEffect(() => {
+    const fromUrlCurrentPackId = urlParams.get('currentPackId')
+
+    if (fromUrlCurrentPackId !== null) {
+      dispatch(setCardsPackIdInLearnAC(fromUrlCurrentPackId))
+    }
+  }, [])
 
   useEffect(() => {
     if (cardsPack_id !== '') {
-      dispatch(getCardsForLearnTC())
-      dispatch(questionsCompletedAC(false))
+      setUrlParams({
+        currentPackId: `${cardsPack_id}`,
+      })
     }
+
+    dispatch(getCardsForLearnTC())
+    dispatch(questionsCompletedAC(false))
   }, [])
 
   const [hideAnswer, setHideAnswer] = useState(true)
   const [currentGrade, setCurrentGrade] = useState(1)
 
   const [card, setCard] = useState<CardType>(initialCard)
-
-  let packName
-
-  if (cardPacks) {
-    const pack = cardPacks.find(pack => pack._id === cardsPack_id)
-
-    packName = pack?.name
-  }
 
   useEffect(() => {
     if (cards) {
@@ -92,10 +99,6 @@ export const Learn = () => {
 
   const backToCardsHandler = () => {
     dispatch(setCurrentPackIdAC(cardsPack_id))
-  }
-
-  if (cardsPack_id === '') {
-    return <Navigate to={PATH.PACKS} />
   }
 
   if (questionsCompleted) {
