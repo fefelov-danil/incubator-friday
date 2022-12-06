@@ -60,6 +60,18 @@ export const Cards = () => {
     dispatch(getCardsTC())
   }, [page, pageCount, filterSearchValue])
 
+  const setCurrentPage = (newCurrentPage: number) => {
+    dispatch(setCurrentCardsPageAC(newCurrentPage))
+  }
+
+  const setPageItemsCount = (count: number) => {
+    dispatch(setPagePacksCountAC(count))
+  }
+
+  if (cardsPack_id === '') {
+    return <Navigate to={PATH.PACKS} />
+  }
+
   const renderMainActions = (myId: string, userId: string) => {
     let packName
 
@@ -109,18 +121,6 @@ export const Cards = () => {
         </div>
       )
     }
-  }
-
-  const setCurrentPage = (newCurrentPage: number) => {
-    dispatch(setCurrentCardsPageAC(newCurrentPage))
-  }
-
-  const setPageItemsCount = (count: number) => {
-    dispatch(setPagePacksCountAC(count))
-  }
-
-  if (cardsPack_id === '') {
-    return <Navigate to={PATH.PACKS} />
   }
 
   return (
