@@ -15,6 +15,7 @@ import {
   questionsCompletedAC,
   setGrade,
 } from 'features/learn/learn-reducer'
+import { QuestionsCompleted } from 'features/learn/questionsCompleted/QuestionsCompleted'
 import { getCard } from 'utils/get-cards'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
@@ -98,21 +99,7 @@ export const Learn = () => {
   }
 
   if (questionsCompleted) {
-    return (
-      <div className={`container ${s.learn}`}>
-        <h1>{packName}</h1>
-        <hr />
-        <p className={s.done}>You answered all the questions.</p>
-        <div className={s.buttons}>
-          <NavLink to={PATH.CARDS}>
-            <Button onClick={backToCardsHandler}>Back to cards</Button>
-          </NavLink>
-          <NavLink to={PATH.PACKS}>
-            <Button>Go to packs</Button>
-          </NavLink>
-        </div>
-      </div>
-    )
+    return <QuestionsCompleted packName={packName} backToCardsHandler={backToCardsHandler} />
   }
 
   return (
