@@ -21,6 +21,7 @@ const packsInitialState = {
   filterSearchValue: '',
   sortPacksValue: '0updated',
   rerender: true,
+  coverImg: undefined as undefined | string,
 }
 
 export const packsReducer = (
@@ -52,12 +53,21 @@ export const packsReducer = (
       return { ...state, sortPacksValue: action.sortPacksValue }
     case 'PACKS/SET-RERENDER':
       return { ...state, rerender: action.rerender }
+    case 'PACKS/SET-COVER-IMG':
+      return { ...state, coverImg: action.coverImg }
     default:
       return state
   }
 }
 
 // Actions
+export const setCoverImgAC = (coverImg: undefined | string) => {
+  return {
+    type: 'PACKS/SET-COVER-IMG',
+    coverImg,
+  } as const
+}
+
 export const setPacksAC = (data: GetPacksResponseType) => {
   return {
     type: 'PACKS/SET-PACKS',
@@ -217,10 +227,12 @@ export type PacksActionsType =
   | ReturnType<typeof setSortPacksValueAC>
   | ReturnType<typeof setRerenderAC>
   | ReturnType<typeof addNewPackAC>
+  | ReturnType<typeof setCoverImgAC>
 
 export type PackType = {
   _id: string
   user_id?: string
+  deckCover?: undefined | string
   name?: string
   cardsCount?: number
   created?: string

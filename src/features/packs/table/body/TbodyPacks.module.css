@@ -12,7 +12,8 @@
 .packName {
   width: 30%;
 }
-.packName button {overflow: hidden;
+.packName button {
+  overflow: hidden;
   display: inline-block;
 
   max-width: 300px;
@@ -26,27 +27,27 @@
 }
 
 .actions button.del {
-  padding: 3px 15px 4px 15px;;
+  padding: 3px 15px 4px 15px;
 
   font-size: 15px;
 }
 
 .actions button.close {
   margin-right: 12px;
-  padding: 3px 15px 4px 15px;;
+  padding: 3px 15px 4px 15px;
 
   font-size: 15px;
 
   background: #868686;
 }
 
-.inputBlock > div{
+.inputBlock > div {
   display: block;
 
   width: 100%;
   margin-bottom: 30px;
 }
-.modalButtonBlock{
+.modalButtonBlock {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -54,4 +55,16 @@
 
   width: 100%;
   margin-top: 30px;
+}
+
+.packNameContainer {
+  display: flex;
+  flex-flow: row;
+  gap: 10px;
+
+  height: 100%;
+}
+
+.packCover {
+  height: 30px;
 }
