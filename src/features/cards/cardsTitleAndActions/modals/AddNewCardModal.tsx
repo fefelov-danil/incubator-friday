@@ -1,11 +1,9 @@
 import React, { ChangeEvent, useState } from 'react'
 
-import defaultCover from '../../../assets/images/default-pack-cover.png'
-import { SelectImage } from '../../../common/selectImage/SelectImage'
-
 import { Button } from 'common/button/Button'
 import { InputText } from 'common/inputText/InputText'
 import { Modal } from 'common/modal/Modal'
+import { SelectImage } from 'common/selectImage/SelectImage'
 import { createNewCardTC } from 'features/cards/cards-reducer'
 import s from 'features/cards/Cards.module.css'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
