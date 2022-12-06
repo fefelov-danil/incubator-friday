@@ -1,64 +1,39 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
-import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
 import SchoolIcon from '@mui/icons-material/School'
 import IconButton from '@mui/material/IconButton/IconButton'
 import { Navigate, NavLink } from 'react-router-dom'
 
-import { Checkbox } from '../../common/checkbox/Checkbox'
-import { Modal } from '../../common/modal/Modal'
-import { useAppDispatch, useAppSelector } from '../../utils/hooks'
-
 import s from './Cards.module.css'
 
 import { Button } from 'common/button/Button'
-import { InputText } from 'common/inputText/InputText'
 import { Paginator } from 'common/paginator/Paginator'
 import { PATH } from 'common/routes/Pages'
-import { createNewCardTC, getCardsTC, setCurrentCardsPageAC } from 'features/cards/cards-reducer'
+import { getCardsTC, setCurrentCardsPageAC } from 'features/cards/cards-reducer'
+import { AddNewCardModal } from 'features/cards/modals/AddNewCardModal'
+import { DeleteModal } from 'features/cards/modals/DeleteModal'
+import { EditModals } from 'features/cards/modals/EditModals'
 import { CardsTable } from 'features/cards/table/CardsTable'
 import { setCardsPackIdInLearnAC } from 'features/learn/learn-reducer'
 import { InputSearch } from 'features/packs/filters/inputSearch/InputSearch'
-import { deletePackTC, setPagePacksCountAC, updatePackTC } from 'features/packs/packs-reducer'
+import { setPagePacksCountAC } from 'features/packs/packs-reducer'
+import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 export const Cards = () => {
   const dispatch = useAppDispatch()
   const myId = useAppSelector(state => state.auth.profile._id)
   const cardPacks = useAppSelector(state => state.packs.cardPacks)
-  const packId = useAppSelector(state => state.cards.currentPackId)
   const userPackId = useAppSelector(state => state.cards.packUserId)
   const cardsPack_id = useAppSelector(state => state.cards.currentPackId)
   const page = useAppSelector(state => state.cards.page)
   const pageCount = useAppSelector(state => state.cards.pageCount)
   const cardsTotalCount = useAppSelector(state => state.cards.cardsTotalCount)
   const filterSearchValue = useAppSelector(state => state.cards.filterSearchValue)
-  const appStatus = useAppSelector(state => state.app.appStatus)
 
   const [openActions, setOpenActions] = useState(false)
-  const [openModal, setOpenModal] = useState<boolean | null>(null)
-  const [openRenameModal, setOpenRenameModal] = useState<boolean | null>(null)
-  const [inputQuestionValue, setInputQuestionValue] = useState<string>('')
-  const [inputAnswerValue, setInputAnswerValue] = useState<string>('')
-  const [questionTypeValue, setQuestionTypeValue] = useState<string>('Text')
-  const [inputValue, setInputValue] = useState<string | undefined>('')
-  const [isChecked, setIsChecked] = useState<boolean | undefined>(false)
-
   const actions = useRef(null as HTMLDivElement | null)
-
-  const onQuestionChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setInputQuestionValue(e.currentTarget.value)
-  }
-
-  const onAnswerChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setInputAnswerValue(e.currentTarget.value)
-  }
-
-  const onTypeQuestionChangeHandler = (value: string) => {
-    setQuestionTypeValue(value)
-  }
 
   useEffect(() => {
     if (!openActions) return
@@ -85,56 +60,6 @@ export const Cards = () => {
     dispatch(getCardsTC())
   }, [page, pageCount, filterSearchValue])
 
-  const addNewCard = () => {
-    setOpenModal(false)
-    if (questionTypeValue === 'Text') {
-      dispatch(
-        createNewCardTC({ cardsPack_id, question: inputQuestionValue, answer: inputAnswerValue })
-      )
-    } else {
-      dispatch(
-        createNewCardTC({
-          cardsPack_id,
-          question: inputQuestionValue,
-          answer: inputAnswerValue,
-          questionImg: 'Pic',
-        })
-      )
-    }
-    setInputQuestionValue('')
-    setInputAnswerValue('')
-  }
-
-  const editPack = () => {
-    dispatch(updatePackTC({ _id: cardsPack_id, name: inputValue, private: isChecked })) //  _id колоды обязательно
-    setOpenRenameModal(false)
-    setInputValue('')
-  }
-
-  const deletePack = () => {
-    dispatch(deletePackTC(cardsPack_id, 'cards'))
-    setOpenModal(false)
-  }
-
-  const onChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setInputValue(e.currentTarget.value)
-  }
-
-  const onCheckBoxChangeHandler = (e: boolean) => {
-    setIsChecked(e)
-  }
-
-  const getPackParam = (packId: string) => {
-    if (cardPacks !== null && cardPacks.length > 0) {
-      const pack = cardPacks.find(p => p._id === packId)
-
-      if (pack) {
-        setInputValue(pack.name)
-        setIsChecked(pack.private)
-      }
-    }
-  }
-
   const renderMainActions = (myId: string, userId: string) => {
     let packName
 
@@ -160,126 +85,15 @@ export const Cards = () => {
                     : `${s.actionsPopUp} ${s.actionsIsClosed}`
                 }
               >
-                <Modal
-                  title={'Pack name'}
-                  setOpenModal={setOpenRenameModal}
-                  childrenOpenModal={
-                    <button
-                      className={s.action}
-                      onClick={() => getPackParam(packId)}
-                      disabled={appStatus === 'loading'}
-                    >
-                      <EditIcon sx={{ fontSize: 19 }} /> Edit
-                    </button>
-                  }
-                  openFromProps={openRenameModal}
-                >
-                  <div className={s.editPackModal}>
-                    <div className={s.inputBlock}>
-                      <InputText
-                        onChange={onChangeHandler}
-                        placeholder={'Enter name'}
-                        value={inputValue}
-                      />
-                      <Checkbox
-                        checked={isChecked}
-                        onChangeChecked={onCheckBoxChangeHandler}
-                        className={s.checkbox}
-                      >
-                        Private pack
-                      </Checkbox>
-                    </div>
-                    <div className={'modalButtonBlock'}>
-                      <Button className={'close'} onClick={() => setOpenRenameModal(false)}>
-                        Cancel
-                      </Button>
-                      <Button className={'del'} onClick={() => editPack()}>
-                        Save
-                      </Button>
-                    </div>
-                  </div>
-                </Modal>
-
-                <Modal
-                  title={'Delete pack'}
-                  setOpenModal={setOpenModal}
-                  childrenOpenModal={
-                    <button
-                      className={s.action}
-                      onClick={() => getPackParam(packId)}
-                      disabled={appStatus === 'loading'}
-                    >
-                      <DeleteIcon sx={{ fontSize: 19 }} /> Delete
-                    </button>
-                  }
-                  openFromProps={openModal}
-                >
-                  <p>
-                    Do you really want to remove <b>{inputValue}</b>?
-                  </p>
-                  <div className={s.modalButtonBlock}>
-                    <Button className={s.close} onClick={() => setOpenModal(false)}>
-                      Cancel
-                    </Button>
-                    <Button className={s.del} onClick={() => deletePack()}>
-                      Delete
-                    </Button>
-                  </div>
-                </Modal>
-
+                <EditModals />
+                <DeleteModal />
                 <NavLink className={s.action} to={PATH.LEARN}>
                   <SchoolIcon sx={{ fontSize: 19 }} /> Learn
                 </NavLink>
               </div>
             </div>
           </div>
-          <Modal
-            title={'Add new card'}
-            childrenOpenModal={<Button onClick={() => setOpenModal(true)}>Add new card</Button>}
-            openFromProps={openModal}
-          >
-            <div className={s.createCardModal}>
-              <p>
-                <b>Choose a question format</b>
-              </p>
-              <select
-                value={questionTypeValue}
-                onChange={e => {
-                  onTypeQuestionChangeHandler(e.currentTarget.value)
-                }}
-                id="select"
-              >
-                <option value="Text">Text</option>
-                <option value="Pic">Pic</option>
-              </select>
-              <div className={s.inputBlock}>
-                <p>
-                  <b>Question</b>
-                </p>
-                <InputText
-                  onChange={onQuestionChangeHandler}
-                  placeholder={'Enter your question'}
-                  value={inputQuestionValue}
-                />
-                <p>
-                  <b>Answer</b>
-                </p>
-                <InputText
-                  onChange={onAnswerChangeHandler}
-                  placeholder={'Enter your answer'}
-                  value={inputAnswerValue}
-                />
-              </div>
-              <div className={'modalButtonBlock'}>
-                <Button className={'close'} onClick={() => setOpenModal(false)}>
-                  Cancel
-                </Button>
-                <Button className={'createPack'} onClick={addNewCard}>
-                  Add card
-                </Button>
-              </div>
-            </div>
-          </Modal>
+          <AddNewCardModal />
         </div>
       )
     }
