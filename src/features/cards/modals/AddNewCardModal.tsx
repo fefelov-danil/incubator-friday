@@ -1,5 +1,8 @@
 import React, { ChangeEvent, useState } from 'react'
 
+import defaultCover from '../../../assets/images/default-pack-cover.png'
+import { SelectImage } from '../../../common/selectImage/SelectImage'
+
 import { Button } from 'common/button/Button'
 import { InputText } from 'common/inputText/InputText'
 import { Modal } from 'common/modal/Modal'
@@ -15,12 +18,17 @@ export const AddNewCardModal = () => {
   const [inputQuestionValue, setInputQuestionValue] = useState<string>('')
   const [inputAnswerValue, setInputAnswerValue] = useState<string>('')
   const [questionTypeValue, setQuestionTypeValue] = useState<string>('Text')
+  const [cover, setCover] = useState<undefined | string>(undefined)
 
   const addNewCard = () => {
     setOpenModal(false)
     if (questionTypeValue === 'Text') {
       dispatch(
-        createNewCardTC({ cardsPack_id, question: inputQuestionValue, answer: inputAnswerValue })
+        createNewCardTC({
+          cardsPack_id,
+          question: inputQuestionValue,
+          answer: inputAnswerValue,
+        })
       )
     } else {
       dispatch(
@@ -28,12 +36,13 @@ export const AddNewCardModal = () => {
           cardsPack_id,
           question: inputQuestionValue,
           answer: inputAnswerValue,
-          questionImg: 'Pic',
+          questionImg: cover,
         })
       )
     }
     setInputQuestionValue('')
     setInputAnswerValue('')
+    setCover(undefined)
   }
 
   const onQuestionChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -68,15 +77,29 @@ export const AddNewCardModal = () => {
           <option value="Text">Text</option>
           <option value="Pic">Pic</option>
         </select>
+        {questionTypeValue === 'Pic' && (
+          <div className={s.coverBlock}>
+            <div className={s.selectCover}>
+              <SelectImage setCoverImg={setCover} />
+            </div>
+            {cover ? <img src={cover} alt="pack cover" /> : ''}
+          </div>
+        )}
         <div className={s.inputBlock}>
-          <p>
-            <b>Question</b>
-          </p>
-          <InputText
-            onChange={onQuestionChangeHandler}
-            placeholder={'Enter your question'}
-            value={inputQuestionValue}
-          />
+          {questionTypeValue === 'Text' ? (
+            <div>
+              <p>
+                <b>Question</b>
+              </p>
+              <InputText
+                onChange={onQuestionChangeHandler}
+                placeholder={'Enter your question'}
+                value={inputQuestionValue}
+              />
+            </div>
+          ) : (
+            ''
+          )}
           <p>
             <b>Answer</b>
           </p>

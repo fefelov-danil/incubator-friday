@@ -83,3 +83,15 @@
 
   width: 100%;
 }
+
+.cardNameContainer {
+  display: flex;
+  flex-flow: row;
+  gap: 10px;
+
+  height: 100%;
+}
+
+.cardCover {
+  height: 30px;
+}

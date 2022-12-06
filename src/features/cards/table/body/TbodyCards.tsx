@@ -8,6 +8,8 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
+import defaultCover from '../../../../assets/images/default-pack-cover.png'
+
 import s from './TbodyCards.module.css'
 
 import { Button } from 'common/button/Button'
@@ -198,8 +200,13 @@ export const TbodyCards = () => {
 
           return (
             <TableRow key={card._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell className={s.packName} component="th" scope="row">
-                <span className={s.text}>{card.question}</span>
+              <TableCell className={s.cardNameContainer} component="th" scope="row">
+                <img className={s.cardCover} src={card.questionImg} />
+                {card.question === 'no question' ? (
+                  ''
+                ) : (
+                  <span className={s.text}>{card.question}</span>
+                )}
               </TableCell>
               <TableCell align="left">
                 <span className={s.text}>{card.answer}</span>
