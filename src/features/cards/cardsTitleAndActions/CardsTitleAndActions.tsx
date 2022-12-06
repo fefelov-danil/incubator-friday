@@ -8,13 +8,14 @@ import { NavLink } from 'react-router-dom'
 import { Button } from 'common/button/Button'
 import { PATH } from 'common/routes/Pages'
 import s from 'features/cards/Cards.module.css'
-import { AddNewCardModal } from 'features/cards/modals/AddNewCardModal'
-import { DeleteModal } from 'features/cards/modals/DeleteModal'
-import { EditModals } from 'features/cards/modals/EditModals'
+import { AddNewCardModal } from 'features/cards/cardsTitleAndActions/modals/AddNewCardModal'
+import { DeleteModal } from 'features/cards/cardsTitleAndActions/modals/DeleteModal'
+import { EditModals } from 'features/cards/cardsTitleAndActions/modals/EditModals'
 import { useAppSelector } from 'utils/hooks'
 
 export const CardsTitleAndActions = () => {
   const packName = useAppSelector(state => state.cards.packName)
+  const cardsTotalCount = useAppSelector(state => state.cards.cardsTotalCount)
   const myId = useAppSelector(state => state.auth.profile._id)
   const userPackId = useAppSelector(state => state.cards.packUserId)
 
@@ -56,9 +57,15 @@ export const CardsTitleAndActions = () => {
             >
               <EditModals />
               <DeleteModal />
-              <NavLink className={s.action} to={PATH.LEARN}>
-                <SchoolIcon sx={{ fontSize: 19 }} /> Learn
-              </NavLink>
+              {cardsTotalCount ? (
+                <NavLink className={s.action} to={PATH.LEARN}>
+                  <SchoolIcon sx={{ fontSize: 19 }} /> Learn
+                </NavLink>
+              ) : (
+                <p className={s.learnDisabled}>
+                  <SchoolIcon sx={{ fontSize: 19 }} /> Learn
+                </p>
+              )}
             </div>
           </div>
         </div>
@@ -69,11 +76,15 @@ export const CardsTitleAndActions = () => {
     return (
       <div className={s.titleAndBtn}>
         <h1>{packName}</h1>
-        <Button>
-          <NavLink className={s.learnBtn} to={PATH.LEARN}>
-            Learn to pack
-          </NavLink>
-        </Button>
+        {cardsTotalCount ? (
+          <Button>
+            <NavLink className={s.learnBtn} to={PATH.LEARN}>
+              Learn to pack
+            </NavLink>
+          </Button>
+        ) : (
+          <Button disabled={true}>Learn to pack</Button>
+        )}
       </div>
     )
   }
