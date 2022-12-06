@@ -14,9 +14,23 @@
   font-size: 36px;
 }
 
-.inputBlock > div{
+.inputBlock > div {
   display: block;
 
   width: 100%;
   margin-bottom: 30px;
+}
+
+.coverBlock {
+  position: relative;
+
+  display: block;
+
+  width: 100%;
+}
+
+.selectCover {
+  position: absolute;
+  right: 0;
+  bottom: 0;
 }

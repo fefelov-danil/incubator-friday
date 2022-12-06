@@ -10,6 +10,7 @@ import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 import { NavLink } from 'react-router-dom'
 
+import defaultCover from '../../../../assets/images/default-pack-cover.png'
 import { Button } from '../../../../common/button/Button'
 import { Checkbox } from '../../../../common/checkbox/Checkbox'
 import { Modal } from '../../../../common/modal/Modal'
@@ -168,7 +169,14 @@ export const TbodyPacks = () => {
               <TableCell className={s.packName} component="th" scope="row">
                 <NavLink to={PATH.CARDS}>
                   <button disabled={appStatus === 'loading'} onClick={() => openPack(pack._id)}>
-                    {pack.name}
+                    <div className={s.packNameContainer}>
+                      <img
+                        className={s.packCover}
+                        src={pack.deckCover || defaultCover}
+                        alt="pack cover"
+                      />
+                      {pack.name}
+                    </div>
                   </button>
                 </NavLink>
               </TableCell>
