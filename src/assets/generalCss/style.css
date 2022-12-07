@@ -99,6 +99,42 @@ hr {
   border-top: 1px solid #e0dede;
 }
 
+@media (max-width: 800px) {
+  h1 {
+    font-size: 45px;
+  }
+  h2 {
+    font-size: 38px;
+  }
+  h3 {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 550px) {
+  h1 {
+    font-size: 38px;
+  }
+  h2 {
+    font-size: 32px;
+  }
+  h3 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 450px) {
+  h1 {
+    font-size: 34px;
+  }
+  h2 {
+    font-size: 28px;
+  }
+  h3 {
+    font-size: 24px;
+  }
+}
+
 /* стили для ul li */
 ul.ul-custom {
   margin-bottom: 20px;
