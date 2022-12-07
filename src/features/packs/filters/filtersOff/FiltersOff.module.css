@@ -14,3 +14,13 @@
 .filtersOff:hover svg {
   color: #FF0000;
 }
+
+@media (max-width: 800px) {
+  .filtersOff svg {
+    font-size: 21px;
+  }
+  .filtersOff {
+    margin-bottom: 2px;
+    padding: 4px 4px 1px 4px;
+  }
+}

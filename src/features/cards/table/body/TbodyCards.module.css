@@ -11,7 +11,7 @@
   overflow: hidden;
   display: inline-block;
 
-  max-width: 300px;
+  max-width: 285px;
 
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -84,14 +84,44 @@
   width: 100%;
 }
 
-.cardNameContainer {
-  display: flex;
-  flex-flow: row;
-  gap: 10px;
-
-  height: 100%;
-}
-
 .cardCover {
   height: 30px;
+}
+
+@media (max-width: 1150px) {
+  .tableBody th {
+    width: auto;
+    max-width: calc(50vw - 250px);
+  }
+  .tableBody td:first-of-type {
+    width: auto;
+    max-width: calc(50vw - 250px);
+  }
+  .tableBody .text {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 800px) {
+  .tableBody tr td {
+    padding: 4px 6px;
+
+    font-size: 14px;
+
+    border-left: 1px solid #DCDCDC !important;
+  }
+  .tableBody th {
+    width: auto;
+    max-width: calc(50vw - 165px);
+  }
+  .tableBody td:first-of-type {
+    width: auto;
+    max-width: calc(50vw - 165px);
+  }
+  .withActions {
+    width: 162px;
+  }
+  .starsAndActions .stars {
+    margin-right: 8px;
+  }
 }

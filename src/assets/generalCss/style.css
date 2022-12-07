@@ -162,6 +162,9 @@ ul.ul-custom li:before {
 }
 
 /* Основная ширина */
+.wrapper {
+  padding: 0 20px;
+}
 .container {
   width: 100%;
   max-width: 1100px;
@@ -176,6 +179,28 @@ ul.ul-custom li:before {
   backdrop-filter: blur(10px);
   border-radius: 12px;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 800px) {
+  .wrapper {
+    padding: 0;
+  }
+  .container-with-table {
+    margin: 0;
+    padding: 30px 15px;
+
+    background-color: rgba(235,235,235,.3);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+@media (max-width: 450px) {
+  .container-with-table {
+    padding: 20px 8px;
+  }
 }
 
 /* Страницы с формой */

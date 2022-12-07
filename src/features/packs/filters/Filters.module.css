@@ -28,3 +28,61 @@ p.filterName {
 
   text-align: right;
 }
+
+@media (max-width: 1020px) {
+  .filters {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+  .search {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+  p.filterName {
+    margin-bottom: 4px;
+
+    font-size: 16px;
+  }
+  .allOrMyPacks {
+    width: auto;
+    margin-right: 20px;
+    padding: 0;
+  }
+  .slider {
+    width: auto;
+    min-width: 350px;
+  }
+}
+
+@media (max-width: 800px) {
+  .search {
+    order: 0;
+
+    width: calc(100% - 40px);
+  }
+  .slider {
+    order: 2;
+
+    width: calc(100% - 105px);
+    min-width: auto;
+  }
+  .slider p.filterName {
+    margin-bottom: 2px;
+  }
+  .allOrMyPacks {
+    order: 2;
+
+    width: 105px;
+    margin-right: 0;
+  }
+  .allOrMyPacks .filterName span {
+    display: none;
+  }
+  .filtersOff {
+    order: 1;
+
+    width: 30px;
+    margin-bottom: 12px;
+    margin-left: 10px;
+  }
+}

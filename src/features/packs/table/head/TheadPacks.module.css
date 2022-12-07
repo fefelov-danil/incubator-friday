@@ -26,3 +26,33 @@
 .tableHead th span.arrowTop svg {
   transform: rotate(180deg);
 }
+
+@media (max-width: 800px) {
+  .tableHead th {
+    padding: 7px;
+
+    font-size: 16px;
+    letter-spacing: 0;
+
+    border-right: 1px solid #DCDCDC;
+  }
+  .tableHead th:first-of-type {
+    width: calc(100% - 390px);
+    min-width: 160px;
+  }
+  .tableHead th:nth-of-type(2) {
+    width: 80px;
+  }
+  .tableHead th:nth-of-type(3) {
+    width: 130px;
+  }
+  .tableHead th:nth-of-type(4) {
+    width: 120px;
+  }
+  .tableHead th:last-of-type {
+    width: 60px;
+  }
+  .tableHead th span svg {
+    font-size: 19px;
+  }
+}
