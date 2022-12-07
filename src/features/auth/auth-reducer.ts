@@ -1,7 +1,6 @@
 import { AxiosError } from 'axios'
 
-import { setAppAlertAC, setAppLoadingAC, setAppStatusAC } from '../../app/app-reducer'
-
+import { setAppAlertAC, setAppLoadingAC, setAppStatusAC } from 'app/app-reducer'
 import { AppDispatch, RootState } from 'app/store'
 import {
   authAPI,
@@ -82,9 +81,8 @@ export const authMeTC = () => async (dispatch: AppDispatch) => {
 
     dispatch(setIsLoggedInAC(true))
     dispatch(setRegistrationAC(true))
-    const avatar = 'https://avatarfiles.alphacoders.com/798/79894.jpg'
 
-    dispatch(profileAC({ ...res.data, avatar }))
+    dispatch(profileAC({ ...res.data }))
     dispatch(setAppLoadingAC(false))
   } catch (err) {
     dispatch(setAppLoadingAC(false))
@@ -135,9 +133,7 @@ export const loginTC = (data: LoginParamsDataType) => async (dispatch: AppDispat
   try {
     const response = await authAPI.login(data)
 
-    const avatar = 'https://avatarfiles.alphacoders.com/798/79894.jpg'
-
-    dispatch(profileAC({ ...response.data, avatar }))
+    dispatch(profileAC({ ...response.data }))
     dispatch(setIsLoggedInAC(true))
   } catch (err) {
     const error = err as Error | AxiosError<{ error: string }>

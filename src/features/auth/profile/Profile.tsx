@@ -1,16 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import LogoutIcon from '@mui/icons-material/Logout'
 
 import s from './Profile.module.css'
 
+import defaultAvatar from 'assets/images/avatar.jpg'
 import { EditableSpan } from 'common/editableSpan/EditableSpan'
+import { SelectImage } from 'common/selectImage/SelectImage'
 import { logOutTC, updateProfileTC } from 'features/auth/auth-reducer'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 export const Profile = () => {
-  const profile = useAppSelector(state => state.auth.profile)
   const dispatch = useAppDispatch()
+  const profile = useAppSelector(state => state.auth.profile)
+
+  const [coverImg, setCoverImg] = useState<string | undefined>('')
+
+  useEffect(() => {
+    if (profile.avatar !== coverImg && coverImg) {
+      dispatch(updateProfileTC({ avatar: coverImg }))
+    }
+  }, [coverImg])
 
   const updateTitleHandler = (name: string) => {
     dispatch(updateProfileTC({ name }))
@@ -24,7 +34,8 @@ export const Profile = () => {
       <div className={s.profile}>
         <h1>Profile</h1>
         <p className={s.avatar}>
-          <img src={profile.avatar} alt="" />
+          <img src={profile.avatar ? profile.avatar : defaultAvatar} alt="" />
+          <SelectImage setCoverImg={setCoverImg} />
         </p>
 
         <p className={s.name}>
