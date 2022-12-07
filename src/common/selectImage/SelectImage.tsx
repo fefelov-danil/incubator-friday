@@ -23,7 +23,7 @@ export const SelectImage: React.FC<SelectImagePropsType> = ({ setCoverImg }) => 
           setCoverImg(file64)
         })
       } else {
-        errorUtils(new Error('Файл слишком большого размера'), dispatch)
+        errorUtils(new Error('File is too large'), dispatch)
       }
     }
   }

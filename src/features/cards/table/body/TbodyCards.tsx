@@ -8,7 +8,7 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
-import defaultCover from '../../../../assets/images/default-pack-cover.png'
+import { SelectImage } from '../../../../common/selectImage/SelectImage'
 
 import s from './TbodyCards.module.css'
 
@@ -30,6 +30,7 @@ export const TbodyCards = () => {
   const [inputQuestionValue, setInputQuestionValue] = useState<string>('')
   const [inputAnswerValue, setInputAnswerValue] = useState<string>('')
   const [questionTypeValue, setQuestionTypeValue] = useState<string>('Text')
+  const [cover, setCover] = useState<undefined | string>(undefined)
 
   const getInputValues = (cardId: string) => {
     const card = cards?.find(c => c._id === cardId)
@@ -107,10 +108,29 @@ export const TbodyCards = () => {
                 <option value="Pic">Picture</option>
               </select>
               <div className={s.inputBlock}>
-                <p>
-                  <b>Question</b>
-                </p>
-                <InputText onChange={onQuestionChangeHandler} value={inputQuestionValue} />
+                {questionTypeValue === 'Pic' && (
+                  <div className={s.coverBlock}>
+                    <p>
+                      <b>Question</b>
+                    </p>
+                    <div className={s.selectCover}>
+                      <SelectImage setCoverImg={setCover} />
+                    </div>
+                    {cover ? <img src={cover} alt="pack cover" /> : ''}
+                  </div>
+                )}
+                {questionTypeValue === 'Text' && (
+                  <div>
+                    <p>
+                      <b>Question</b>
+                    </p>
+                    <InputText
+                      onChange={onQuestionChangeHandler}
+                      placeholder={'Enter your question'}
+                      value={inputQuestionValue}
+                    />
+                  </div>
+                )}
                 <p>
                   <b>Answer</b>
                 </p>
@@ -201,7 +221,7 @@ export const TbodyCards = () => {
           return (
             <TableRow key={card._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell className={s.cardNameContainer} component="th" scope="row">
-                <img className={s.cardCover} src={card.questionImg} />
+                <img className={s.cardCover} src={card.questionImg} alt={'card cover'} />
                 {card.question === 'no question' ? (
                   ''
                 ) : (

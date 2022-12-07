@@ -77,6 +77,9 @@ export const AddNewCardModal = () => {
         </select>
         {questionTypeValue === 'Pic' && (
           <div className={s.coverBlock}>
+            <p>
+              <b>Question</b>
+            </p>
             <div className={s.selectCover}>
               <SelectImage setCoverImg={setCover} />
             </div>
@@ -84,7 +87,7 @@ export const AddNewCardModal = () => {
           </div>
         )}
         <div className={s.inputBlock}>
-          {questionTypeValue === 'Text' ? (
+          {questionTypeValue === 'Text' && (
             <div>
               <p>
                 <b>Question</b>
@@ -95,8 +98,6 @@ export const AddNewCardModal = () => {
                 value={inputQuestionValue}
               />
             </div>
-          ) : (
-            ''
           )}
           <p>
             <b>Answer</b>
