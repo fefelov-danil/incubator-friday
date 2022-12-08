@@ -1,5 +1,8 @@
 import React, { useState } from 'react'
 
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
+
 import s from './Paginator.module.css'
 
 import { useAppSelector } from 'utils/hooks'
@@ -47,7 +50,7 @@ export const Paginator = ({
             setPortionNumber(portionNumber - 1)
           }}
         >
-          {`<`}
+          <ArrowBackIosNewIcon />
         </button>
       )}
 
@@ -76,10 +79,10 @@ export const Paginator = ({
             setPortionNumber(portionNumber + 1)
           }}
         >
-          {`>`}
+          <ArrowForwardIosIcon />
         </button>
       )}
-      <div className={s.changeItemsPerPageBlock}>
+      <p className={s.changeItemsPerPageBlock}>
         <span>SHOW</span>
         <select
           disabled={appStatus === 'loading'}
@@ -93,8 +96,10 @@ export const Paginator = ({
           <option value="10">10</option>
           <option value="20">20</option>
         </select>
-        <span>{name} PER PAGE</span>
-      </div>
+        <span>
+          <span>{name} </span>PER PAGE
+        </span>
+      </p>
     </div>
   )
 }

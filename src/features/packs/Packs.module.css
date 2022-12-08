@@ -14,6 +14,12 @@
   font-size: 36px;
 }
 
+.pacs table {
+  overflow-x: auto;
+
+  min-width: 600px;
+}
+
 .inputBlock > div {
   display: block;
 
@@ -33,4 +39,20 @@
   position: absolute;
   right: 0;
   bottom: 0;
+}
+
+@media (max-width: 800px) {
+  .titleAndBtn {
+    margin-bottom: 12px;
+    padding-bottom: 15px;
+  }
+  .titleAndBtn h1 {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 500px) {
+  .titleAndBtn h1 {
+    font-size: 28px;
+  }
 }

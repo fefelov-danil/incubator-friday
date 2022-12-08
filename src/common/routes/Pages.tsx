@@ -46,7 +46,7 @@ export const Pages = () => {
   // )
 
   return (
-    <div>
+    <div className={'wrapper'}>
       <Routes>
         {isLoggedIn ? (
           <>

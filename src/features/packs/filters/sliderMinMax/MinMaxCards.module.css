@@ -14,7 +14,7 @@
   overflow: hidden;
   display: inline-block;
 
-  width: 52px;
+  width: 57px;
   margin-right: 14px;
 
   font-size: 20px;
@@ -29,4 +29,16 @@
 }
 .minMax:last-of-type {
   margin-left: 14px;
+}
+
+@media (max-width: 800px) {
+  .minMax {
+    width: 45px;
+    padding: 3px 0;
+
+    font-size: 16px;
+  }
+  .minMax:last-of-type {
+    margin-right: 0;
+  }
 }

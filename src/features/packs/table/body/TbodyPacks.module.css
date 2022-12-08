@@ -1,5 +1,20 @@
+.tableBody th {
+  padding: 5px 10px;
+}
 .tableBody td {
   padding: 8px 12px;
+}
+.tableBody td:nth-of-type(2) {
+  max-width: 170px;
+}
+.tableBody td .userName {
+  overflow: hidden;
+  display: inline-block;
+
+  max-width: 150px;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .actions {
   display: flex;
@@ -59,14 +74,15 @@
 
 .packNameContainer {
   display: flex;
-  flex-flow: row;
-  gap: 10px;
-
-  height: 100%;
+  align-items: center;
 }
 
 .packCover {
-  height: 30px;
+  overflow: hidden;
+
+  max-width: 60px;
+  max-height: 40px;
+  margin-right: 5px;
 }
 
 .coverBlock {
@@ -81,4 +97,45 @@
   position: absolute;
   right: 0;
   bottom: 0;
+}
+
+@media (max-width: 800px) {
+  .tableBody tr td {
+    padding: 4px 6px;
+
+    font-size: 14px;
+
+    border-left: 1px solid #DCDCDC !important;
+  }
+  .tableBody th {
+    width: calc(100% - 390px);
+
+    font-size: 14px;
+  }
+  .tableBody td:first-of-type {
+    width: 80px;
+  }
+  .tableBody td:nth-of-type(2) {
+    width: 130px;
+  }
+  .tableBody td:nth-of-type(3) {
+    width: 120px;
+  }
+  .tableBody td:last-of-type {
+    width: 60px;
+  }
+  .tableBody td .userName {
+    max-width: 118px;
+  }
+  .packName button {
+    max-width: 250px;
+
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 700px) {
+  .packName button {
+    max-width: 210px;
+  }
 }

@@ -39,20 +39,24 @@ export const TbodyPacks = () => {
             <TableRow key={pack._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
               <TableCell className={s.packName} component="th" scope="row">
                 <NavLink to={PATH.CARDS}>
-                  <button disabled={appStatus === 'loading'} onClick={() => openPack(pack._id)}>
-                    <div className={s.packNameContainer}>
-                      <img
-                        className={s.packCover}
-                        src={pack.deckCover || defaultCover}
-                        alt="pack cover"
-                      />
-                      {pack.name}
-                    </div>
+                  <button
+                    className={s.packNameContainer}
+                    disabled={appStatus === 'loading'}
+                    onClick={() => openPack(pack._id)}
+                  >
+                    <img
+                      className={s.packCover}
+                      src={pack.deckCover || defaultCover}
+                      alt="pack cover"
+                    />
+                    {pack.name}
                   </button>
                 </NavLink>
               </TableCell>
               <TableCell align="right">{pack.cardsCount}</TableCell>
-              <TableCell align="right">{pack.user_name}</TableCell>
+              <TableCell align="right">
+                <span className={s.userName}>{pack.user_name}</span>
+              </TableCell>
               <TableCell align="right">{date}</TableCell>
               {myId === pack.user_id ? (
                 <ActionsForMyPacks

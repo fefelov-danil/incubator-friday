@@ -17,14 +17,57 @@
 }
 .tableHead th:last-of-type {
   padding-left: 21px;
-
-  text-align: left;
+}
+.tableHead th.my:last-of-type {
+  width: 190px;
+}
+.tableHead th.user:last-of-type {
+  width: 145px;
 }
 .tableHead th span {
   display: flex;
   align-items: center;
   justify-content: center;
 }
+.tableHead th:last-of-type span {
+  justify-content: flex-start;
+}
 .tableHead th span.arrowTop svg {
   transform: rotate(180deg);
+}
+
+@media (max-width: 1150px) {
+  .tableHead th:nth-of-type(3) {
+    width: 150px;
+  }
+  .tableHead th:last-of-type {
+    width: 190px;
+  }
+  .tableHead th.user:last-of-type {
+    width: 145px;
+  }
+}
+
+@media (max-width: 800px) {
+  .tableHead th {
+    padding: 7px;
+
+    font-size: 16px;
+    letter-spacing: 0;
+
+    border-right: 1px solid #DCDCDC;
+  }
+  .tableHead th:last-of-type {
+    width: 170px;
+  }
+  .tableHead th.user:last-of-type {
+    width: 140px;
+    padding-left: 7px;
+  }
+  .tableHead th.user:last-of-type span {
+    justify-content: center;
+  }
+  .tableHead th:nth-of-type(3) {
+    width: 130px;
+  }
 }

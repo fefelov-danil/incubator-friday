@@ -25,3 +25,9 @@
 .buttons button:disabled {
   background: #a49e9e !important;
 }
+
+@media (max-width: 800px) {
+  .buttons button {
+    padding: 5px 10px;
+  }
+}

@@ -219,7 +219,11 @@ export const TbodyCards = () => {
             new Date(card.updated).getFullYear()
 
           return (
-            <TableRow key={card._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+            <TableRow
+              key={card._id}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              className={myId === card.user_id ? s.my : s.user}
+            >
               <TableCell className={s.cardNameContainer} component="th" scope="row">
                 <img className={s.cardCover} src={card.questionImg} alt={'card cover'} />
                 {card.question === 'no question' ? (

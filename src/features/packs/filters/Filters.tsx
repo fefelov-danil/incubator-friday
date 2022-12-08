@@ -5,7 +5,7 @@ import s from './Filters.module.css'
 import { AllOrMyPacks } from 'features/packs/filters/allOrMyPacks/AllOrMyPacks'
 import { FiltersOff } from 'features/packs/filters/filtersOff/FiltersOff'
 import { InputSearch } from 'features/packs/filters/inputSearch/InputSearch'
-import { MinMaxCards } from 'features/packs/filters/slider/MinMaxCards'
+import { MinMaxCards } from 'features/packs/filters/sliderMinMax/MinMaxCards'
 
 export const Filters = () => {
   return (
@@ -15,7 +15,9 @@ export const Filters = () => {
         <InputSearch whose={'packs'} placeholder={'Provide your text'} />
       </div>
       <div className={s.allOrMyPacks}>
-        <p className={s.filterName}>Show packs cards</p>
+        <p className={s.filterName}>
+          Show packs <span>cards</span>
+        </p>
         <AllOrMyPacks />
       </div>
       <div className={s.slider}>
