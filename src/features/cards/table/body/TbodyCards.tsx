@@ -1,177 +1,19 @@
-import React, { ChangeEvent, useState } from 'react'
+import React from 'react'
 
-import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
 import StarIcon from '@mui/icons-material/Star'
-import IconButton from '@mui/material/IconButton'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableRow from '@mui/material/TableRow'
 
-import { SelectImage } from '../../../../common/selectImage/SelectImage'
-
 import s from './TbodyCards.module.css'
 
-import { Button } from 'common/button/Button'
-import { InputText } from 'common/inputText/InputText'
-import { Modal } from 'common/modal/Modal'
-import { deleteCardTC, updateCardTC } from 'features/cards/cards-reducer'
-import { useAppDispatch, useAppSelector } from 'utils/hooks'
+import { DeleteCardModal } from 'features/cards/table/body/modals/DeleteCardModal'
+import { EditCardModal } from 'features/cards/table/body/modals/EditCardModal'
+import { useAppSelector } from 'utils/hooks'
 
 export const TbodyCards = () => {
-  const dispatch = useAppDispatch()
-
   const cards = useAppSelector(state => state.cards.cards)
   const myId = useAppSelector(state => state.auth.profile._id)
-  const appStatus = useAppSelector(state => state.app.appStatus)
-
-  const [openModal, setOpenModal] = useState<boolean | null>(null)
-  const [openRenameModal, setOpenRenameModal] = useState<boolean | null>(null)
-  const [inputQuestionValue, setInputQuestionValue] = useState<string>('')
-  const [inputAnswerValue, setInputAnswerValue] = useState<string>('')
-  const [questionTypeValue, setQuestionTypeValue] = useState<string>('Text')
-  const [cover, setCover] = useState<undefined | string>(undefined)
-
-  const getInputValues = (cardId: string) => {
-    const card = cards?.find(c => c._id === cardId)
-
-    if (card) {
-      setInputQuestionValue(card.question)
-      setInputAnswerValue(card.answer)
-    }
-    if (card?.questionImg && card?.questionImg !== '') {
-      setQuestionTypeValue('Pic')
-    } else {
-      setQuestionTypeValue('Text')
-    }
-  }
-
-  const editPack = (cardId: string) => {
-    questionTypeValue === 'Text'
-      ? dispatch(
-          updateCardTC({ _id: cardId, question: inputQuestionValue, answer: inputAnswerValue })
-        )
-      : dispatch(
-          updateCardTC({
-            _id: cardId,
-            question: inputQuestionValue,
-            answer: inputAnswerValue,
-            questionImg: 'Pic',
-          })
-        )
-    setOpenRenameModal(false)
-  }
-
-  const deleteCard = (cardId: string) => {
-    dispatch(deleteCardTC(cardId))
-    setOpenModal(false)
-  }
-
-  const onQuestionChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setInputQuestionValue(e.currentTarget.value)
-  }
-
-  const onAnswerChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setInputAnswerValue(e.currentTarget.value)
-  }
-
-  const onTypeQuestionChangeHandler = (value: string) => {
-    setQuestionTypeValue(value)
-  }
-
-  const renderActions = (myId: string, userId: string, cardId: string) => {
-    if (myId === userId) {
-      return (
-        <div className={s.actions}>
-          <Modal
-            setOpenModal={setOpenRenameModal}
-            title={'Edit card'}
-            childrenOpenModal={
-              <IconButton onClick={() => getInputValues(cardId)} disabled={appStatus === 'loading'}>
-                <EditIcon sx={{ fontSize: 19 }} />
-              </IconButton>
-            }
-            openFromProps={openRenameModal}
-          >
-            <div className={s.editCardModal}>
-              <p>
-                <b>Choose a question format</b>
-              </p>
-              <select
-                value={questionTypeValue}
-                onChange={e => {
-                  onTypeQuestionChangeHandler(e.currentTarget.value)
-                }}
-                id="select"
-              >
-                <option value="Text">Text question</option>
-                <option value="Pic">Picture</option>
-              </select>
-              <div className={s.inputBlock}>
-                {questionTypeValue === 'Pic' && (
-                  <div className={s.coverBlock}>
-                    <p>
-                      <b>Question</b>
-                    </p>
-                    <div className={s.selectCover}>
-                      <SelectImage setCoverImg={setCover} />
-                    </div>
-                    {cover ? <img src={cover} alt="pack cover" /> : ''}
-                  </div>
-                )}
-                {questionTypeValue === 'Text' && (
-                  <div>
-                    <p>
-                      <b>Question</b>
-                    </p>
-                    <InputText
-                      onChange={onQuestionChangeHandler}
-                      placeholder={'Enter your question'}
-                      value={inputQuestionValue}
-                    />
-                  </div>
-                )}
-                <p>
-                  <b>Answer</b>
-                </p>
-                <InputText onChange={onAnswerChangeHandler} value={inputAnswerValue} />
-              </div>
-              <div className={'modalButtonBlock'}>
-                <Button className={'close'} onClick={() => setOpenRenameModal(false)}>
-                  Cancel
-                </Button>
-                <Button className={'createPack'} onClick={() => editPack(cardId)}>
-                  Save
-                </Button>
-              </div>
-            </div>
-          </Modal>
-          <Modal
-            title={'Delete card'}
-            setOpenModal={setOpenModal}
-            childrenOpenModal={
-              <IconButton onClick={() => getInputValues(cardId)} disabled={appStatus === 'loading'}>
-                <DeleteIcon sx={{ fontSize: 19 }} />
-              </IconButton>
-            }
-            openFromProps={openModal}
-          >
-            <p>
-              Do you really want to delete card - <b>{inputQuestionValue}</b>
-            </p>
-            <div className={'modalButtonBlock'}>
-              <Button className={'close'} onClick={() => setOpenModal(false)}>
-                Close
-              </Button>
-              <Button className={'del'} onClick={() => deleteCard(cardId)}>
-                Delete
-              </Button>
-            </div>
-          </Modal>
-        </div>
-      )
-    }
-  }
 
   const renderStars = (countStars: number) => {
     const fiveStars = [1, 1, 1, 1, 1]
@@ -242,7 +84,10 @@ export const TbodyCards = () => {
               >
                 <div className={s.starsAndActions}>
                   {renderStars(card.grade)}
-                  {renderActions(myId, card.user_id, card._id)}
+                  <div className={s.actions}>
+                    {myId === card.user_id && <EditCardModal cardId={card._id} card={card} />}
+                    {myId === card.user_id && <DeleteCardModal cardId={card._id} card={card} />}
+                  </div>
                 </div>
               </TableCell>
             </TableRow>
