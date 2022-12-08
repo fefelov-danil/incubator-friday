@@ -18,6 +18,12 @@
 .tableHead th:last-of-type {
   padding-left: 21px;
 }
+.tableHead th.my:last-of-type {
+  width: 190px;
+}
+.tableHead th.user:last-of-type {
+  width: 145px;
+}
 .tableHead th span {
   display: flex;
   align-items: center;
@@ -37,6 +43,9 @@
   .tableHead th:last-of-type {
     width: 190px;
   }
+  .tableHead th.user:last-of-type {
+    width: 145px;
+  }
 }
 
 @media (max-width: 800px) {
@@ -50,6 +59,13 @@
   }
   .tableHead th:last-of-type {
     width: 170px;
+  }
+  .tableHead th.user:last-of-type {
+    width: 140px;
+    padding-left: 7px;
+  }
+  .tableHead th.user:last-of-type span {
+    justify-content: center;
   }
   .tableHead th:nth-of-type(3) {
     width: 130px;

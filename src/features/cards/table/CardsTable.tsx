@@ -9,7 +9,7 @@ import { TheadCards } from 'features/cards/table/head/TheadCards'
 
 export const CardsTable = () => {
   return (
-    <TableContainer component={Paper} sx={{ marginTop: '30px' }}>
+    <TableContainer component={Paper}>
       <Table>
         <TheadCards />
         <TbodyCards />

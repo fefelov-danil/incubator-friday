@@ -1,3 +1,11 @@
+.cards .search {
+  margin-bottom: 30px;
+}
+.cards table {
+  overflow-x: auto;
+
+  min-width: 700px;
+}
 .backToPacks {
   margin-bottom: 25px;
 }
@@ -20,6 +28,7 @@
 }
 .titleAndBtn {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
 
@@ -28,6 +37,9 @@
 
   border-bottom: 1px solid #fff;
 }
+.titleAndBtn > div:first-of-type {
+  width: calc(100% - 160px);
+}
 .titleAndBtn h1 {
   margin-bottom: 0;
 
@@ -35,7 +47,7 @@
 }
 .titleAndBtn > div {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 }
 .learnBtn {
   font-family: 'Oswald', sans-serif;
@@ -56,10 +68,15 @@
   margin-right: 5px;
 }
 .actions .dotsForActions {
+  margin-top: 7px;
   margin-left: 5px;
   padding: 2px;
 
+  background: #fff;
   border: 1px solid #afafaf;
+}
+.actions .dotsForActions:hover {
+  background: #fff;
 }
 .actionsPopUp {
   position: absolute;
@@ -91,6 +108,9 @@
 
   background: transparent;
   border: 0;
+}
+.actions a.action {
+  margin-bottom: 0;
 }
 .actions .action svg {
   margin-right: 5px;
@@ -161,4 +181,31 @@ p.filterName {
   position: absolute;
   right: 0;
   bottom: 0;
+}
+
+@media (max-width: 800px) {
+  .cards .search {
+    margin-bottom: 20px;
+  }
+  .titleAndBtn {
+    margin-bottom: 12px;
+    padding-bottom: 15px;
+  }
+  .titleAndBtn h1 {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 500px) {
+  .titleAndBtn h1 {
+    font-size: 28px;
+  }
+  .titleAndBtn > div:first-of-type {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  .actions .dotsForActions {
+    margin-top: 4px;
+    padding: 1px;
+  }
 }

@@ -100,6 +100,13 @@
   .tableBody .text {
     max-width: 100%;
   }
+  .tableBody .user th {
+    max-width: calc(50vw - 230px);
+  }
+  .tableBody .user td:first-of-type {
+    width: auto;
+    max-width: calc(50vw - 250px);
+  }
 }
 
 @media (max-width: 800px) {
@@ -113,10 +120,17 @@
   .tableBody th {
     width: auto;
     max-width: calc(50vw - 165px);
+    padding: 4px 6px;
   }
   .tableBody td:first-of-type {
     width: auto;
     max-width: calc(50vw - 165px);
+  }
+  .tableBody .user th {
+    max-width: calc(50vw - 140px);
+  }
+  .tableBody .user td:first-of-type {
+    max-width: calc(50vw - 140px);
   }
   .withActions {
     width: 162px;

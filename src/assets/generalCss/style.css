@@ -186,6 +186,7 @@ ul.ul-custom li:before {
     padding: 0;
   }
   .container-with-table {
+    min-height: calc(100vh - 73px);
     margin: 0;
     padding: 30px 15px;
 
