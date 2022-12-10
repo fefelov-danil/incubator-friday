@@ -44,11 +44,7 @@ export const TbodyPacks = () => {
                     disabled={appStatus === 'loading'}
                     onClick={() => openPack(pack._id)}
                   >
-                    <img
-                      className={s.packCover}
-                      src={pack.deckCover || defaultCover}
-                      alt="pack cover"
-                    />
+                    <img className={s.packCover} src={pack.deckCover || defaultCover} alt="cover" />
                     {pack.name}
                   </button>
                 </NavLink>

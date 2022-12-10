@@ -26,7 +26,7 @@ export const TbodyCards = () => {
   const renderImgCell = (imgSrc: string) => {
     return (
       <TableCell className={s.imgCall}>
-        <img className={s.cardCover} src={imgSrc} alt={'card cover'} />
+        <img className={s.cardCover} src={imgSrc} alt={'cover'} />
       </TableCell>
     )
   }

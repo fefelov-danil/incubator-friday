@@ -81,7 +81,12 @@ export const Learn = () => {
       <h1>{packName}</h1>
       <hr />
       <p className={s.question}>
-        <b>Question:</b> {card.question}
+        <b>Question: </b>
+        {card.questionImg && card.questionImg !== 'null' ? (
+          <img src={card.questionImg} alt={'question'} />
+        ) : (
+          card.question
+        )}
       </p>
       <p className={s.tryCounts}>Number of answers the question: {card.shots}</p>
       <Answer card={card} />

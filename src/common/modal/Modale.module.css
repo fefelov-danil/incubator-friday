@@ -5,9 +5,12 @@
   left: 50%;
   transform: translate(-50%, -50%);
 
+  overflow-x: hidden;
+  overflow-y: auto;
   display: none;
 
   width: 400px;
+  max-height: 100vh;
 
   background: #fff;
   border-radius: 5px;
@@ -50,24 +53,18 @@
   cursor: pointer;
 
   position: absolute;
-  top: -11px;
-  right: -11px;
+  top: 3px;
+  right: 0;
 
-  padding: 1px 1px 0px 1px;
+  padding: 0;
 
   line-height: 0.9;
 
-  background: #5B5B5B;
-  border-radius: 4px;
-
   transition: 0.2s;
 }
-.titleAndClose .modalClose:hover {
-  background: #444;
-}
 .titleAndClose .modalClose svg {
-  font-size: 25px;
-  color: #fff;
+  font-size: 35px;
+  color: #5B5B5B;
 }
 .modalBody {
   padding: 0 30px 20px 30px;

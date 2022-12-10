@@ -47,7 +47,12 @@ export const Answer: FC<AnswerPropsType> = ({ card }) => {
     return (
       <div className={s.answerBlock}>
         <p className={s.answer}>
-          <b>Answer:</b> {card.answer}
+          <b>Answer: </b>
+          {card.answerImg && card.answerImg !== 'null' ? (
+            <img src={card.answerImg} alt={'answer'} />
+          ) : (
+            card.answer
+          )}
         </p>
         <Grade setCurrentGrade={setCurrentGrade} />
         <p className={s.btn}>
