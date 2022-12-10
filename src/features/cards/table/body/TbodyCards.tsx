@@ -82,8 +82,12 @@ export const TbodyCards = () => {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               className={myId === card.user_id ? s.my : s.user}
             >
-              {card.questionImg ? renderImgCell(card.questionImg) : renderTextCell(card.question)}
-              {card.answerImg ? renderImgCell(card.answerImg) : renderTextCell(card.answer)}
+              {card.questionImg && card.questionImg !== 'null'
+                ? renderImgCell(card.questionImg)
+                : renderTextCell(card.question)}
+              {card.answerImg && card.answerImg !== 'null'
+                ? renderImgCell(card.answerImg)
+                : renderTextCell(card.answer)}
               <TableCell align="center">{date}</TableCell>
               <TableCell
                 align="right"
