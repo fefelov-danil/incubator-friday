@@ -52,19 +52,35 @@ export const EditCardModal: FC<EditCardModalPropsType> = ({ cardId, card }) => {
     setAnswerTypeValue(card?.answerImg && card?.answerImg !== '' ? 'Pic' : 'Text')
   }
 
-  const editPack = (cardId: string) => {
-    questionTypeValue === 'Text'
-      ? dispatch(
-          updateCardTC({ _id: cardId, question: inputQuestionValue, answer: inputAnswerValue })
-        )
-      : dispatch(
+  const editCard = (cardId: string) => {
+    if (questionTypeValue === 'Text') {
+      dispatch(
+        updateCardTC({ _id: cardId, question: inputQuestionValue, answer: inputAnswerValue })
+      )
+    } else {
+      if (answerTypeValue === 'Text') {
+        dispatch(
           updateCardTC({
             _id: cardId,
             question: inputQuestionValue,
             answer: inputAnswerValue,
-            questionImg: 'Pic',
+            questionImg: coverQuestion,
+            answerImg: '',
           })
         )
+        setCoverAnswer(undefined)
+      } else {
+        dispatch(
+          updateCardTC({
+            _id: cardId,
+            question: inputQuestionValue,
+            answer: inputAnswerValue,
+            questionImg: coverQuestion,
+            answerImg: coverAnswer,
+          })
+        )
+      }
+    }
     setOpenRenameModal(false)
   }
 
@@ -130,9 +146,6 @@ export const EditCardModal: FC<EditCardModalPropsType> = ({ cardId, card }) => {
             <option value="Text">Text answer</option>
             <option value="Pic">Picture</option>
           </select>
-          <p>
-            <b>Answer</b>
-          </p>
           {answerTypeValue === 'Pic' && (
             <div className={s.coverBlock}>
               <p>
@@ -161,7 +174,7 @@ export const EditCardModal: FC<EditCardModalPropsType> = ({ cardId, card }) => {
           <Button className={'close'} onClick={() => setOpenRenameModal(false)}>
             Cancel
           </Button>
-          <Button className={'createPack'} onClick={() => editPack(cardId)}>
+          <Button className={'createPack'} onClick={() => editCard(cardId)}>
             Save
           </Button>
         </div>
