@@ -1,10 +1,13 @@
 .tableBody td {
   padding: 8px 12px;
 }
-.tableBody th {
-  width: 30%;
+.tableBody td.imgCall {
+  padding: 5px 8px;
 }
 .tableBody td:first-of-type {
+  width: 30%;
+}
+.tableBody td:nth-of-type(2) {
   width: 30%;
 }
 .tableBody .text {
@@ -85,7 +88,7 @@
 }
 
 .cardCover {
-  height: 30px;
+  height: 40px;
 }
 
 .selectCover {
@@ -94,21 +97,21 @@
 
 
 @media (max-width: 1150px) {
-  .tableBody th {
+  .tableBody td:first-of-type {
     width: auto;
     max-width: calc(50vw - 250px);
   }
-  .tableBody td:first-of-type {
+  .tableBody td:nth-of-type(2) {
     width: auto;
     max-width: calc(50vw - 250px);
   }
   .tableBody .text {
     max-width: 100%;
   }
-  .tableBody .user th {
+  .tableBody .user td:first-of-type {
     max-width: calc(50vw - 230px);
   }
-  .tableBody .user td:first-of-type {
+  .tableBody .user td:nth-of-type(2) {
     width: auto;
     max-width: calc(50vw - 250px);
   }
@@ -122,19 +125,19 @@
 
     border-left: 1px solid #DCDCDC !important;
   }
-  .tableBody th {
+  .tableBody td:first-of-type {
     width: auto;
     max-width: calc(50vw - 165px);
     padding: 4px 6px;
   }
-  .tableBody td:first-of-type {
+  .tableBody td:nth-of-type(2) {
     width: auto;
     max-width: calc(50vw - 165px);
   }
-  .tableBody .user th {
+  .tableBody .user td:first-of-type {
     max-width: calc(50vw - 140px);
   }
-  .tableBody .user td:first-of-type {
+  .tableBody .user td:nth-of-type(2) {
     max-width: calc(50vw - 140px);
   }
   .withActions {

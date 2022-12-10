@@ -37,7 +37,7 @@ export const TbodyPacks = () => {
 
           return (
             <TableRow key={pack._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-              <TableCell className={s.packName} component="th" scope="row">
+              <TableCell className={s.packName}>
                 <NavLink to={PATH.CARDS}>
                   <button
                     className={s.packNameContainer}

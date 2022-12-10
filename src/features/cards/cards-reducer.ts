@@ -186,4 +186,5 @@ export type CardType = {
   created: string
   updated: string
   questionImg?: string
+  answerImg?: string
 }

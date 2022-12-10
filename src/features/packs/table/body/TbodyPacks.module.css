@@ -1,10 +1,10 @@
-.tableBody th {
-  padding: 5px 10px;
+.tableBody td:first-of-type {
+  padding: 5px 8px;
 }
 .tableBody td {
   padding: 8px 12px;
 }
-.tableBody td:nth-of-type(2) {
+.tableBody td:nth-of-type(3) {
   max-width: 170px;
 }
 .tableBody td .userName {
@@ -107,18 +107,18 @@
 
     border-left: 1px solid #DCDCDC !important;
   }
-  .tableBody th {
+  .tableBody td:first-of-type {
     width: calc(100% - 390px);
 
     font-size: 14px;
   }
-  .tableBody td:first-of-type {
+  .tableBody td:nth-of-type(2) {
     width: 80px;
   }
-  .tableBody td:nth-of-type(2) {
+  .tableBody td:nth-of-type(3) {
     width: 130px;
   }
-  .tableBody td:nth-of-type(3) {
+  .tableBody td:nth-of-type(4) {
     width: 120px;
   }
   .tableBody td:last-of-type {
