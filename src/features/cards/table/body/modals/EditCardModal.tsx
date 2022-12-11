@@ -15,113 +15,106 @@ type EditCardModalPropsType = {
   cardId: string
   card: CardType
 }
+type selectType = 'Text' | 'Pic'
 
 export const EditCardModal: FC<EditCardModalPropsType> = ({ cardId, card }) => {
   const dispatch = useAppDispatch()
   const appStatus = useAppSelector(state => state.app.appStatus)
 
-  const [openRenameModal, setOpenRenameModal] = useState<boolean | null>(null)
-  const [coverQuestion, setCoverQuestion] = useState<undefined | string>(card.questionImg)
-  const [coverAnswer, setCoverAnswer] = useState<undefined | string>(card.answer)
-  const [inputQuestionValue, setInputQuestionValue] = useState<string>('')
-  const [inputAnswerValue, setInputAnswerValue] = useState<string>('')
-  const [questionTypeValue, setQuestionTypeValue] = useState<string>('Text')
-  const [answerTypeValue, setAnswerTypeValue] = useState<string>('Text')
+  const [openModal, setOpenModal] = useState<boolean | null>(null)
+  const [questionImg, setQuestionImg] = useState<undefined | string>(card.questionImg)
+  const [answerImg, setAnswerImg] = useState<undefined | string>(card.answerImg)
+  const [questionText, setQuestionText] = useState(card.question)
+  const [answerText, setAnswerText] = useState(card.answer)
+  const [questionType, setQuestionType] = useState<selectType>('Text')
+  const [answerType, setAnswerType] = useState<selectType>('Text')
 
-  const onQuestionChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setInputQuestionValue(e.currentTarget.value)
+  const onQuestionChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setQuestionText(e.currentTarget.value)
   }
 
-  const onAnswerChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setInputAnswerValue(e.currentTarget.value)
+  const onAnswerChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setAnswerText(e.currentTarget.value)
   }
 
-  const onTypeQuestionChangeHandler = (value: string) => {
-    setQuestionTypeValue(value)
+  const onTypeQuestionChangeHandler = (value: selectType) => {
+    if (value === 'Text') {
+      setQuestionText(card.question)
+      setQuestionImg('null')
+    } else {
+      setQuestionImg(card.questionImg)
+      setQuestionText('')
+    }
+    setQuestionType(value)
   }
 
-  const onTypeAnswerChangeHandler = (value: string) => {
-    setAnswerTypeValue(value)
+  const onTypeAnswerChangeHandler = (value: selectType) => {
+    if (value === 'Text') {
+      setAnswerText(card.question)
+      setAnswerImg('null')
+    } else {
+      setAnswerImg(card.questionImg)
+      setAnswerText('')
+    }
+    setAnswerType(value)
   }
 
   const getInputValues = () => {
-    setInputQuestionValue(card.question)
-    setInputAnswerValue(card.answer)
-
-    setQuestionTypeValue(card?.questionImg && card?.questionImg !== '' ? 'Pic' : 'Text')
-    setAnswerTypeValue(card?.answerImg && card?.answerImg !== '' ? 'Pic' : 'Text')
+    setQuestionType(card?.questionImg && card?.questionImg !== 'null' ? 'Pic' : 'Text')
+    setAnswerType(card?.answerImg && card?.answerImg !== 'null' ? 'Pic' : 'Text')
   }
 
-  const editCard = (cardId: string) => {
-    if (questionTypeValue === 'Text') {
-      dispatch(
-        updateCardTC({ _id: cardId, question: inputQuestionValue, answer: inputAnswerValue })
-      )
-    } else {
-      if (answerTypeValue === 'Text') {
-        dispatch(
-          updateCardTC({
-            _id: cardId,
-            question: inputQuestionValue,
-            answer: inputAnswerValue,
-            questionImg: coverQuestion,
-            answerImg: '',
-          })
-        )
-        setCoverAnswer(undefined)
-      } else {
-        dispatch(
-          updateCardTC({
-            _id: cardId,
-            question: inputQuestionValue,
-            answer: inputAnswerValue,
-            questionImg: coverQuestion,
-            answerImg: coverAnswer,
-          })
-        )
-      }
-    }
-    setOpenRenameModal(false)
+  const editPack = (cardId: string) => {
+    dispatch(
+      updateCardTC({
+        _id: cardId,
+        question: questionText,
+        answer: answerText,
+        questionImg: questionImg,
+        answerImg: answerImg,
+      })
+    )
+    setOpenModal(false)
   }
 
   return (
     <Modal
-      setOpenModal={setOpenRenameModal}
+      setOpenModal={setOpenModal}
       title={'Edit card'}
       childrenOpenModal={
         <IconButton onClick={() => getInputValues()} disabled={appStatus === 'loading'}>
           <EditIcon sx={{ fontSize: 19 }} />
         </IconButton>
       }
-      openFromProps={openRenameModal}
+      openFromProps={openModal}
     >
       <div className={s.editCardModal}>
         <p>
           <b>Choose a question format</b>
         </p>
         <select
-          value={questionTypeValue}
+          value={questionType}
           onChange={e => {
-            onTypeQuestionChangeHandler(e.currentTarget.value)
+            onTypeQuestionChangeHandler(e.currentTarget.value as selectType)
           }}
-          id="select"
+          id="questionSelect"
         >
           <option value="Text">Text question</option>
           <option value="Pic">Picture</option>
         </select>
         <div className={s.inputBlock}>
-          {questionTypeValue === 'Pic' && (
+          {questionType === 'Pic' && (
             <div className={s.coverBlock}>
               <p>
                 <b>Question</b>
               </p>
               <div className={s.selectCover}>
-                <SelectImage setCoverImg={setCoverQuestion} />
+                <SelectImage setCoverImg={setQuestionImg} />
               </div>
-              {coverQuestion ? <img src={coverQuestion} alt="pack cover" /> : ''}
+              {questionImg ? <img src={questionImg} alt="pack cover" /> : ''}
             </div>
           )}
-          {questionTypeValue === 'Text' && (
+          {questionType === 'Text' && (
             <div>
               <p>
                 <b>Question</b>
@@ -129,7 +122,7 @@ export const EditCardModal: FC<EditCardModalPropsType> = ({ cardId, card }) => {
               <InputText
                 onChange={onQuestionChangeHandler}
                 placeholder={'Enter your question'}
-                value={inputQuestionValue}
+                value={questionText}
               />
             </div>
           )}
@@ -137,27 +130,27 @@ export const EditCardModal: FC<EditCardModalPropsType> = ({ cardId, card }) => {
             <b>Choose a answer format</b>
           </p>
           <select
-            value={answerTypeValue}
+            value={answerType}
             onChange={e => {
-              onTypeAnswerChangeHandler(e.currentTarget.value)
+              onTypeAnswerChangeHandler(e.currentTarget.value as selectType)
             }}
             id="answerSelect"
           >
             <option value="Text">Text answer</option>
             <option value="Pic">Picture</option>
           </select>
-          {answerTypeValue === 'Pic' && (
+          {answerType === 'Pic' && (
             <div className={s.coverBlock}>
               <p>
                 <b>Answer</b>
               </p>
               <div className={s.selectCover}>
-                <SelectImage setCoverImg={setCoverAnswer} />
+                <SelectImage setCoverImg={setAnswerImg} />
               </div>
-              {coverAnswer ? <img src={coverAnswer} alt="cover" /> : ''}
+              {answerImg ? <img src={answerImg} alt="cover" /> : ''}
             </div>
           )}
-          {answerTypeValue === 'Text' && (
+          {answerType === 'Text' && (
             <div>
               <p>
                 <b>Answer</b>
@@ -165,16 +158,16 @@ export const EditCardModal: FC<EditCardModalPropsType> = ({ cardId, card }) => {
               <InputText
                 onChange={onAnswerChangeHandler}
                 placeholder={'Enter your answer'}
-                value={inputAnswerValue}
+                value={answerText}
               />
             </div>
           )}
         </div>
         <div className={'modalButtonBlock'}>
-          <Button className={'close'} onClick={() => setOpenRenameModal(false)}>
+          <Button className={'close'} onClick={() => setOpenModal(false)}>
             Cancel
           </Button>
-          <Button className={'createPack'} onClick={() => editCard(cardId)}>
+          <Button className={'createPack'} onClick={() => editPack(cardId)}>
             Save
           </Button>
         </div>
