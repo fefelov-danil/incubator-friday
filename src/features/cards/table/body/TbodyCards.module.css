@@ -81,6 +81,27 @@
   border-radius: 5px;
 }
 
+/*.inputBlock .coverBlock {*/
+/*  position: relative;*/
+
+/*  text-align: center;*/
+/*}*/
+
+/*.inputBlock .coverBlock .selectCover {*/
+/*  position: absolute;*/
+/*  top: 50%;*/
+/*  left: 50%;*/
+/*}*/
+
+.editCardModal .inputBlock .coverBlock p {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.inputBlock img {
+  max-height: 110px;
+}
+
 .inputBlock input {
   display: block;
 

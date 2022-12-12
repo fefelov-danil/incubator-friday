@@ -15,20 +15,16 @@ export const TbodyCards = () => {
   const cards = useAppSelector(state => state.cards.cards)
   const myId = useAppSelector(state => state.auth.profile._id)
 
-  const renderTextCell = (text: string) => {
-    return (
-      <TableCell className={s.textCall}>
-        <span className={s.text}>{text}</span>
-      </TableCell>
-    )
+  const renderText = (text: string) => {
+    if (text && text !== 'no answer' && text !== 'no question') {
+      return <span className={s.text}>{text}</span>
+    }
   }
 
-  const renderImgCell = (imgSrc: string) => {
-    return (
-      <TableCell className={s.imgCall}>
-        <img className={s.cardCover} src={imgSrc} alt={'cover'} />
-      </TableCell>
-    )
+  const renderImg = (imgSrc: string | undefined) => {
+    if (imgSrc && imgSrc !== 'null') {
+      return <img className={s.cardCover} src={imgSrc} alt={'cover'} />
+    }
   }
 
   const renderStars = (countStars: number) => {
@@ -82,12 +78,11 @@ export const TbodyCards = () => {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               className={myId === card.user_id ? s.my : s.user}
             >
-              {card.questionImg && card.questionImg !== 'null'
-                ? renderImgCell(card.questionImg)
-                : renderTextCell(card.question)}
-              {card.answerImg && card.answerImg !== 'null'
-                ? renderImgCell(card.answerImg)
-                : renderTextCell(card.answer)}
+              <TableCell>
+                {renderImg(card.questionImg)}
+                {renderText(card.question)}
+              </TableCell>
+              <TableCell>{renderText(card.answer)}</TableCell>
               <TableCell align="center">{date}</TableCell>
               <TableCell
                 align="right"
