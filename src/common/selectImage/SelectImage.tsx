@@ -21,7 +21,6 @@ export const SelectImage: React.FC<SelectImagePropsType> = ({ setCoverImg }) => 
 
       if (file.size < 5000000) {
         convertFileToBase64(file, (file64: string) => {
-          console.log('third', file64)
           setCoverImg(file64)
         })
       } else {
