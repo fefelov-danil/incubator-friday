@@ -6,9 +6,10 @@ import { Modal } from 'common/modal/Modal'
 import { SelectImgForModal } from 'common/modal/selectImgForModal/SelectImgForModal'
 import { createNewCardTC } from 'features/cards/cards-reducer'
 import s from 'features/cards/Cards.module.css'
-import { useAppSelector } from 'utils/hooks'
+import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 export const AddNewCardModal = () => {
+  const dispatch = useAppDispatch()
   const cardsPack_id = useAppSelector(state => state.cards.currentPackId)
 
   const [openModal, setOpenModal] = useState<boolean | null>(null)
@@ -18,12 +19,14 @@ export const AddNewCardModal = () => {
 
   const addNewCard = () => {
     setOpenModal(false)
-    createNewCardTC({
-      cardsPack_id,
-      question: inputQuestionValue,
-      answer: inputAnswerValue,
-      questionImg: cover,
-    })
+    dispatch(
+      createNewCardTC({
+        cardsPack_id,
+        question: inputQuestionValue,
+        answer: inputAnswerValue,
+        questionImg: cover,
+      })
+    )
     setInputQuestionValue('')
     setInputAnswerValue('')
     setCover(undefined)
@@ -35,6 +38,16 @@ export const AddNewCardModal = () => {
 
   const onAnswerChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setInputAnswerValue(e.currentTarget.value)
+  }
+
+  const disabledAddCard = () => {
+    if (!inputQuestionValue || !inputAnswerValue) {
+      if (!cover || !inputAnswerValue) {
+        return true
+      }
+    }
+
+    return false
   }
 
   return (
@@ -71,7 +84,7 @@ export const AddNewCardModal = () => {
           <Button className={'close'} onClick={() => setOpenModal(false)}>
             Cancel
           </Button>
-          <Button className={'createPack'} onClick={addNewCard}>
+          <Button disabled={disabledAddCard()} className={'createPack'} onClick={addNewCard}>
             Add card
           </Button>
         </div>
