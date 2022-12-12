@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useRef } from 'react'
 
 import CameraAltOutlinedIcon from '@mui/icons-material/CameraAltOutlined'
 import { IconButton } from '@mui/material'
@@ -15,6 +15,14 @@ export type SelectImagePropsType = {
 export const SelectImage: React.FC<SelectImagePropsType> = ({ setCoverImg }) => {
   const dispatch = useAppDispatch()
 
+  const inpFile = useRef<HTMLInputElement | null>(null)
+
+  const clearInputContent = () => {
+    if (inpFile.current) {
+      inpFile.current.value = ''
+    }
+  }
+
   const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length) {
       const file = e.target.files[0]
@@ -30,11 +38,19 @@ export const SelectImage: React.FC<SelectImagePropsType> = ({ setCoverImg }) => 
   }
 
   return (
-    <label>
-      <input type="file" onChange={uploadHandler} style={{ display: 'none' }} />
-      <IconButton style={{ backgroundColor: 'grey' }} component="span">
-        <CameraAltOutlinedIcon sx={{ color: grey[50] }} />
-      </IconButton>
-    </label>
+    <>
+      <label>
+        <input
+          ref={inpFile}
+          type="file"
+          onClick={clearInputContent}
+          onChange={uploadHandler}
+          style={{ display: 'none' }}
+        />
+        <IconButton style={{ backgroundColor: 'grey' }} component="span">
+          <CameraAltOutlinedIcon sx={{ color: grey[50] }} />
+        </IconButton>
+      </label>
+    </>
   )
 }
