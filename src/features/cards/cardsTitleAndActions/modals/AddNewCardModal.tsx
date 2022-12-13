@@ -1,9 +1,9 @@
 import React, { ChangeEvent, useState } from 'react'
 
 import { Button } from 'common/button/Button'
-import { InputText } from 'common/inputText/InputText'
 import { Modal } from 'common/modal/Modal'
 import { SelectImgForModal } from 'common/modal/selectImgForModal/SelectImgForModal'
+import { Textarea } from 'common/textarea/Textarea'
 import { createNewCardTC } from 'features/cards/cards-reducer'
 import s from 'features/cards/Cards.module.css'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
@@ -15,7 +15,7 @@ export const AddNewCardModal = () => {
   const [openModal, setOpenModal] = useState<boolean | null>(null)
   const [inputQuestionValue, setInputQuestionValue] = useState<string>('')
   const [inputAnswerValue, setInputAnswerValue] = useState<string>('')
-  const [cover, setCover] = useState<undefined | string>(undefined)
+  const [coverQuestion, setCoverQuestion] = useState<undefined | string>(undefined)
 
   const addNewCard = () => {
     setOpenModal(false)
@@ -24,25 +24,25 @@ export const AddNewCardModal = () => {
         cardsPack_id,
         question: inputQuestionValue,
         answer: inputAnswerValue,
-        questionImg: cover,
+        questionImg: coverQuestion,
       })
     )
     setInputQuestionValue('')
     setInputAnswerValue('')
-    setCover(undefined)
+    setCoverQuestion(undefined)
   }
 
-  const onQuestionChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const onQuestionChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInputQuestionValue(e.currentTarget.value)
   }
 
-  const onAnswerChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const onAnswerChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setInputAnswerValue(e.currentTarget.value)
   }
 
   const disabledAddCard = () => {
     if (!inputQuestionValue || !inputAnswerValue) {
-      if (!cover || !inputAnswerValue) {
+      if (!coverQuestion || !inputAnswerValue) {
         return true
       }
     }
@@ -61,20 +61,20 @@ export const AddNewCardModal = () => {
           <p>
             <b>Question</b>
           </p>
-          <InputText
+          <Textarea
             onChange={onQuestionChangeHandler}
             placeholder={'Enter your question'}
             value={inputQuestionValue}
           />
           <SelectImgForModal
             title={'Add an image to the question (optional)'}
-            cover={cover}
-            setCoverImg={setCover}
+            cover={coverQuestion}
+            setCoverImg={setCoverQuestion}
           />
           <p>
             <b>Answer</b>
           </p>
-          <InputText
+          <Textarea
             onChange={onAnswerChangeHandler}
             placeholder={'Enter your answer'}
             value={inputAnswerValue}

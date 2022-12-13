@@ -130,14 +130,14 @@ p.filterName {
   display: block;
 
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .createCardModal p {
-  margin-bottom: 8px;
+  margin-bottom: 5px;
 }
 .createCardModal .inputBlock p:last-of-type {
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .editPackModal input {
