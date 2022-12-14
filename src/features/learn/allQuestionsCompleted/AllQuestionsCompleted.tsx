@@ -13,7 +13,7 @@ type QuestionsCompletedPropsType = {
   backToCardsHandler: () => void
 }
 
-export const QuestionsCompleted: FC<QuestionsCompletedPropsType> = ({
+export const AllQuestionsCompleted: FC<QuestionsCompletedPropsType> = ({
   packName,
   backToCardsHandler,
 }) => {
