@@ -37,9 +37,9 @@ export const EditCardModal: FC<EditCardModalPropsType> = ({ cardId, card }) => {
     dispatch(
       updateCardTC({
         _id: cardId,
-        question: inputQuestionValue,
+        question: inputQuestionValue !== '' ? inputQuestionValue : ' ',
         answer: inputAnswerValue,
-        questionImg: coverQuestion,
+        questionImg: coverQuestion !== '' ? coverQuestion : ' ',
       })
     )
     setOpenModal(false)
