@@ -79,8 +79,10 @@ export const TbodyCards = () => {
               className={myId === card.user_id ? s.my : s.user}
             >
               <TableCell>
-                {renderImg(card.questionImg)}
-                {renderText(card.question)}
+                <div className={s.textAndCoverCell}>
+                  {renderImg(card.questionImg)}
+                  {renderText(card.question)}
+                </div>
               </TableCell>
               <TableCell>{renderText(card.answer)}</TableCell>
               <TableCell align="center">{date}</TableCell>

@@ -9,8 +9,8 @@ import { Button } from 'common/button/Button'
 import { PATH } from 'common/routes/Pages'
 import s from 'features/cards/Cards.module.css'
 import { AddNewCardModal } from 'features/cards/cardsTitleAndActions/modals/AddNewCardModal'
-import { DeleteModal } from 'features/cards/cardsTitleAndActions/modals/DeleteModal'
-import { EditModals } from 'features/cards/cardsTitleAndActions/modals/EditModals'
+import { DeletePackModal } from 'features/cards/cardsTitleAndActions/modals/DeletePackModal'
+import { EditPackModals } from 'features/cards/cardsTitleAndActions/modals/EditPackModals'
 import { useAppSelector } from 'utils/hooks'
 
 export const CardsTitleAndActions = () => {
@@ -55,8 +55,8 @@ export const CardsTitleAndActions = () => {
                   : `${s.actionsPopUp} ${s.actionsIsClosed}`
               }
             >
-              <EditModals />
-              <DeleteModal />
+              <EditPackModals />
+              <DeletePackModal />
               {cardsTotalCount ? (
                 <NavLink className={s.action} to={PATH.LEARN}>
                   <SchoolIcon sx={{ fontSize: 19 }} /> Learn

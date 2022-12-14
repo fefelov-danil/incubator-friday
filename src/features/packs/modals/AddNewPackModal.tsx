@@ -1,14 +1,13 @@
 import React, { ChangeEvent, useState } from 'react'
 
-import { Input } from '@mui/material'
+import s from './AddNewPackModal.module.css'
 
-import defaultCover from 'assets/images/default-pack-cover.png'
 import { Button } from 'common/button/Button'
 import { Checkbox } from 'common/checkbox/Checkbox'
+import { InputText } from 'common/inputText/InputText'
 import { Modal } from 'common/modal/Modal'
-import { SelectImage } from 'common/selectImage/SelectImage'
+import { SelectImgForModal } from 'common/modal/selectImgForModal/SelectImgForModal'
 import { addPackTC } from 'features/packs/packs-reducer'
-import s from 'features/packs/Packs.module.css'
 import { useAppDispatch } from 'utils/hooks'
 
 export const AddNewPackModal = () => {
@@ -42,14 +41,19 @@ export const AddNewPackModal = () => {
       openFromProps={openModal}
     >
       <div className={s.createPackModal}>
-        <div className={s.coverBlock}>
-          <div className={s.selectCover}>
-            <SelectImage setCoverImg={setCover} />
-          </div>
-          <img src={cover || defaultCover} alt="pack cover" />
-        </div>
         <div className={s.inputBlock}>
-          <Input onChange={onChangeHandler} value={inputValue} />
+          <InputText
+            className={s.inpName}
+            onChange={onChangeHandler}
+            placeholder={'Enter Pack name'}
+            value={inputValue}
+          />
+          <SelectImgForModal
+            className={s.addPackImg}
+            title={'Add an image to the Pack (optional)'}
+            cover={cover}
+            setCoverImg={setCover}
+          />
           <Checkbox
             checked={isChecked}
             onChangeChecked={onCheckBoxChangeHandler}

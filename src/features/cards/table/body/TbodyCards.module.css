@@ -1,6 +1,13 @@
 .tableBody td {
   padding: 8px 12px;
 }
+.tableBody td .textAndCoverCell {
+  display: flex;
+  align-items: center;
+}
+.tableBody td .textAndCoverCell img {
+  margin-right: 5px;
+}
 .tableBody td.imgCall {
   padding: 5px 8px;
 }
@@ -80,18 +87,6 @@
   border: 1px solid #a7a7a7;
   border-radius: 5px;
 }
-
-/*.inputBlock .coverBlock {*/
-/*  position: relative;*/
-
-/*  text-align: center;*/
-/*}*/
-
-/*.inputBlock .coverBlock .selectCover {*/
-/*  position: absolute;*/
-/*  top: 50%;*/
-/*  left: 50%;*/
-/*}*/
 
 .editCardModal .inputBlock .coverBlock p {
   margin-top: 0;

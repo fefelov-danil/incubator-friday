@@ -13,19 +13,21 @@ type SelectImgForModalPropsType = {
   title: string
   cover: string | undefined
   setCoverImg: (cover: string | undefined) => void
+  className?: string
 }
 
 export const SelectImgForModal: FC<SelectImgForModalPropsType> = ({
   title,
   cover,
   setCoverImg,
+  className,
 }) => {
   const deleteCoverImd = () => {
     setCoverImg(undefined)
   }
 
   return (
-    <div className={s.selectCover}>
+    <div className={className ? `${className} ${s.selectCover}` : s.selectCover}>
       <p>{title}</p>
       <div className={s.image}>
         <SelectImage setCoverImg={setCoverImg} />

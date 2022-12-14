@@ -1,6 +1,9 @@
 .selectCover {
   margin-bottom: 10px;
 }
+.selectCover > p {
+  margin-bottom: 5px;
+}
 .image {
   position: relative;
 
