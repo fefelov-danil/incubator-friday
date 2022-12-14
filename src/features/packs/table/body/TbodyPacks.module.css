@@ -41,37 +41,6 @@
   border: 0;
 }
 
-.actions button.del {
-  padding: 3px 15px 4px 15px;
-
-  font-size: 15px;
-}
-
-.actions button.close {
-  margin-right: 12px;
-  padding: 3px 15px 4px 15px;
-
-  font-size: 15px;
-
-  background: #868686;
-}
-
-.inputBlock > div {
-  display: block;
-
-  width: 100%;
-  margin-bottom: 30px;
-}
-.modalButtonBlock {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-
-  width: 100%;
-  margin-top: 30px;
-}
-
 .packNameContainer {
   display: flex;
   align-items: center;
@@ -97,6 +66,15 @@
   position: absolute;
   right: 0;
   bottom: 0;
+}
+
+.editPackModal .inpName {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.editPackModal .editPackImg {
+  margin-bottom: 20px;
 }
 
 @media (max-width: 800px) {

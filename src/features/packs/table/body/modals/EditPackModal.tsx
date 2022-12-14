@@ -1,14 +1,13 @@
 import React, { ChangeEvent, FC, useEffect, useState } from 'react'
 
 import EditIcon from '@mui/icons-material/Edit'
-import { Input } from '@mui/material'
 import IconButton from '@mui/material/IconButton'
 
-import defaultCover from 'assets/images/default-pack-cover.png'
 import { Button } from 'common/button/Button'
 import { Checkbox } from 'common/checkbox/Checkbox'
+import { InputText } from 'common/inputText/InputText'
 import { Modal } from 'common/modal/Modal'
-import { SelectImage } from 'common/selectImage/SelectImage'
+import { SelectImgForModal } from 'common/modal/selectImgForModal/SelectImgForModal'
 import { updatePackTC } from 'features/packs/packs-reducer'
 import s from 'features/packs/table/body/TbodyPacks.module.css'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
@@ -30,7 +29,7 @@ export const EditPackModal: FC<EditPackModalPropsType> = ({
   const appStatus = useAppSelector(state => state.app.appStatus)
 
   const [openRenameModal, setOpenRenameModal] = useState<boolean | null>(null)
-  const [inputValue, setInputValue] = useState(packName)
+  const [inputPackName, setInputPackName] = useState(packName)
   const [isChecked, setIsChecked] = useState(packPrivate)
   const [cover, setCover] = useState<undefined | string>(deckCover)
 
@@ -43,14 +42,14 @@ export const EditPackModal: FC<EditPackModalPropsType> = ({
   }
 
   const editPack = (packId: string) => {
-    dispatch(updatePackTC({ _id: packId, name: packName, private: isChecked, deckCover: cover }))
+    dispatch(
+      updatePackTC({ _id: packId, name: inputPackName, private: isChecked, deckCover: cover })
+    )
     setOpenRenameModal(false)
-    setInputValue('')
-    setCover(undefined)
   }
 
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setInputValue(e.currentTarget.value)
+    setInputPackName(e.currentTarget.value)
   }
 
   return (
@@ -65,14 +64,19 @@ export const EditPackModal: FC<EditPackModalPropsType> = ({
       openFromProps={openRenameModal}
     >
       <div className={s.editPackModal}>
-        <div className={s.coverBlock}>
-          <div className={s.selectCover}>
-            <SelectImage setCoverImg={setCover} />
-          </div>
-          <img src={cover || defaultCover} alt="pack cover" />
-        </div>
         <div className={s.inputBlock}>
-          <Input onChange={onChangeHandler} value={inputValue} />
+          <InputText
+            className={s.inpName}
+            onChange={onChangeHandler}
+            placeholder={'Enter Pack name'}
+            value={inputPackName}
+          />
+          <SelectImgForModal
+            className={s.editPackImg}
+            title={'Add an image to the Pack (optional)'}
+            cover={cover}
+            setCoverImg={setCover}
+          />
           <Checkbox
             checked={isChecked}
             onChangeChecked={onCheckBoxChangeHandler}
@@ -81,11 +85,11 @@ export const EditPackModal: FC<EditPackModalPropsType> = ({
             Private pack
           </Checkbox>
         </div>
-        <div className={s.modalButtonBlock}>
-          <Button className={s.close} onClick={() => setOpenRenameModal(false)}>
+        <div className={'modalButtonBlock'}>
+          <Button className={'close'} onClick={() => setOpenRenameModal(false)}>
             Cancel
           </Button>
-          <Button className={s.del} onClick={() => editPack(packId)}>
+          <Button className={'del'} onClick={() => editPack(packId)}>
             Save
           </Button>
         </div>
