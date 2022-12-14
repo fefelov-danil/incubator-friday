@@ -8,7 +8,7 @@ import s from 'features/cards/Cards.module.css'
 import { deletePackTC } from 'features/packs/packs-reducer'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
-export const DeleteModal = () => {
+export const DeletePackModal = () => {
   const dispatch = useAppDispatch()
   const packName = useAppSelector(state => state.cards.packName)
   const cardsPack_id = useAppSelector(state => state.cards.currentPackId)

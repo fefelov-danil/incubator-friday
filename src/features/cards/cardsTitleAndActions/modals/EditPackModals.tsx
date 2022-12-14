@@ -10,7 +10,7 @@ import s from 'features/cards/Cards.module.css'
 import { updatePackTC } from 'features/packs/packs-reducer'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
-export const EditModals = () => {
+export const EditPackModals = () => {
   const dispatch = useAppDispatch()
   const packId = useAppSelector(state => state.cards.currentPackId)
   const cardsPack_id = useAppSelector(state => state.cards.currentPackId)
