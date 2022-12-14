@@ -7,20 +7,20 @@ import s from './Learn.module.css'
 
 import { PATH } from 'common/routes/Pages'
 import { CardType, setCurrentPackIdAC } from 'features/cards/cards-reducer'
+import { AllQuestionsCompleted } from 'features/learn/allQuestionsCompleted/AllQuestionsCompleted'
 import { Answer } from 'features/learn/answer/Answer'
 import {
   getCardsForLearnTC,
   questionsCompletedAC,
   setCardsPackIdInLearnAC,
 } from 'features/learn/learn-reducer'
-import { QuestionsCompleted } from 'features/learn/questionsCompleted/QuestionsCompleted'
 import { getCard } from 'utils/get-cards'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 const initialCard = {
   _id: '',
-  answer: 'initial answer',
-  question: 'initial question',
+  answer: '',
+  question: '',
   cardsPack_id: '',
   grade: 0,
   shots: 0,
@@ -69,7 +69,7 @@ export const Learn = () => {
   }
 
   if (questionsCompleted) {
-    return <QuestionsCompleted packName={packName} backToCardsHandler={backToCardsHandler} />
+    return <AllQuestionsCompleted packName={packName} backToCardsHandler={backToCardsHandler} />
   }
 
   return (
@@ -83,9 +83,12 @@ export const Learn = () => {
       <p className={s.question}>
         <b>Question: </b>
         {card.questionImg && card.questionImg !== 'null' ? (
-          <img src={card.questionImg} alt={'question'} />
+          <>
+            {card.question !== 'no question' && card.question}
+            <img src={card.questionImg} alt={'question'} />
+          </>
         ) : (
-          card.question
+          <>{card.question}</>
         )}
       </p>
       <p className={s.tryCounts}>Number of answers the question: {card.shots}</p>

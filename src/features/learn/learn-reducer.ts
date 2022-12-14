@@ -81,7 +81,6 @@ export const getCardsForLearnTC =
     const pageCount = getState().learn.pageCount
     const cardsPack_id = getState().learn.cardsPack_id
 
-    console.log(111111)
     try {
       const res = await cardsAPI.getCards({
         cardsPack_id,
