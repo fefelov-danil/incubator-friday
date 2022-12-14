@@ -40,6 +40,17 @@ export const learnReducer = (
       return { ...state, questionsCompleted: action.completed }
     case 'LEARN/SET-CARDS-PACK-ID':
       return { ...state, cardsPack_id: action.cardsPack_id }
+    case 'LEARN/RESET-LEARN-STATE':
+      return {
+        ...state,
+        packName: '',
+        cards: null,
+        cardsTotalCount: 0,
+        pageCount: 150,
+        packUserId: '',
+        questionsCompleted: false,
+        learnLoading: true,
+      }
     default:
       return state
   }
@@ -71,6 +82,12 @@ export const setCardsPackIdInLearnAC = (cardsPack_id: string) => {
   return {
     type: 'LEARN/SET-CARDS-PACK-ID',
     cardsPack_id,
+  } as const
+}
+
+export const resetLearnStateAC = () => {
+  return {
+    type: 'LEARN/RESET-LEARN-STATE',
   } as const
 }
 
@@ -121,3 +138,4 @@ export type LearnActionsType =
   | ReturnType<typeof deleteStudiedCardAC>
   | ReturnType<typeof questionsCompletedAC>
   | ReturnType<typeof setCardsPackIdInLearnAC>
+  | ReturnType<typeof resetLearnStateAC>

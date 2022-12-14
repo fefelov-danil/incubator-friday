@@ -50,6 +50,21 @@ export const cardsReducer = (
       return { ...state, sortCardsValue: action.sortCardsValue }
     case 'CARDS/SET-FILTER-TO-CARDS-FROM-INPUT-SEARCH':
       return { ...state, filterSearchValue: action.searchValue }
+    case 'CARDS/RESET-STATE':
+      return {
+        ...state,
+        packName: '',
+        cards: null,
+        cardsTotalCount: 0,
+        maxGrade: 0,
+        minGrade: 0,
+        page: 1,
+        pageCount: 5,
+        packUserId: '',
+        currentPackId: '',
+        sortCardsValue: '0updated',
+        filterSearchValue: '',
+      }
     default:
       return state
   }
@@ -96,6 +111,12 @@ export const setFilterToCardsFromInputSearchAC = (searchValue: string) => {
   return {
     type: 'CARDS/SET-FILTER-TO-CARDS-FROM-INPUT-SEARCH',
     searchValue,
+  } as const
+}
+
+export const resetCardStateAC = () => {
+  return {
+    type: 'CARDS/RESET-STATE',
   } as const
 }
 
@@ -174,6 +195,7 @@ export type CardsActionsType =
   | ReturnType<typeof setPageCardsCountAC>
   | ReturnType<typeof setSortCardsValueAC>
   | ReturnType<typeof setFilterToCardsFromInputSearchAC>
+  | ReturnType<typeof resetCardStateAC>
 
 export type CardType = {
   _id: string

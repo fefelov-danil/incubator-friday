@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom'
 
 import defaultCover from 'assets/images/default-pack-cover.png'
 import { PATH } from 'common/routes/Pages'
-import { setCurrentPackIdAC } from 'features/cards/cards-reducer'
+import { resetCardStateAC, setCurrentPackIdAC } from 'features/cards/cards-reducer'
 import { ActionsForMyPacks } from 'features/packs/table/body/actions/ActionsForMyPacks'
 import { ActionsForStrangerPacks } from 'features/packs/table/body/actions/ActionsForStrangerPacks'
 import s from 'features/packs/table/body/TbodyPacks.module.css'
@@ -21,6 +21,7 @@ export const TbodyPacks = () => {
   const appStatus = useAppSelector(state => state.app.appStatus)
 
   const openPack = (cardsPack_id: string) => {
+    dispatch(resetCardStateAC())
     dispatch(setCurrentPackIdAC(cardsPack_id))
   }
 

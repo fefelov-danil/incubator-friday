@@ -6,7 +6,7 @@ import TableCell from '@mui/material/TableCell'
 import { NavLink } from 'react-router-dom'
 
 import { PATH } from 'common/routes/Pages'
-import { setCardsPackIdInLearnAC } from 'features/learn/learn-reducer'
+import { resetLearnStateAC, setCardsPackIdInLearnAC } from 'features/learn/learn-reducer'
 import s from 'features/packs/table/body/TbodyPacks.module.css'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
@@ -23,6 +23,7 @@ export const ActionsForStrangerPacks: FC<ActionsForStrangerPacksPropsType> = ({
   const appStatus = useAppSelector(state => state.app.appStatus)
 
   const studyPack = (packId: string) => {
+    dispatch(resetLearnStateAC())
     dispatch(setCardsPackIdInLearnAC(packId))
   }
 

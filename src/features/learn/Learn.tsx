@@ -6,7 +6,7 @@ import { NavLink, useSearchParams } from 'react-router-dom'
 import s from './Learn.module.css'
 
 import { PATH } from 'common/routes/Pages'
-import { CardType, setCurrentPackIdAC } from 'features/cards/cards-reducer'
+import { CardType, resetCardStateAC, setCurrentPackIdAC } from 'features/cards/cards-reducer'
 import { AllQuestionsCompleted } from 'features/learn/allQuestionsCompleted/AllQuestionsCompleted'
 import { Answer } from 'features/learn/answer/Answer'
 import {
@@ -65,6 +65,7 @@ export const Learn = () => {
   }, [cards])
 
   const backToCardsHandler = () => {
+    dispatch(resetCardStateAC())
     dispatch(setCurrentPackIdAC(cardsPack_id))
   }
 

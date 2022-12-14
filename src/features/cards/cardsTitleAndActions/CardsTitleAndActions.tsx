@@ -5,15 +5,18 @@ import SchoolIcon from '@mui/icons-material/School'
 import IconButton from '@mui/material/IconButton/IconButton'
 import { NavLink } from 'react-router-dom'
 
+import { resetLearnStateAC } from '../../learn/learn-reducer'
+
 import { Button } from 'common/button/Button'
 import { PATH } from 'common/routes/Pages'
 import s from 'features/cards/Cards.module.css'
 import { AddNewCardModal } from 'features/cards/cardsTitleAndActions/modals/AddNewCardModal'
 import { DeletePackModal } from 'features/cards/cardsTitleAndActions/modals/DeletePackModal'
 import { EditPackModals } from 'features/cards/cardsTitleAndActions/modals/EditPackModals'
-import { useAppSelector } from 'utils/hooks'
+import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 export const CardsTitleAndActions = () => {
+  const dispatch = useAppDispatch()
   const packName = useAppSelector(state => state.cards.packName)
   const cardsTotalCount = useAppSelector(state => state.cards.cardsTotalCount)
   const myId = useAppSelector(state => state.auth.profile._id)
@@ -21,6 +24,10 @@ export const CardsTitleAndActions = () => {
 
   const [openActions, setOpenActions] = useState(false)
   const actions = useRef(null as HTMLDivElement | null)
+
+  const resetLearnStateHandler = () => {
+    dispatch(resetLearnStateAC())
+  }
 
   useEffect(() => {
     if (!openActions) return
@@ -58,7 +65,7 @@ export const CardsTitleAndActions = () => {
               <EditPackModals />
               <DeletePackModal />
               {cardsTotalCount ? (
-                <NavLink className={s.action} to={PATH.LEARN}>
+                <NavLink className={s.action} to={PATH.LEARN} onClick={resetLearnStateHandler}>
                   <SchoolIcon sx={{ fontSize: 19 }} /> Learn
                 </NavLink>
               ) : (
@@ -78,12 +85,12 @@ export const CardsTitleAndActions = () => {
         <h1>{packName}</h1>
         {cardsTotalCount ? (
           <Button>
-            <NavLink className={s.learnBtn} to={PATH.LEARN}>
-              Learn to pack
+            <NavLink className={s.learnBtn} to={PATH.LEARN} onClick={resetLearnStateHandler}>
+              Learn this pack
             </NavLink>
           </Button>
         ) : (
-          <Button disabled={true}>Learn to pack</Button>
+          <Button disabled={true}>Learn this pack</Button>
         )}
       </div>
     )
