@@ -18,9 +18,9 @@ export const Answer: FC<AnswerPropsType> = ({ card }) => {
   const [currentGrade, setCurrentGrade] = useState(1)
   const [hideAnswer, setHideAnswer] = useState(true)
 
-  const nextQuestion = async () => {
+  const nextQuestion = () => {
     setHideAnswer(true)
-    await dispatch(setGrade(currentGrade, card._id))
+    dispatch(setGrade(currentGrade, card._id))
 
     if (cards && cards.length === 1) {
       dispatch(questionsCompletedAC(true))
