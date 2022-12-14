@@ -10,6 +10,7 @@ React, Redux, TypeScript, Axios, Thunk middleware, Formik, React Router, Eslint.
 ### Our team:
 Fefelov Danil (telegram - @Danil_Fefelov)
 Borisov Vladimir (telegram - @borisovlife)
+Kirill Barkovskiy (telegram - @splinshady)
 
 ### Installation:
 
