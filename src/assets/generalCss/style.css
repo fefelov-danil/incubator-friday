@@ -206,11 +206,11 @@ ul.ul-custom li:before {
     margin: 0;
     padding: 30px 15px;
 
-    background-color: rgba(235,235,235,.3);
-    -webkit-backdrop-filter: blur(4px);
-    backdrop-filter: blur(4px);
     border-radius: 0;
     box-shadow: none;
+  }
+  .container-with-table:before {
+    border-radius: 0;
   }
 }
 

@@ -6,7 +6,6 @@ import IconButton from '@mui/material/IconButton'
 import { Button } from 'common/button/Button'
 import { Modal } from 'common/modal/Modal'
 import { deletePackTC } from 'features/packs/packs-reducer'
-import s from 'features/packs/table/body/TbodyPacks.module.css'
 import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 type DeletePackPropsType = {
@@ -39,11 +38,11 @@ export const DeletePackModal: FC<DeletePackPropsType> = ({ packId, packName }) =
       <p>
         Do you really want to remove <b>{packName}</b>?
       </p>
-      <div className={s.modalButtonBlock}>
-        <Button className={s.close} onClick={() => setOpenModal(false)}>
+      <div className={'modalButtonBlock'}>
+        <Button className={'close'} onClick={() => setOpenModal(false)}>
           Cancel
         </Button>
-        <Button className={s.del} onClick={() => deletePack(packId)}>
+        <Button className={'del'} onClick={() => deletePack(packId)}>
           Delete
         </Button>
       </div>

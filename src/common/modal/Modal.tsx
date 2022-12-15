@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 import CloseIcon from '@mui/icons-material/Close'
 
-import s from './Modale.module.css'
+import s from 'common/modal/Modal.module.css'
 
 type ModalProps = {
   title: string
