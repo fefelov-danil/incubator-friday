@@ -62,7 +62,7 @@
   display: block;
 
   max-height: 160px;
-  margin: 5px auto 0 auto;
+  margin: 12px auto 0 auto;
 }
 .answer {
   margin-bottom: 30px;
@@ -111,4 +111,12 @@ h2 {
   padding: 8px 55px;
 
   font-size: 18px;
+}
+
+@media (max-width: 580px) {
+  .learn {
+    width: 95%;
+    margin: 30px auto;
+    padding: 40px 25px 30px 25px;
+  }
 }
