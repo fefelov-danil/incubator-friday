@@ -149,9 +149,11 @@ export const getCardsTC = () => async (dispatch: AppDispatch, getState: () => Ro
 }
 
 export const createNewCardTC = (data: CreateCardRequestType) => async (dispatch: AppDispatch) => {
+  dispatch(setAppStatusAC('loading'))
   try {
     await cardsAPI.addCard(data)
     dispatch(getCardsTC())
+    dispatch(setAppStatusAC('succeeded'))
   } catch (err) {
     const error = err as Error | AxiosError<{ error: string }>
 
