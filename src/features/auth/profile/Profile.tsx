@@ -35,7 +35,7 @@ export const Profile = () => {
   return (
     <div className={'formPage'}>
       <div className={s.profile}>
-        <NavLink className={s.goToPack} to={PATH.CARDS}>
+        <NavLink className={s.goToPack} to={PATH.PACKS}>
           <ArrowBackIosNewIcon />
           Go to packs page
         </NavLink>
