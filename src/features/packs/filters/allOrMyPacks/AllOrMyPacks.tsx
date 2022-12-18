@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { useAppDispatch, useAppSelector } from '../../../../utils/hooks'
 import {
   getPacksTC,
+  setCurrentPacksPageAC,
   setFilterToPacksFromInputSearchAC,
   setRerenderAC,
   setSortByAllMyAC,
@@ -10,6 +10,8 @@ import {
 } from '../../packs-reducer'
 
 import s from './AllOrMyPacks.module.css'
+
+import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 export const AllOrMyPacks: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -25,6 +27,7 @@ export const AllOrMyPacks: React.FC = () => {
     const maxCardsCount = res ? res.maxCardsCount : 150
 
     dispatch(setSortMinMaxCardsAC(0, maxCardsCount))
+    dispatch(setCurrentPacksPageAC(1))
   }
 
   return (

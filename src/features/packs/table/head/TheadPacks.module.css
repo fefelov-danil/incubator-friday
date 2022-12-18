@@ -26,6 +26,9 @@
 .tableHead th span.arrowTop svg {
   transform: rotate(180deg);
 }
+.tableHead th span.disabled {
+  pointer-events: none;
+}
 
 @media (max-width: 800px) {
   .tableHead th {

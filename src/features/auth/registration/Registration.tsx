@@ -3,15 +3,15 @@ import React from 'react'
 import { useFormik } from 'formik'
 import { Navigate } from 'react-router-dom'
 
-import { Button } from '../../../common/button/Button'
-import { InputPassword } from '../../../common/inputPassword/InputPassword'
-import { InputText } from '../../../common/inputText/InputText'
-import { useAppDispatch, useAppSelector } from '../../../utils/hooks'
 import { registerMeTC } from '../auth-reducer'
 
 import s from './Registration.module.css'
 
+import { Button } from 'common/button/Button'
+import { InputPassword } from 'common/inputPassword/InputPassword'
+import { InputText } from 'common/inputText/InputText'
 import { PATH } from 'common/routes/Pages'
+import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 export const Registration = () => {
   const dispatch = useAppDispatch()
@@ -21,6 +21,7 @@ export const Registration = () => {
     initialValues: {
       email: '',
       password: '',
+      repeatPassword: '',
     },
     validate: values => {
       const errors: FormikErrorType = {}
@@ -34,6 +35,11 @@ export const Registration = () => {
         errors.password = 'Required'
       } else if (values.password.length <= 7) {
         errors.password = 'Password must be more than 7 characters'
+      }
+      if (!values.repeatPassword) {
+        errors.repeatPassword = 'Required'
+      } else if (values.repeatPassword !== values.password) {
+        errors.repeatPassword = 'Password must be match'
       }
 
       return errors
@@ -72,6 +78,16 @@ export const Registration = () => {
               <span className={s.error_message}>{formik.errors.password}</span>
             ) : null}
           </div>
+          <div className={s.inpPass_container}>
+            <InputPassword
+              placeholder={'repeat password'}
+              className={s.inpPass}
+              {...formik.getFieldProps('repeatPassword')}
+            />
+            {formik.touched.repeatPassword && formik.errors.repeatPassword ? (
+              <span className={s.error_message}>{formik.errors.repeatPassword}</span>
+            ) : null}
+          </div>
           <Button type={'submit'} className={s.btn}>
             Register
           </Button>
@@ -85,4 +101,5 @@ export const Registration = () => {
 type FormikErrorType = Partial<{
   email: string
   password: string
+  repeatPassword: string
 }>
