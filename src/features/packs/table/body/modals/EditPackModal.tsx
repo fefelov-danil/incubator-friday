@@ -43,7 +43,12 @@ export const EditPackModal: FC<EditPackModalPropsType> = ({
 
   const editPack = (packId: string) => {
     dispatch(
-      updatePackTC({ _id: packId, name: inputPackName, private: isChecked, deckCover: cover })
+      updatePackTC({
+        _id: packId,
+        name: inputPackName,
+        private: isChecked,
+        deckCover: cover ? cover : '',
+      })
     )
     setOpenRenameModal(false)
   }
