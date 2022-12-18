@@ -5,13 +5,15 @@ import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 
-import { useAppDispatch, useAppSelector } from '../../../../utils/hooks'
 import { setSortPacksValueAC } from '../../packs-reducer'
 
-import s from 'features/packs/table/head/TheadPacks.module.css'
+import s from './TheadPacks.module.css'
+
+import { useAppDispatch, useAppSelector } from 'utils/hooks'
 
 export const TheadPacks = () => {
   const dispatch = useAppDispatch()
+  const appStatus = useAppSelector(state => state.app.appStatus)
 
   const onClickHandler = (sort: string) => {
     dispatch(setSortPacksValueAC(sort))
@@ -22,7 +24,10 @@ export const TheadPacks = () => {
     if (sortPacksValue === '1' + sort) {
       return (
         <TableCell>
-          <span className={s.arrowTop} onClick={() => onClickHandler('0' + sort)}>
+          <span
+            className={appStatus === 'loading' ? `${s.disabled} ${s.arrowTop}` : s.arrowTop}
+            onClick={() => onClickHandler('0' + sort)}
+          >
             {name} <ArrowDropDownIcon />
           </span>
         </TableCell>
@@ -32,7 +37,10 @@ export const TheadPacks = () => {
     if (sortPacksValue === '0' + sort) {
       return (
         <TableCell>
-          <span className={s.arrowBottom} onClick={() => onClickHandler('1' + sort)}>
+          <span
+            className={appStatus === 'loading' ? `${s.disabled} ${s.arrowBottom}` : s.arrowBottom}
+            onClick={() => onClickHandler('1' + sort)}
+          >
             {name} <ArrowDropDownIcon />
           </span>
         </TableCell>
@@ -41,7 +49,13 @@ export const TheadPacks = () => {
 
     return (
       <TableCell>
-        <span onClick={() => onClickHandler('0' + sort)}> {name} </span>
+        <span
+          className={appStatus === 'loading' ? s.disabled : ''}
+          onClick={() => onClickHandler('0' + sort)}
+        >
+          {' '}
+          {name}{' '}
+        </span>
       </TableCell>
     )
   }
